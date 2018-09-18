@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Dynamic Inventory Management</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div>
+<nav th:fragment="navigation_home">
+    <h2><b><a href="/user">Users</a></b> |
+    <b><a href="/material">Materials Flow</a> |</b>
+    <b><a href="/schedule">Schedule</a> |</b></h2>
+
+</nav>
+</div>
+<hr/>
+
+<div>
+    <nav th:fragment="navigation_location">
+        <h4>
+            <a href="addlocationformaterial">Add location</a> |
+            <a href="locations">Locations</a> |
+            <a href="locationstatus">Status of the location</a>
+        </h4>
+    </nav>
+</div>
+
+
+<div>
+    <nav th:fragment="navigation_user">
+
+        <h4><a href="/user/login">Login</a> |</h4>
+        <h4><a href="/user/registration">Sign Up</a> |</h4>
+    </nav>
+</div>
+</body>
+</html>

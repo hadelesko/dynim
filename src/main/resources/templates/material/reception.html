@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <h1 th:text="${title}">Default Title</h1>
+</head>
+<body>
+<form  method="POST" style="max-width:600px;" th:object="${material}" action="reception">
+    <div class="material">
+        <label th:for="matName">Name</label>
+        <div>
+            <input class="form-control" th:field="*{matName}"/>
+            <span th:errors="*{matName}" class="error"></span>
+        </div>
+    </div>
+
+
+     <div clas="material">
+           <label th:for="description">Description</label>
+           <div>
+                <input class="form-control" th:field="*{description}"/>
+                 <span th:errors="*{description}" class="error"></span>
+           </div>
+     </div>
+
+    <div class="material">
+        <label th:for="stock">Stock</label>
+        <div>
+            <input class="form-control" th:field="*{stock}"/>
+            <span th:errors="*{stock}" class="error"></span>
+        </div>
+    </div>
+    <input type="submit" value="Confirm reception" />
+</form>
+
+</body>
+</html>
