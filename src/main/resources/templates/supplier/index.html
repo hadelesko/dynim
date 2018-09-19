@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
-<body>
+<head th:replace="fragments :: head"></head>
 
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<p th:unless="${suppliers} and ${suppliers.size()}">no supplier yet :(</p>
+
+
+<table class="table">
+
+    <tr>
+        <th>List of suppliers</th>
+    </tr>
+
+    <tr>
+        <th>Name</th>
+        <th>material</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Fax</th>
+    </tr>
+
+    <tr th:each="supplier:${suppliers}">
+        <!--<li><a th:href="'supplier/'+${supplier.id}" th:object="${supplier}"></a></li>-->
+        <td th:text="${supplier.name}"></td>
+        <td th:text="${supplier.material}"></td>
+        <td th:text="${supplier.email}"></td>
+        <td th:text="${supplier.address}"></td>
+        <td th:text="${supplier.phone}"></td>
+        <td th:text="${supplier.fax}"></td>
+    </tr>
+</table>
+<b><a href="reception">Add Material</a> |</b>
+<b><a href="remove">Remove Material</a></b>
+<b><a href="/supplier/">Supplier list</a></b>
+<b><a href="/supplier/add">Add new Supplier</a></b>
 </body>
 </html>

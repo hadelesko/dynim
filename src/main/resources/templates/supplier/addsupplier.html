@@ -2,9 +2,63 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
-    <title></title>
+<h1 th:text="${title}">Default Title</h1>
 </head>
 <body>
+<form  method="POST" style="max-width:600px;" th:object="${supplier}" action="add">
+    <div class="supplier">
+        <label th:for="name">Name</label>
+        <div>
+            <input class="form-control" th:field="*{name}"/>
+            <span th:errors="*{name}" class="error"></span>
+        </div>
+    </div>
+
+
+    <div clas="supplier">
+        <label th:for="address">Address</label>
+        <div>
+            <input class="form-control" th:field="*{address}"/>
+            <span th:errors="*{address}" class="error"></span>
+        </div>
+    </div>
+
+    <div class="material">
+        <label th:for="email">Stock</label>
+        <div>
+            <input class="form-control" th:field="*{email}"/>
+            <span th:errors="*{email}" class="error"></span>
+        </div>
+    </div>
+
+    <div class="supplier">
+        <label th:for="phone">Phone</label>
+        <div>
+            <input class="form-control" th:field="*{phone}"/>
+            <span th:errors="*{phone}" class="error"></span>
+        </div>
+    </div>
+
+    <div class="supplier">
+        <label th:for="fax">Stock</label>
+        <div>
+            <input class="form-control" th:field="*{fax}"/>
+            <span th:errors="*{fax}" class="error"></span>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label th:for="type">Type</label>
+        <select name="matId">
+            <option th:each="mat : ${materials}"
+                    th:text="${mat.matName}"
+                    th:value="${mat.matId}">
+            </option>
+        </select>
+    </div>
+    <div><input type="submit" value="Add a new supplier" /></div>
+</form>
 
 </body>
 </html>

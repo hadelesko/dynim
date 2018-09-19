@@ -66,7 +66,7 @@ public class MaterialController {
             Flow entrymaterial=new Flow();
 
             // Registration of the Flow
-
+            ///(matDao.findByMatName(matName)).getMatId(); // request the id of the material
             entrymaterial.setMaterial(matDao.findByMatName(matName));
             entrymaterial.setFlowQuantity(stock);
             entrymaterial.setName("reception");
