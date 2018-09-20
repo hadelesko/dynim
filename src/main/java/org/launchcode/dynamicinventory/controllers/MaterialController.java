@@ -73,6 +73,11 @@ public class MaterialController {
             entrymaterial.getFlowId();
             flowDao.save(entrymaterial);
 
+            material.getSupplier().getSupplierId();
+
+
+
+
             if (matDao.findByMatName(matName) != null) { //it was checked that the
                 // material with the name matName exists so the only things to do here is
                 //to update the available quantity

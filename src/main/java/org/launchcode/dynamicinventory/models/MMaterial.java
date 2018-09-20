@@ -18,17 +18,27 @@ public class MMaterial {
 
     private double stock;
 
-    @OneToMany
-    @JoinColumn(name = "mat_Id")
-    private List<Supplier> supplier;
+    @ManyToOne
+    private Supplier supplier;
+
+    @ManyToOne
+    private Location location;
 
     @OneToMany
-    @JoinColumn(name = "mat_Id")
-    private List<Location> locations = new ArrayList<>();
-
-    @OneToMany
-    @JoinColumn(name = "mat_Id")
+    @JoinColumn(name = "matId")
     private List<Flow> flows = new ArrayList<>();
+
+ /*   @OneToMany
+    @JoinColumn(name = "mat_Id")
+    private List<Supplier> supplier;*/
+
+/*    @OneToMany
+    @JoinColumn(name = "mat_Id")
+    private List<Location> locations = new ArrayList<>();*/
+
+
+
+    public MMaterial(){}
 
 
     public int getMatId() {
@@ -39,38 +49,20 @@ public class MMaterial {
         this.matId = matId;
     }
 
-
-
-    public List<Supplier> getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(List<Supplier> supplier) {
-        this.supplier = supplier;
-    }
-
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public List<Flow> getFlows() {
-        return flows;
-    }
-
-    public void setFlows(List<Flow> flows) {
-        this.flows = flows;
-    }
-
     public String getMatName() {
         return matName;
     }
 
     public void setMatName(String matName) {
         this.matName = matName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getStock() {
@@ -81,11 +73,27 @@ public class MMaterial {
         this.stock = stock;
     }
 
-    public String getDescription() {
-        return description;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public List<Flow> getFlows() {
+        return flows;
+    }
+
+    public void setFlows(List<Flow> flows) {
+        this.flows = flows;
     }
 }

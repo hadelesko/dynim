@@ -54,11 +54,12 @@ public class SupplierController {
             return "supplier/addsupplier";
         } else {
             MMaterial mat = new MMaterial();
-            /*supplierDao.findByName(name)--->return supplier/    +.getMaterial()--->returns supplied  materials
-             +.getMatId() ----> returns the id of this material
+            /*supplierDao.findByName(name)--->return supplier/    +.getMaterials()--->returns supplied  materials
+             +.contains(matdao.findByMatId(materialId)) ----> returns boolean true or false
             * */
 
-            if (supplierDao.findByName(name) != null && supplierDao.findByName(name).getMaterial().getMatId() != materialId) {
+            //
+            if (supplierDao.findByName(name) != null && supplierDao.findByName(name).getMaterials().contains(matDao.findByMatId(materialId))==false) {
                 // above : if supplier exist && delivered material is not yet recorded for him ?Then add the new material
                 // to his list of delivered material
                 String supplierName = name;
@@ -72,25 +73,38 @@ public class SupplierController {
                 // of the material delivered by this supplier
 
 
-                List<MMaterial> listDeliveredMaterial = supplierDao.findByMMaterialAndSupplierId(material, supplierId);
-                //Alternative
-                //List<MMaterial> listDeliveredMaterial=supplierDao.findByMatIdAndSupplierName(materialId, suppliername);
+                List<MMaterial> listDeliveredMaterial = supplier.getMaterials();//supplied by the supplier
+
                 mat.getMatId();
                 listDeliveredMaterial.add(mat);
-                supplier.setMaterial(mat);
+                supplier.setMaterials(listDeliveredMaterial);
                 supplierDao.save(supplier);
                 return "redirect:";
             }
-            else {
-                if (supplierDao.findByName(name) != null && supplierDao.findByName(name).getMaterial().getMatId() == materialId){
+            else {// here the supplier exists already and he has already delivered this material to the company
+                  // then nothing more to do the supplier and that material are already in the our system.
+                if (supplierDao.findByName(name) != null && supplierDao.findByName(name).getMaterials().contains(matDao.findByMatId(materialId))==true){
                     return "redirect:";
-                }else{
-                    if(supplierDao.findByName(name) == null && supplierDao.findByName(name).getMaterial().getMatId() == materialId)
+                }else{//This supplier have never delivered us. This material is till now delivered by other suppliers
+                      //Todo is to add this supplier to the list of suppliers of this material
+                    if(supplierDao.findByName(name) == null && supplierDao.findByName(name).getMaterials().contains(matDao.findByMatId(materialId))==true){
                         supplier.getSupplierId();
                         supplierDao.save(supplier);
                         return "redirect:";
-                }
-            }}}}
+                } else{//A new supplier with new material for the company
+                        // Todo here is to record the new material and new supplier in our system and
+                       if(supplierDao.findByName(name) == null && supplierDao.findByName(name).getMaterials().contains(matDao.findByMatId(materialId))==false){
+                           supplier.getSupplierId();
+
+                           //add the new material to the list of the supplied materials
+                           supplier.getMaterials().add(matDao.findByMatId(materialId));
+                           supplierDao.save(supplier);
+                           matDao.save(material);
+                           return "redirect:";
+
+                       }
+                    }
+            }}}}}
 
 
 

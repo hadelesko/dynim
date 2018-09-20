@@ -30,6 +30,29 @@
             <span th:errors="*{stock}" class="error"></span>
         </div>
     </div>
+
+    <div class="form-group">
+        <label th:for="supplier">Supplier</label>
+        <select name="supplierId">
+            <option th:each="supplier : ${suppliers}"
+                    th:text="${supplier.name}"
+                    th:value="${supplier.supplierId}">
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label th:for="location">Location</label>
+        <select name="locationId">
+            <option th:each="location : ${locations}"
+                    th:text="${location.name}"
+                    th:value="${location.locationId}">
+            </option>
+        </select>
+    </div>
+
+
+
     <input type="submit" value="Confirm reception" />
 </form>
 

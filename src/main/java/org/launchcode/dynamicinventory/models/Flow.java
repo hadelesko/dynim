@@ -1,9 +1,9 @@
 package org.launchcode.dynamicinventory.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Flow {
     @Id
@@ -15,8 +15,15 @@ public class Flow {
     @ManyToOne
     private MMaterial material;
 
+    @ManyToOne
+    private Location location;
+
+    @ManyToOne
+    private Supplier supplier;
+
 
     public Flow(){}
+
 
     public int getFlowId() {
         return flowId;
@@ -48,5 +55,21 @@ public class Flow {
 
     public void setMaterial(MMaterial material) {
         this.material = material;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 }

@@ -1,9 +1,9 @@
 package org.launchcode.dynamicinventory.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Location {
 
@@ -11,12 +11,18 @@ public class Location {
     @GeneratedValue
     private int locationId;
     private String name;
-    private double locstock;
+    private double locationStock;
 
-    @ManyToOne
-    private MMaterial material;
+    @OneToMany
+    @JoinColumn(name="locationId")
+    private List<MMaterial> materials;
+
+    @OneToMany
+    @JoinColumn(name="locationId")
+    private List<Flow> flows=new ArrayList<>();
 
     public Location(){}
+
 
     public int getLocationId() {
         return locationId;
@@ -34,19 +40,27 @@ public class Location {
         this.name = name;
     }
 
-    public double getLocstock() {
-        return locstock;
+    public double getLocationStock() {
+        return locationStock;
     }
 
-    public void setLocstock(double locstock) {
-        this.locstock = locstock;
+    public void setLocationStock(double locationStock) {
+        this.locationStock = locationStock;
     }
 
-    public MMaterial getMaterial() {
-        return material;
+    public List<MMaterial> getMaterials() {
+        return materials;
     }
 
-    public void setMaterial(MMaterial material) {
-        this.material = material;
+    public void setMaterials(List<MMaterial> materials) {
+        this.materials = materials;
+    }
+
+    public List<Flow> getFlows() {
+        return flows;
+    }
+
+    public void setFlows(List<Flow> flows) {
+        this.flows = flows;
     }
 }

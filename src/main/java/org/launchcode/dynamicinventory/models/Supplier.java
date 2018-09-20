@@ -1,9 +1,9 @@
 package org.launchcode.dynamicinventory.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Supplier {
     @Id
@@ -17,20 +17,30 @@ public class Supplier {
     private long fax;
     private String address;
 
-    @ManyToOne
-    private MMaterial material;
+    /*@ManyToOne
+    private MMaterial material;*/
+    @OneToMany
+    @JoinColumn(name="supplierId")
+    private List<MMaterial> materials=new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name="supplierId")
+    private List<Flow>flows=new ArrayList<>();
+
+
 
     public Supplier(){}
 
-    public Supplier(int supplierId, String name, String email, long phone, long fax, String address, MMaterial material){
-        this.supplierId=supplierId;
-        this.name =name;
-        this.email=email;
-        this.phone=phone;
-        this.fax=fax;
-        this.address=address;
-        this.material=material;
+    public Supplier(int supplierId, String name, String email, long phone, long fax, String address, List<MMaterial> materials){
+        this.setSupplierId(supplierId);
+        this.setName(name);
+        this.setEmail(email);
+        this.setPhone(phone);
+        this.setFax(fax);
+        this.setAddress(address);
+        this.setMaterials(materials);
     }
+
 
     public int getSupplierId() {
         return supplierId;
@@ -56,23 +66,6 @@ public class Supplier {
         this.email = email;
     }
 
-    public MMaterial getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(MMaterial material) {
-        this.material = material;
-    }
-
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public long getPhone() {
         return phone;
     }
@@ -87,5 +80,29 @@ public class Supplier {
 
     public void setFax(long fax) {
         this.fax = fax;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public List<MMaterial> getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(List<MMaterial> materials) {
+        this.materials = materials;
+    }
+
+    public List<Flow> getFlows() {
+        return flows;
+    }
+
+    public void setFlows(List<Flow> flows) {
+        this.flows = flows;
     }
 }
