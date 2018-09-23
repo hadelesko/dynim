@@ -11,10 +11,11 @@ import java.util.List;
 @Transactional
 public interface MatDao extends CrudRepository<MMaterial,Integer> {
 
-
+    List<MMaterial>findAll();
     MMaterial removeByMatName(String matName);
     MMaterial findByMatId(int matId);
     MMaterial removeByMatNameAndStockLessThanEqual(String matName, double stock);
+    MMaterial findByMatName(String matName);
 /*    Iterable<MMaterial> getAllMaterials();
     Iterable<MMaterial> getbysupplier(String suppliername);
     MMaterial getById(int id);

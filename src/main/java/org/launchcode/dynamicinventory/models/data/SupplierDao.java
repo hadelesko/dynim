@@ -13,13 +13,13 @@ import java.util.List;
 @Transactional
 public interface SupplierDao extends CrudRepository<Supplier,Integer> {
 
-
+    List<Supplier> findAll();
     Supplier findByName(String name);
     Supplier findBySupplierId(int supplierId);
     List<Supplier> removeByName(String name);
-    List<MMaterial> findByMaterialAndSupplierId(MMaterial material, int supplierId);
+    //List<MMaterial> findByMaterialAndSupplierId(MMaterial material, int supplierId);
     //Alternative
-    List<MMaterial>findByMatIdAndSupplierName(int materialId, String supplierName);
+    //List<MMaterial>findByMatIdAndSupplierName(int materialId, String supplierName);
     ////List<Supplier> removeByMatNameAndStockLessThanEqual(String matName, double stock);
 /*    Iterable<MMaterial> getAllMaterials();
     Iterable<MMaterial> getbysupplier(String suppliername);

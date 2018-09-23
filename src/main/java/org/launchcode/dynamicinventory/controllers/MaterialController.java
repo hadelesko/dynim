@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping(value="material")
 public class MaterialController {
    @Autowired
    private MatDao matDao;
@@ -61,7 +62,7 @@ public class MaterialController {
             model.addAttribute("title", "Insert a new Material");
 
             return "material/reception";
-        } else {
+        }else {
 
             Flow entrymaterial=new Flow();
 

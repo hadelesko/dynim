@@ -1,6 +1,7 @@
 package org.launchcode.dynamicinventory.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +10,9 @@ public class Supplier {
     @Id
     @GeneratedValue
     private int supplierId;
-
+    @NotNull
     private String name;
-
+    @NotNull
     private String email;
     private long phone;
     private long fax;
