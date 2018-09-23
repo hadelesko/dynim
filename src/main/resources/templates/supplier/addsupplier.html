@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
-<h1 th:text="${title}">Default Title</h1>
+    <h1 th:text="${title}">Default Title</h1>
 </head>
 <body>
-<form  method="POST" style="max-width:600px;" th:object="${supplier}" action="add">
+<form method="POST" style="max-width:600px;" th:object="${supplier}" action="add">
     <div class="supplier">
         <label th:for="name">Name</label>
         <div>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="material">
-        <label th:for="email">Stock</label>
+        <label th:for="email">Email</label>
         <div>
             <input class="form-control" th:field="*{email}"/>
             <span th:errors="*{email}" class="error"></span>
@@ -40,7 +40,7 @@
     </div>
 
     <div class="supplier">
-        <label th:for="fax">Stock</label>
+        <label th:for="fax">Fax</label>
         <div>
             <input class="form-control" th:field="*{fax}"/>
             <span th:errors="*{fax}" class="error"></span>
@@ -48,7 +48,14 @@
     </div>
 
 
-    <div class="form-group">
+
+ <!-- Making option of materials suppose that we have already the materials in the database.
+  if we don't have them before, this form will not process because the controller required
+    the material id that suppose the existence of the material.How to avoid this error
+    when no material is in the database of the material, we just recommend here a
+    the <input> of the material or id instead of the <select> options
+    -->
+    <!--    <div class="form-group">
         <label th:for="material">Material</label>
         <select name="matId">
             <option th:each="mat : ${materials}"
@@ -56,9 +63,22 @@
                     th:value="${mat.matId}">
             </option>
         </select>
-    </div>
-    <div><input type="submit" value="Add a new supplier" /></div>
-</form>
+    </div>-->
 
+    <div class="material">
+        <label th:for="matName">Supplied Material name</label>
+        <div>
+            <input class="form-control" name="matName" th:text="${matName}"/>
+        </div>
+    </div>
+
+    <div class="material">
+        <label th:for="nmaterialId">Supplied Material id</label>
+        <div>
+            <input class="form-control" name="nmaterialId" th:text="${nmaterialId}"/>
+        </div>
+    </div>
+    <div><input type="submit" value="Add a new supplier"/></div>
+</form>
 </body>
 </html>
