@@ -51,14 +51,14 @@ public class SupplierController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String addsupplierprocessform(Model model,
                                          @ModelAttribute @Valid Supplier supplier,
-                                         Errors errors, @RequestParam("name")String name ,
+                                         Errors errors, @RequestParam("name") String name,
                                          @RequestParam String nmaterialId,
-                                         @RequestParam String matName){
-         //In summary, parseInt(String) returns a primitive int, whereas valueOf(String) returns a new Integer() object.
-        int materialId= Integer.valueOf(nmaterialId);
+                                         @RequestParam String matName) {
+        //In summary, parseInt(String) returns a primitive int, whereas valueOf(String) returns a new Integer() object.
+        int materialId = Integer.valueOf(nmaterialId);
 
         //@RequestParam String name,
-         //String name= supplier.getName();
+        //String name= supplier.getName();
         //String returnFormOrUrl;
         if (errors.hasErrors()) {
             model.addAttribute("title", "make sure to fill th required fields. Correct your form");
@@ -91,15 +91,15 @@ public class SupplierController {
                 supplierDao.save(supplier);
 
                 return "redirect:";
-               //return returnFormOrUrl;
+                //return returnFormOrUrl;
 
                 //return "redirect:";
             }
             // here the supplier exists already and he has already delivered this material to the company
             // then nothing more to do the supplier and that material are already in the our system.
             if (supplierDao.findByName(name) != null && supplierDao.findByName(name).getMaterials().contains(matDao.findByMatId(materialId)) == true) {
-                return"redirect:";
-               // return returnFormOrUrl;
+                return "redirect:";
+                // return returnFormOrUrl;
             }
 
             //This supplier have never delivered us. This material is till now delivered by other suppliers
@@ -107,7 +107,7 @@ public class SupplierController {
             if (supplierDao.findByName(name) == null && supplierDao.findByName(name).getMaterials().contains(matDao.findByMatId(materialId)) == true) {
                 supplier.getSupplierId();
                 supplierDao.save(supplier);
-                return"redirect:";
+                return "redirect:";
                 // return returnFormOrUrl;
                 //return "redirect:";
             }
@@ -127,63 +127,81 @@ public class SupplierController {
 
                 //record of the new material
                 //return "redirect:material/add"; //mat.getMatId()
-                return"redirect:material/add";
+                return "redirect:material/add";
                 //return returnFormOrUrl;
 
-            } }return "redirect:";
+            }
+        }
+        return "redirect:";
     }
-       @RequestMapping(value="addOrUpdateSupplierOrMaterial", method=RequestMethod.GET)
-       public String addsupplierform(Model model){
-            model.addAttribute("title", "The list of the suppliers");
-            model.addAttribute(new Supplier());
-            model.addAttribute("suppliers", supplierDao.findAll());
-            model.addAttribute("actuellistofmaterials",matDao.findAll());
-            model.addAttribute(new MMaterial());
+
+    @RequestMapping(value = "addorupdate", method = RequestMethod.GET)
+    public String addsupplierform(Model model) {
+        model.addAttribute("title", "Add a new supplier to the list of the suppliers");
+        model.addAttribute(new Supplier());
+        //model.addAttribute("suppliers", supplierDao.findAll());
+        //model.addAttribute("actuellistofmaterials", matDao.findAll());
+        //model.addAttribute(new MMaterial());
+        return "supplier/addOrUpdateSupplierOrMaterial";
+
+    }
+
+    @RequestMapping(value = "addorupdadte", method = RequestMethod.POST)
+    public String addsupplierformp(Model model, @ModelAttribute @Valid Supplier supplier,
+                                  Errors errors, @RequestParam("name") String name){
+                                  /*@RequestParam String nmaterialId,
+                                  @RequestParam String matName)*/
+
+        if (errors.hasErrors()) {
+            model.addAttribute("title", "Make sure you add the correct supplier or enter the correct value of the fields");
             return "supplier/addOrUpdateSupplierOrMaterial";
+        } else {
+            //Condition1:The supplier does not exist .
+            // Supplier and Material both are new in the whole system
+            if (supplierDao.findByName(name) == null) {/*&& matDao.findByMatName(matName) == null)*/
 
-       }
+                //model.addAttribute("title", "The supplier and the material did not exist, add the delivered material and then supplier");
+                supplier.getSupplierId();
+                supplierDao.save(supplier);
+                return "redirect:";
+                //return "redirect:material/reception";
+            }else {
+            //Condition 2: Supplier exists already but deliver for new material for the whole system. first supplier for that material
+            //if (supplierDao.findByName(supplier.getName()) != null /*&& matDao.findByMatName(matName) == null*/) {
+            //model.addAttribute("title", "The supplier exists already");
+            return "redirect:material/reception";
+        }
+    }
+}}
 
-         @RequestMapping(value = "addOrUpdateSupplierOrMaterial", method=RequestMethod.POST)                                                                                               questMapping(value="addOrUpdateSupplierOrMaterial", method=RequestMethod.POST)
-         public String addsupplierform(Model model,@ModelAttribute @Valid Supplier supplier,
-                                       Errors errors, @RequestParam("name")String name ,
-                                       @RequestParam String nmaterialId,
-                                       @RequestParam String matName){
+/*        }else {
 
-          if(errors.hasErrors()){
-              model.addAttribute("title", "Make sure you add the correct supplier or enter the correct value of the fields");
-              return "supplier/addOrUpdateSupplierOrMaterial";
-             }
-             //Condition1: Supplier and Material both are new in the whole system
-             if(supplierDao.findByName(name)==null && matDao.findByMatName(matName)==null){
+            //Condition 3.1: Supplier and material exist already  but it is the first time the supplier deliver this material
+            // ToDo is to add this material to the list of the materials delivered by this supplier
+            // and update the existing stock of this material
 
-              model.addAttribute("title","The supplier and the material did not exist, add the delivered material and then supplier");
+            if (supplierDao.findByName(name) != null && matDao.findByMatName(matName) != null &&
+                    supplier.getMaterials().contains(matDao.findByMatName(matName).getMatId()) == false) {
 
-              return "redirect:material/reception";
-             }
-             //Condition2: Supplier exists already but deliver for new material for the whole system. first supplier for that material
-             if(supplierDao.findByName(supplier.getName()) !=null && matDao.findByMatName(matName)==null){
-                model.addAttribute("title","The supplier exists already, add the delivered material");
-                return "redirect:material/reception";
+                supplier.getMaterials().add(matDao.findByMatName(matName));
+                return "redirect material/reception";
 
-             }
+            } else {
 
-             //Condition 3: Supplier and material exist already  but it is the first time the supplier deliver this material
-             // ToDo is to add this material to the list of the materials delivered by this supplier
-             // and update the existing stock of this material
+                //Condition 3.2: The material and supplier exist already and this supplier used to deliver this material.
+                //the material exist for the whole system and exists in the list of materials supplied by this supplier
+                if (supplierDao.findByName(name) != null && matDao.findByMatName(matName) != null &&
+                        supplier.getMaterials().contains(matDao.findByMatName(matName).getMatId()) == true) {
+                    // todo: update the stock of the material
+                    model.addAttribute("title", "The supplier exists and material exist already for this supplier. The only thing to do is to update the stock of this material by redirecting to this form");
+                    return "redirect material/reception";
+                }
 
-             if(supplierDao.findByName(name) != null && matDao.findByMatName(matName) != null &&
-                     supplier.getMaterials().contains(matDao.findByMatName(matName).getMatId())==false){
-
-                     supplier.getMaterials().add(matDao.findByMatName(matName));
-                     return "redirect material/reception";
-
-
-             }
-}
-
-}
+            }
+            return "redirect:";
 
 
+        }}}*/
 
 
 

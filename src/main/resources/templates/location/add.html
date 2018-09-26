@@ -2,9 +2,28 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
-    <title></title>
+    <title th:text="${title}">Default title</title>
 </head>
 <body>
+<form method="POST" style="max-width:600px;" th:object="${location}" action="add">
+    <div class="location">
+        <label th:for="name">Name</label>
+        <div>
+            <input class="form-control" th:field="*{name}"/>
+            <span th:errors="*{name}" class="error"></span>
+        </div>
+    </div>
+
+
+    <div clas="location">
+        <label th:for="locationStock">Stock</label>
+        <div>
+            <input class="form-control" th:field="*{locationStock}"/>
+            <span th:errors="*{locationStock}" class="error"></span>
+        </div>
+    </div>
+    <div><input type="submit" value="Add a new location"/></div>
+</form>
 
 </body>
 </html>

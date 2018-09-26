@@ -10,8 +10,8 @@
 
 <p th:unless="${materials} and ${materials.size()}">no material yet :(</p>
 
-
-<table class="table">
+<div th:if="${materials} and ${materials.size()}">
+<table class="table" >
 
     <tr>
         <th>Materials</th>
@@ -31,6 +31,7 @@
         <td th:text="${mat.stock}"></td>
     </tr>
 </table>
+</div>
 <b><a href="reception">Add Material</a> |</b>
 <b><a href="remove">Remove Material</a></b>
 

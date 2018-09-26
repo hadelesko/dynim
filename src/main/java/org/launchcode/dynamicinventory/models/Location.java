@@ -1,6 +1,7 @@
 package org.launchcode.dynamicinventory.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,9 @@ public class Location {
     @Id
     @GeneratedValue
     private int locationId;
+    @NotNull
     private String name;
+    @NotNull
     private double locationStock;
 
     @OneToMany
