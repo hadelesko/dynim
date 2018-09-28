@@ -5,8 +5,9 @@
 <h1 th:text="${title}">Default Title</h1>
 </head>
 <body>
-<form method = "POST" style="max-width:600px;" th:object="${supplier}" action = "addorupdate">
-    <div class="supplier">
+<!--<form method = "POST" style="max-width:600px;" th:object="${supplier}" action = "add">-->
+<form method = "POST" style="max-width:600px;" th:object="${supplier}" action = "addo">
+<div class="supplier">
         <label th:for="name">Name</label>
         <div>
             <input class="form-control" th:field="*{name}"/>

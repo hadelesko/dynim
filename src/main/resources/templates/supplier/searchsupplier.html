@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Default title</title>
+</head>
+<body>
+<form action="search"  style="max-width:600px;"  method="POST">
+    Enter the supplier name you are looking for or about to register: <input th:text="${suppliername}" name="name"/>
+    <input type="submit" value="search"/>
+</form>
+</body>
+</html>

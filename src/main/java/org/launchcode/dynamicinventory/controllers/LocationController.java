@@ -43,9 +43,11 @@ public class LocationController {
         return "location/searchLocation";
     }
     @RequestMapping(value="search", method =RequestMethod.POST)
-    public String search(Model model, @RequestParam("name") String name,
+    public String search(Model model, @RequestParam("locationName") String name,
                          @RequestParam Map<String,Integer>vars) {
+
         int locationId = vars.get("locationId");
+
         int stock = vars.get("locationStock");
         List<Location> locations=new ArrayList<>();
         if (name != null && vars.get("locationId") == null && vars.get("locationStock") == null) {
@@ -84,17 +86,27 @@ public class LocationController {
     public String addlocationproceedform(Model model, @ModelAttribute @Valid Location location, Errors errors,
                                          @RequestParam("name") String name) {
 
+
         if (errors.hasErrors()) {
             model.addAttribute("title", "Make sure the required fields are not empty");
             return "location/add";
         }
-        //
+/*        for (Location newloc : locationDao.findAll()) {
+            if (newloc.getName()!=name) {
+                return "redirect:";
+            } else {
+                location.getLocationId();
+                location.setLocationId(location.getLocationId());
+                locationDao.save(location);
+                return "location/editLocation";
+            }
+        }}}*/
         if (locationDao.findByName(name) == null) {
             location.getLocationId();
+            //location.setLocationId(location.getLocationId());
             locationDao.save(location);
-            return "redirect:";
+            //return "location/editLocation";
         }
-        return "redirect:";
-
-    }
-}
+        //return "redirect:";
+        return "location/editLocation";
+    }}

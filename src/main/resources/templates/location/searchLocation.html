@@ -4,30 +4,102 @@
     <meta charset="UTF-8"/>
 
     <title th:text="${title}"></title>
-    <script type="text/javascript" src="scriptsearch.js">
-</script>
+    <script type="text/javascript">
+    </script>
 
 </head>
 <body>
 <form method="POST" action="search">
-    <div>
 
-        Location id:  <input  type="checkbox" id="locationiId" th:value="locationid" onclick="myFunction()"/>
-        Location name:<input  type="checkbox" id="locationName" th:value="name" onclick="myFunction()"/>
-        Available Stock:<input  type="checkbox" id="locationStock" th:value="locationStock" onclick="myFunction()"/>
+    <table>
+        <tr>
+            <td><label th:for="locationId">Location id: </label></td>
+            <td><input th:text="${locationId}" align="right"/></td>
+        </tr>
+        <tr>
+            <td><label th:for="locationName">Location name: </label></td>
+            <td><input th:text="${locationName}" name="locationName" align="right"/></td>
+        </tr>
+        <tr>
+            <td><label th:for="locationStock">Available Stock:</label></td>
+            <td><input th:text="${locationStock}"  align="right"/></td>
+        </tr>
+    </table>
+    <input type="submit" value="search"/>
+</form>
+</body>
 
-    </div>
+</html>
+
+<!--<form method="POST" action="search">
+
+
+
+
+    &lt;!&ndash;    <div>
+
+            Location id:  <input  type="checkbox" id="locationiId" th:value="locationid" onclick="myFunction()"/>
+            Location name:<input  type="checkbox" id="locationName" th:value="name" onclick="myFunction()"/>
+            Available Stock:<input  type="checkbox" id="locationStock" th:value="locationStock" onclick="myFunction()"/>
+
+        </div>
+        <div>
+            <input id="locid" name="locationId" type="text" style="display:none" placeholder="Enter the location id"/>
+
+            <input id="locname" name="name" type="text" style="display:none" placeholder="Enter the location name"/>
+
+            <input id="locstock" name="locationStock" type="text" style="display:none"
+                   placeholder="Enter the requiered Stock at this location"/>
+        </div>&ndash;&gt;
+
+    <select name="searchoption" onchange="myyfunction(this)">
+        <option value="locationId" align="right">Location Id</option>
+        <option value="locationName">Location Name</option>
+        <option value="locationStock">Available stock on this Location</option>
+    </select>
     <div>
         <input id="locid" name="locationId" type="text" style="display:none" placeholder="Enter the location id"/>
-
+    </div>
+    <div>
         <input id="locname" name="name" type="text" style="display:none" placeholder="Enter the location name"/>
-
+    </div>
+    <div>
         <input id="locstock" name="locationStock" type="text" style="display:none"
                placeholder="Enter the requiered Stock at this location"/>
     </div>
+
     <input type="submit" value="search"/>
-</form>
-<script type="text/javascript">
+<script>
+    function myyfunction(liste){
+        liste=["locationId", "locationName", locationStock]
+        var numero=liste.selectedIndex;
+        var valeur=liste.options[numero].value;
+        alert("you choose : " + valeur +" for the search");
+
+        var inputfieldid = document.getElementById("locid");
+        var inpufieldlocationName=document.getElementById("locname");
+        var inpufieldlocationStock=document.getElementById("locstock");
+
+
+        if(liste.selectedIndex==0){
+            inputfieldid.style.display="block";
+        }else{
+              inputfieldid.style.display = "none";}
+
+        if(liste.selectedIndex==1){
+            inpufieldlocationName.style.display="block";
+        }else{
+              inpufieldlocationName.style.display = "none";}
+
+        if(liste.selectedIndex==2){
+           inpufieldlocationStock.style.display="block";
+        }else{
+           inpufieldlocationStock.style.display = "none";}
+
+    }
+</script>
+<script>
+
     function myFunction() {
 var optionlocationId = document.getElementById("locationiId");
 var inputfieldid = document.getElementById("locid");
@@ -56,10 +128,9 @@ inputfieldlocationStock.style.display = "block";
 inputfieldlocationStock.style.display = "none";
 }
 }
+
 </script>
+</form>-->
 
 
-</body>
-
-</html>
 

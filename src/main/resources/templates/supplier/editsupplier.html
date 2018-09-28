@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Default title</title>
+</head>
+<body>
+
+<table class="table">
+
+    <tr>
+        <th> This supplier exists already</th>
+    </tr>
+
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Email</th>
+    </tr>
+
+    <tr>
+        <!--<li><a th:href="'supplier/'+${supplier.id}" th:object="${supplier}"></a></li>-->
+        <td th:text="${supplier.supplierId}"></td>
+        <td th:text="${supplier.name}"></td>
+        <td th:text="${supplier.address}"></td>
+        <td th:text="${supplier.phone}"></td>
+        <td th:text="${supplier.email}"></td>
+    </tr>
+</table>
+<b><a href="/material">Material</a>|</b>
+<b><a href="/supplier">Supplier</a>|</b>
+<b><a href="/location">Locations</a>|</b>
+<b><a href="/flow">Flows</a>|</b>
+
+
+
+</body>
+</html>

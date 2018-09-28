@@ -18,6 +18,7 @@
     </tr>
 
     <tr>
+        <th>Id</th>
         <th>Name</th>
         <th>Description</th>
         <th>Stock</th>
@@ -25,15 +26,16 @@
 
     <tr th:each="mat:${materials}">
         <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
-
+        <td th:text="${mat.matId}"></td>
         <td th:text="${mat.matName}"></td>
         <td th:text="${mat.description}"></td>
         <td th:text="${mat.stock}"></td>
+
     </tr>
 </table>
 </div>
-<b><a href="reception">Add Material</a> |</b>
-<b><a href="remove">Remove Material</a></b>
+<b><a href="material/reception">Add Material</a> |</b>
+<b><a href="material/remove">Remove Material</a></b>
 
 </body>
 </html>

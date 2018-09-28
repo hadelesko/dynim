@@ -48,6 +48,10 @@ public class MaterialController {
         model.addAttribute("title", "Add the new flow of the material");
         model.addAttribute("material", new MMaterial());
 
+
+        model.addAttribute("suppliers",supplierDao.findAll());
+        model.addAttribute("locations",locDao.findAll());
+
         return "material/reception";
     }
 
@@ -74,7 +78,7 @@ public class MaterialController {
             entrymaterial.getFlowId();
             flowDao.save(entrymaterial);
 
-            material.getSupplier().getSupplierId();
+            //material.getSupplier().getSupplierId();
 
 
 
