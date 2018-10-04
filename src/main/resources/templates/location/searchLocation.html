@@ -14,7 +14,7 @@
     <table>
         <tr>
             <td><label th:for="locationId">Location id: </label></td>
-            <td><input th:text="${locationId}" align="right"/></td>
+            <td><input th:text="${locationId}" name="locationId" align="right"/></td>
         </tr>
         <tr>
             <td><label th:for="locationName">Location name: </label></td>
@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <td><label th:for="locationStock">Available Stock:</label></td>
-            <td><input th:text="${locationStock}"  align="right"/></td>
+            <td><input th:text="${locationStock}" name="locationStock" align="right"/></td>
         </tr>
     </table>
     <input type="submit" value="search"/>

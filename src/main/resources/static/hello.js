@@ -60,3 +60,48 @@ function onCheckboxChanged(checked){
     }
 }
 
+
+
+
+Checkbox1: <input type="checkbox" id="myCheck1"  onclick="myFunction1()">
+<input  id="text1" style="display:none"/ placeholder="Checkbox1 is CHECKED!">
+
+<p>Display some text when the checkbox is checked:</p>
+
+Checkbox: <input type="checkbox" id="myCheck"  onclick="myFunction1()">
+
+<p id="text" style="display:none">Checkbox is CHECKED!</p>
+
+
+/*<select>
+	<option>
+    	University: <input type="checkbox"/>
+    </option>
+</select>*/
+
+
+<script>
+function myFunction1() {
+    var checkBox = document.getElementById("myCheck");
+    var text = document.getElementById("text");
+
+    var checkBox1 = document.getElementById("myCheck1");
+    var text1 = document.getElementById("text1")
+
+    if (checkBox.checked == true){
+        text.style.display = "block";
+    } else {
+       text.style.display = "none";
+    }
+
+    if (checkBox1.checked == true){
+        text1.style.display = "block";
+    } else {
+       text1.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
+

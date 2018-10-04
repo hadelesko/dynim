@@ -51,17 +51,18 @@
         </select>
     </div>
 
-   <!-- <div class="form-group">
-        <label th:for="suppliers">Suppliers</label>
-        <select name="supplierId">
-            <option th:each="supplier : ${suppliers}"
-                    th:text="${supplier.name}"
-                    th:value="${supplier.supplierId}">
+
+
+   <div class="form-group">
+        <label th:for="locationswithstock">Location with stock</label>
+        <select name="locationId">
+            <option th:each="loc : ${locationswithstock}"
+                    th:text="${loc.name}"
+                    th:value="${loc.locationId}">
             </option>
         </select>
     </div>
 
--->
 
     <input type="submit" value="Confirm reception" />
 </form>

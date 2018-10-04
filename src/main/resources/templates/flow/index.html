@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
-    <meta charset="UTF-8"/>
-    <title></title>
+    <h1 th:text="${title}">Default Title</h1>
+
+    <nav th:replace="fragments :: navigation_home"></nav>
 </head>
 <body>
+    <p th:unless="${flows} and ${flows.size()}">no flow yet :(</p>
 
+
+    <table class="table" th:object="${flow}">
+
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Quantity</td>
+        </tr>
+
+        <tr th:each="flow:${flows}">
+            <td th:text="${flow.flowId}"></td>
+            <td th:text="${flow.name}"></td>
+            <td th:text="${flow.flowQuantity}"></td>
+        </tr>
+    </table>
+    <b><a href="/flow/add">add flow</a> |</b>
+    <b><a href="/material">Material</a> |</b>
+    <b><a href="/supplier">Supplier</a>|</b>
+    <b><a href="/location/">Locations</a>|</b>
+    <b><a href="/location/search">search Location</a>|</b>
 </body>
 </html>
+

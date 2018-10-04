@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 @Transactional
 public interface LocDao extends CrudRepository<Location,Integer> {
-    List<Location>findByName(String name);
+    Location findByName(String name);
     //List<Location>findByNameAndByLocationStock(String name, int locationStock);
-    List<Location>findByLocationId(int locationId);
-    List<Location>findByLocationStock(int locationId);
+    Location findByLocationId(int locationId);
+    List<Location>findByLocationStock(double locationStock);
 }

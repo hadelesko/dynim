@@ -17,6 +17,7 @@ public interface SupplierDao extends CrudRepository<Supplier,Integer> {
     Supplier findByName(String name);
     Supplier findBySupplierId(int supplierId);
     List<Supplier> removeByName(String name);
+    //void updateMaterials(List<MMaterial>materials);
     //List<MMaterial> findByMaterialAndSupplierId(MMaterial material, int supplierId);
     //Alternative
     //List<MMaterial>findByMatIdAndSupplierName(int materialId, String supplierName);
