@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <h1 th:text="${title}">Default Title</h1>
+</head>
+<body>
+<form  method="POST" style="max-width:600px;" th:object="${materialOrder}" action="add">
+    <div class="material">
+
+        <div>
+            <label th:for="datetime">Date</label>
+            <input class="form-control"  th:field ="*{date}"/>
+            <span th:errors="*{date}" class="error"></span>
+        </div>
+    </div>
+    <div class="material">
+        <label th:for="name">Name</label>
+        <div>
+            <input class="form-control" th:field="*{name}"/>
+            <span th:errors="*{name}" class="error"></span>
+        </div>
+    </div>
+
+
+    <div clas="material">
+        <label th:for="orderQuantity">Quantity Ordered</label>
+        <div>
+            <input class="form-control" th:field="*{orderQuantity}"/>
+            <span th:errors="*{orderQuantity}" class="error"></span>
+        </div>
+    </div>
+
+<!--    @GeneratedValue
+    private int orderId;
+    private String name;
+    @NotNull
+    private double orderQuantity;
+    @NotNull
+    private String destination;
+    @NotNull
+    private Date date;
+
+    @ManyToOne
+    private MMaterial material;-->
+
+
+    <div class="material">
+        <label th:for="destination">Destination</label>
+        <div>
+            <input class="form-control" th:field="*{Destination}"/>
+            <span th:errors="*{destination}" class="error"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label th:for="material">Material</label>
+        <select name="material">
+            <option th:each="material : ${materials}"
+                    th:text="${material.matName}"
+                    th:value="${material.matId}">
+            </option>
+        </select>
+    </div>
+
+<!--
+    <div class="form-group">
+        <label th:for="location">Location</label>
+        <select name="locationId" multiple="multiple">
+            <option th:each ="location : ${locations}"
+                    th:text ="${location.name}"
+                    th:value="${location.locationId}">
+            </option>
+            <input th:each="0 :${locations.size()}" name="flowquantity" placeholder ="add the quantity to be added to this location"/>
+        </select>
+        &lt;!&ndash;<div>
+            <input th:each="0 :${locations.size()}" name="flowquantity" placeholder ="add the quantity to be added to this location"/>
+        </div>&ndash;&gt;
+    </div>-->
+
+    <!--   <div class="form-group">
+            <label th:for="locationswithstock">Location with stock</label>
+            <select name="locationId" multiple="multiple">
+                <option th:each="loc : ${locationswithstock}"
+                        th:text="${loc.name}"
+                        th:value="${loc.locationId}">
+                </option>
+
+            </select>
+        </div>-->
+
+ <!--   <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org/">
+    <head>
+        <meta charset="UTF-8"/>
+        <title th:text="${title}">Default title</title>
+    </head>
+    <body>
+    <form action="order" method="POST">
+        <table>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>Disponible</th>
+                <th>Ord.Quantity</th>
+                <th>Destination</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="material:${materials}">
+                <td th:text="${material.matId}"></td>
+                <td><a th:href="${material.matName}"></a><span th:text="${material.matName}"></span></td>
+                <td th:text="${material.stock}"></td>
+                <td><input type="text" name="quantity"/></td>
+                <td><input type="text" name="destination"/></td>
+                <td><input type="checkbox" /></td>
+            </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Edit order" />
+    </form>
+    </body>
+    </html>-->
+
+    <input type="submit" value="Edit order" />
+</form>
+
+</body>
+</html>

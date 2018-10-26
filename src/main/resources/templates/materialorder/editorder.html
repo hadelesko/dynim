@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}">Default title</title>
+</head>
+<body>
+<form action="fororder" method="POST">
+    <table>
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>Disponible</th>
+            <th>Ord.Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="material:${materials}">
+            <td th:text="${material.matId}"></td>
+            <td><a th:href="${material.matName}"></a><span th:text="${material.matName}"></span></td>
+            <td th:text="${material.stock}"></td>
+            <td><input type="text" name="quantity"/></td>
+            <td><input type="checkbox" /></td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="submit" value="Edit order" />
+</form>
+</body>
+</html>

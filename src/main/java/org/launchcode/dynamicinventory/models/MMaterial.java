@@ -28,12 +28,21 @@ public class MMaterial {
     @JoinColumn(name = "matId")
     private List<Flow> flows = new ArrayList<>();
 
+    @OneToMany
+    @JoinColumn(name = "matId")
+    private List<MaterialOrder> materialOrders = new ArrayList<>();
+
  /*   @OneToMany
     @JoinColumn(name = "mat_Id")
     private List<Supplier> supplier;*/
 
-/*    @OneToMany
-    @JoinColumn(name = "mat_Id")
+/*    // Here we want to use this relationship to associate to every the material to the locations
+    // But one location can only be used to store only one category of material at time but one material
+    // can be stored to different location. That means one location for more material at time can be contradiction
+    // to the reality because each single location is affected to only one and one material
+
+    @OneToMany
+    @JoinColumn(name = "materialId")
     private List<Location> locations = new ArrayList<>();*/
 
 
@@ -95,5 +104,13 @@ public class MMaterial {
 
     public void setFlows(List<Flow> flows) {
         this.flows = flows;
+    }
+
+    public List<MaterialOrder> getMaterialOrders() {
+        return materialOrders;
+    }
+
+    public void setMaterialOrders(List<MaterialOrder> materialOrders) {
+        this.materialOrders = materialOrders;
     }
 }

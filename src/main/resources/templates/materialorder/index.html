@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${title}"></title>
+</head>
+<body>
+<p th:unless="${materialorders} and ${materialorders.size()}">no material order yet :(</p>
+
+<div th:if="${materialorders} and ${materialorders.size()}">
+    <table class="table" >
+
+        <tr>
+            <th>Material order</th>
+        </tr>
+
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>destination</th>
+            <th>Date</th>
+        </tr>
+
+        <tr th:each="materialorder:${materialorders}">
+            <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
+            <td th:text="${materialorder.orderId}"></td>
+            <td th:text="${materialorder.name}"></td>
+            <td th:text="${materialorder.orderQuantity}"></td>
+            <td th:text="${materialorder.destination}"></td>
+            <td th:text="${materialorder.date}"></td>
+        </tr>
+    </table>
+</div>
+<div>
+
+    <b><a href="/material">Materials</a> |</b>
+    <b><a href="/flow/">flow</a> |</b>
+    <b><a href="/material">Material</a> |</b>
+    <b><a href="/supplier">Supplier</a> |</b>
+    <b><a href="/location/">Locations</a> |</b>
+    <b><a href="/location/search">search Location</a> |</b>
+    <b><a href="/order">Orders</a> |</b>
+    <b><a href="/order/batches">Actual Orders</a>|</b>
+</div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+/*td, th{width=25%;}*/
+#name,#val, #id{width=10%;}
+#description{width=60}
+table, th, td {
+   border: 1px solid black;
+}
+td{align="right"}

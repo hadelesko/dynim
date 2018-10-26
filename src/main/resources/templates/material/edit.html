@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="mycss.css" />
+    <title th:text="${title}"></title>
+</head>
+<body>
+<table class="table">
+
+<thead>
+<th>Id</th>
+<th>Name</th>
+<th>Description</th>
+<th>Stock</th>
+</thead>
+<tbody>
+<tr th:object="${material}">
+    <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
+    <td id ="id" th:text="${material.matId}"></td>
+    <td id ="name" th:text="${material.matName}"></td>
+    <td id ="description" th:text="${material.description}"></td>
+    <td id ="val" th:text="${material.stock}"></td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>

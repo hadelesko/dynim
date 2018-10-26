@@ -15,12 +15,13 @@
     </div>
 
     <div clas="location">
-        <label th:for="locationStock">Stock</label>
+        <label th:for="locationStock"></label>
         <div>
-            <input class="form-control" th:field="*{locationStock}"/>
+            <input type="hidden" class="form-control" th:field="*{locationStock}" th:value="0"/>
             <span th:errors="*{locationStock}" class="error"></span>
         </div>
     </div>
+    <br/>
 
     <div><input type="submit" value="Add a new location"/></div>
 </form>

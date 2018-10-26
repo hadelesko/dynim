@@ -7,13 +7,8 @@ import org.launchcode.dynamicinventory.data.MatDao;
 import org.launchcode.dynamicinventory.data.SupplierDao;*/
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
-import org.launchcode.dynamicinventory.models.Flow;
-import org.launchcode.dynamicinventory.models.MMaterial;
-import org.launchcode.dynamicinventory.models.Supplier;
-import org.launchcode.dynamicinventory.models.data.FlowDao;
-import org.launchcode.dynamicinventory.models.data.LocDao;
-import org.launchcode.dynamicinventory.models.data.MatDao;
-import org.launchcode.dynamicinventory.models.data.SupplierDao;
+import org.launchcode.dynamicinventory.models.*;
+import org.launchcode.dynamicinventory.models.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "material")
@@ -38,6 +34,8 @@ public class MaterialController {
 
     @Autowired
     private SupplierDao supplierDao;
+    @Autowired
+    private IntorderDao internOrderDao;
 
 
     @RequestMapping(value = "")
@@ -59,7 +57,18 @@ public class MaterialController {
         model.addAttribute("locationwithstock", locDao.findByLocationStock(0));
         return "material/reception";
     }
-
+    @RequestMapping(value="search", method=RequestMethod.GET)
+    public String search(Model model){
+        return "material/search";
+    }
+    @RequestMapping(value="search",method=RequestMethod.POST)
+    public String editsearch(Model model, HttpServletRequest request){
+        String searchTerm=request.getParameter("searchTerm");
+        model.addAttribute("title", "The result of your search ");
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("material",matDao.findByMatName(searchTerm));
+        return "material/edit";
+    }
 
     @RequestMapping(value = "reception", method = RequestMethod.POST)
     public String processaddmaterial(Model model,
@@ -89,8 +98,6 @@ public class MaterialController {
 
             //creation of pseudo variable to reduce the expression
             if ((matDao.findByMatName(matName) == null)) {
-            //if ((matDao.findByMatName(material.getMatName()) == null)) {
-
 
                 // the material does not exist; the supplier is supposed to exist because it was choose in the drop down
                 // So the supplier registration must be done before the materials'
@@ -109,6 +116,24 @@ public class MaterialController {
                 thissupplier.setMaterials(materials);
                 supplierDao.findBySupplierId(supplierId).setMaterials(materials);
 
+                //LOCATION
+                Location location=material.getLocation();
+                List<Location> locations=locDao.findByLocationStock(0);
+                List<MMaterial>newmaterialListforthislocation=new ArrayList<MMaterial>();
+
+                model.addAttribute("locations",locations);
+                double variationStock=Double.parseDouble(request.getParameter("flowquantity"));
+
+                location.setLocationStock(variationStock);
+                locations.add(location);
+                newmaterialListforthislocation.add(material);
+                location.setMaterials(newmaterialListforthislocation);
+                //material.setLocation(location);
+
+
+                locDao.save(location);
+                //matDao.save(material);
+
                 //return "redirect:";
 
             } else { //Here the material exist already in the system. we have to test here if this  material is new or old for this supplier
@@ -116,12 +141,7 @@ public class MaterialController {
 
                 double newstocko = matDao.findByMatName(material.getMatName()).getStock() + stock;
                 matDao.findByMatName(material.getMatName()).setStock(newstocko);
-                //matDao.save(material);
-
-                //Supplier thissupplier = supplierDao.findBySupplierId(supplierId);
-                //String suppliername = thissupplier.getName();
-
-                //List<MMaterial> listMaterialsuppliedBythissupplier = thissupplier.getMaterials();
+                matDao.save(material);
 
                 //if (supplierDao.findBySupplierId(material.getSupplier().getSupplierId()).getMaterials().contains(material.getMatName()) == true) {
                 if(materials.contains(material) == true) {
@@ -131,8 +151,6 @@ public class MaterialController {
                     // The update the available quantity is already done. No update of the list of the supplied material by this supplier
 
                     String suppliermaterialsmessage = "No Add this material to the list of the delivered materials by this supplier";
-                    //does this supplier have this material in his list of the delivered materials?
-                    //if(!supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material.getMatId())){
 
                     //return "redirect:";
 
@@ -143,44 +161,7 @@ public class MaterialController {
                     materials.add(material);
                     thissupplier.setMaterials(materials);
                     supplierDao.findBySupplierId(supplierId).setMaterials(materials);
-                    
 
-                    String sname = request.getParameter("supplierName");
-                    //supplierDao.findBySupplierId(material.getSupplier().getSupplierId()).getMaterials().add(material);
-
-                    //supplierDao.findBySupplierId(supplierId).getMaterials().add(material);
-                    //supplierDao.save(thissupplier);
-                    //supplierDao.findBySupplierId(supplierId).setMaterials(supplierDao.findBySupplierId(supplierId).getMaterials());
-
-                    //matDao.save(matDao.findByMatName(matName));
-                    /*thissupplier.getMaterials().add(material);
-                    thissupplier.setMaterials(thissupplier.getMaterials());*/
-                    //supplierDao.save(thissupplier);*/
-
-
-                        /*supplierDao.findByName(material.getSupplier().getName()).getMaterials().add(material);
-
-                        //set the list of the materials delivered by this supplier database
-                        supplierDao.findByName(material.getSupplier().getName()).setMaterials(supplierDao.findByName(material.getSupplier().getName()).getMaterials());
-
-                        matDao.save(matDao.findByMatName(matName));*/
-
-                        //Copy of the existing list of material in the new list
-/*                        List<MMaterial>listmaterialforthissupplier=new ArrayList<>();
-                        thissupplier.getMaterials().add(material);
-                        List<MMaterial>oldmateriallistforthissupplier=thissupplier.getMaterials();
-                        for(MMaterial mat:oldmateriallistforthissupplier){
-                            listmaterialforthissupplier.add(mat);
-                        }*/
-                        // update the List of material by this supplier
-
-                        //thissupplier.setMaterials(listmaterialforthissupplier);
-
-
-
-
-                    //material.setMatId(material.getMatId());
-                    //matDao.save(material);
 
                     //return "redirect:";
                 }
@@ -191,68 +172,14 @@ public class MaterialController {
 
     }
 
+
+
+
 }
 
 
 
 
-            /*//material.getSupplier().getSupplierId();
-             //if ((matDao.findByMatName(matName) != null) && (supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material.getMatId()) == true)){
-            if ((matDao.findByMatName(matName) != null) && listMaterialsuppliedBythissupplier.contains(material.getMatId())==true){
-                 //if (!(supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material.getMatId()))) { //it was checked that the
-                // material with the name matName exists so the only things to do here is
-                //// to update the available quantity and to update le list of the supplied material by this supplier
-
-
-                double newstocko = matDao.findByMatName(matName).getStock() + stock;
-                matDao.findByMatName(matName).setStock(newstocko);
-                matDao.save(matDao.findByMatName(matName));
-                String suppliermaterialsmessage = "";
-                //does this supplier have this material in his list of the delivered materials?
-                //if(!supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material.getMatId())){
-                suppliermaterialsmessage = "Add this material to the list of the delivered materials by this supplier";
-                supplierDao.findByName(material.getSupplier().getName()).getMaterials().add(material);
-                //set the list of the materials delivered by this supplier database
-                supplierDao.findByName(material.getSupplier().getName()).setMaterials(supplierDao.findByName(material.getSupplier().getName()).getMaterials());
-                 return "redirect:";
-
-            } else{
-                if(matDao.findByMatName(matName) != null && supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material) == false) {
-                    //material and the supplier exist already. It exist also already in the list of the supplied material by this supplier
-
-                    // if (supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material.getMatId())) {
-                    //suppliermaterialsmessage="The supplier used already to deliver this material. no more need to add it";
-
-
-                    double newstocko = matDao.findByMatName(matName).getStock() + stock;
-                    matDao.findByMatName(matName).setStock(newstocko);
-                    matDao.save(matDao.findByMatName(matName));
-                    //material.setMatId(material.getMatId());
-                    //matDao.save(material);
-                    return "redirect:";
-
-                } else{
-
-                    //if (matDao.findByMatName(matName) == null) {
-
-
-                    // the material does not exist; the supplier is supposed to exist because it was choose in the drop down
-                    // So the supplier registration must be done before the materials'
-                    // Todo here is to implement something to oblige the user to search the for supplier before the reception of the material
-                    material.setMatId(material.getMatId());   //get  and set the id for the new material
-                    matDao.save(material); // the new material has been saved
-                    //add the new material to the list of the delivered by this supplier
-                    supplierDao.findByName(material.getSupplier().getName()).getMaterials().add(material);
-                    return "redirect:";
-
-                }
-            }
-                }
-
-            }
-
-
-        }*/
 
 
 

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Location {
@@ -18,7 +19,8 @@ public class Location {
 
     @OneToMany
     @JoinColumn(name="locationId")
-    private List<MMaterial> materials;
+    private List<MMaterial>materials;
+    //private Map<MMaterial,Double> materials;
 
     @OneToMany
     @JoinColumn(name="locationId")

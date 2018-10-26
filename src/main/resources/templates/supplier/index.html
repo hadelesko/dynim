@@ -6,7 +6,7 @@
 
 <h1 th:text="${title}">Default Title</h1>
 
-<nav th:replace="fragments :: navigation"></nav>
+<nav th:replace="fragments :: navigation_home"></nav>
 
 <p th:unless="${suppliers} and ${suppliers.size()}">no supplier yet :(</p>
 
@@ -36,9 +36,13 @@
         <td th:text="${supplier.fax}"></td>
     </tr>
 </table>
-<b><a href="/material/">List Material</a>|</b>
-<!--<b><a href="/material/remove">Remove Material</a></b>-->
-<b><a href="/location/">List locations</a>|</b>
-<b><a href="/supplier/addo">Add new Supplier</a></b>
+<nav>
+    <b><a href="/supplier/addo">Add new Supplier</a>|</b>
+    <b><a href="/material">Materials</a> |</b>
+    <b><a href="/flow">flow</a> |</b>
+    <b><a href="/material">Material</a> |</b>
+    <b><a href="/location">Locations</a> |</b>
+    <b><a href="/location/search">search Location</a> |</b>
+</nav>
 </body>
 </html>
