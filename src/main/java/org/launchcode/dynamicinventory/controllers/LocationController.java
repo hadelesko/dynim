@@ -1,6 +1,8 @@
 package org.launchcode.dynamicinventory.controllers;
 
+import org.launchcode.dynamicinventory.models.Flow;
 import org.launchcode.dynamicinventory.models.Location;
+import org.launchcode.dynamicinventory.models.MMaterial;
 import org.launchcode.dynamicinventory.models.data.FlowDao;
 import org.launchcode.dynamicinventory.models.data.LocDao;
 import org.launchcode.dynamicinventory.models.data.MatDao;
@@ -113,15 +115,19 @@ public class LocationController {
     public String addlocationdisplayform(Model model) {
         model.addAttribute("title", "Create new location for material storage in the warehouse ");
         model.addAttribute(new Location());
-
+        model.addAttribute(new MMaterial());
+        model.addAttribute(new Flow());
+        model.addAttribute("materials",matDao.findAll());
 
         return "location/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String addlocationproceedform(Model model, @ModelAttribute @Valid Location location, Errors errors,
-                                         @RequestParam("name") String name) {
+                                         @RequestParam("name") String name, @RequestParam("materialId") int materialId) {
 
+        //MMaterial mat=matDao.findByMatId(materialId);
+        model.addAttribute("material", matDao.findByMatId(materialId));
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Make sure the required fields are not empty");

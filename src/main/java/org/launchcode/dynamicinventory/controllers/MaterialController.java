@@ -45,18 +45,6 @@ public class MaterialController {
         return "material/index";
     }
 
-    @RequestMapping(value = "reception", method = RequestMethod.GET)
-    public String displayaddmatflow(Model model) {
-
-        model.addAttribute("title", "Add the new flow of the material");
-        model.addAttribute("material", new MMaterial());
-
-
-        model.addAttribute("suppliers", supplierDao.findAll());
-        model.addAttribute("locations", locDao.findAll());
-        model.addAttribute("locationwithstock", locDao.findByLocationStock(0));
-        return "material/reception";
-    }
     @RequestMapping(value="search", method=RequestMethod.GET)
     public String search(Model model){
         return "material/search";
@@ -70,11 +58,29 @@ public class MaterialController {
         return "material/edit";
     }
 
+    @RequestMapping(value = "reception", method = RequestMethod.GET)
+    public String displayaddmatflow(Model model) {
+
+        model.addAttribute("title", "Add the new flow of the material");
+        model.addAttribute("material",new MMaterial());
+        model.addAttribute(new Location());
+        model.addAttribute(new Supplier());
+
+        model.addAttribute("suppliers", supplierDao.findAll());
+        model.addAttribute("locations", locDao.findAll());
+        model.addAttribute("locationwithstock", locDao.findByLocationStock(0));
+        return "material/reception";
+    }
+
+
     @RequestMapping(value = "reception", method = RequestMethod.POST)
     public String processaddmaterial(Model model,
                                      @ModelAttribute @Valid MMaterial material,
                                      Errors errors, @RequestParam("stock") double stock,
-                                     @RequestParam String matName, @RequestParam("supplierId") int supplierId, HttpServletRequest request) {
+                                     @RequestParam String matName, @RequestParam("supplierId") int supplierId){
+                                     //@RequestParam("locationId") int locationId,
+                                    // HttpServletRequest request) {
+
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Insert a new Material");
@@ -82,19 +88,26 @@ public class MaterialController {
             return "material/reception";
         } else {
 
-
             Flow entrymaterial = new Flow();
 
             // Registration of the Flow
-            ///(matDao.findByMatName(matName)).getMatId(); // request the id of the material
+            ///(matDao.findByMatName(matName)).getMatId();   //request the id of the material
             entrymaterial.setMaterial(matDao.findByMatName(material.getMatName()));
             entrymaterial.setFlowQuantity(stock);
             entrymaterial.setName("reception");
             entrymaterial.getFlowId();
             flowDao.save(entrymaterial);
 
+            //Location mlocation =locDao.findByLocationId(locationId);
+            //model.addAttribute("mlocation", mlocation);
+            //Supplier msupplier=supplierDao.findBySupplierId(supplierId);
+            //model.addAttribute("msupplier", msupplier);
+
             Supplier thissupplier = supplierDao.findBySupplierId(supplierId);
+            model.addAttribute("thissupplier",thissupplier);
+
             List<MMaterial>materials=thissupplier.getMaterials();
+            List<Location>locations=material.getLocations();
 
             //creation of pseudo variable to reduce the expression
             if ((matDao.findByMatName(matName) == null)) {
@@ -114,10 +127,14 @@ public class MaterialController {
 
                 materials.add(material);
                 thissupplier.setMaterials(materials);
+
                 supplierDao.findBySupplierId(supplierId).setMaterials(materials);
 
-                //LOCATION
-                Location location=material.getLocation();
+
+
+                //***LOCATION// canceled after changing the relationship between material(One) and location(many) to One to Many
+
+                /*Location location=material.getLocations();
                 List<Location> locations=locDao.findByLocationStock(0);
                 List<MMaterial>newmaterialListforthislocation=new ArrayList<MMaterial>();
 
@@ -130,8 +147,7 @@ public class MaterialController {
                 location.setMaterials(newmaterialListforthislocation);
                 //material.setLocation(location);
 
-
-                locDao.save(location);
+                locDao.save(location);*/
                 //matDao.save(material);
 
                 //return "redirect:";
@@ -141,7 +157,7 @@ public class MaterialController {
 
                 double newstocko = matDao.findByMatName(material.getMatName()).getStock() + stock;
                 matDao.findByMatName(material.getMatName()).setStock(newstocko);
-                matDao.save(material);
+                //matDao.save(material);
 
                 //if (supplierDao.findBySupplierId(material.getSupplier().getSupplierId()).getMaterials().contains(material.getMatName()) == true) {
                 if(materials.contains(material) == true) {

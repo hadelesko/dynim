@@ -4,6 +4,7 @@ import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class MMaterial {
@@ -21,8 +22,12 @@ public class MMaterial {
     @ManyToOne
     private Supplier supplier;
 
-    @ManyToOne
-    private Location location;
+    /*@ManyToOne
+    private Location location;*/
+
+    @OneToMany
+    @JoinColumn(name = "materialId")
+    private List<Location> locations = new ArrayList<Location>();
 
     @OneToMany
     @JoinColumn(name = "matId")
@@ -39,7 +44,7 @@ public class MMaterial {
 /*    // Here we want to use this relationship to associate to every the material to the locations
     // But one location can only be used to store only one category of material at time but one material
     // can be stored to different location. That means one location for more material at time can be contradiction
-    // to the reality because each single location is affected to only one and one material
+    // to the reality because each single location is affected to one and only one material
 
     @OneToMany
     @JoinColumn(name = "materialId")
@@ -90,13 +95,13 @@ public class MMaterial {
         this.supplier = supplier;
     }
 
-    public Location getLocation() {
+/*  public Location getLocation() {
         return location;
     }
 
     public void setLocation(Location location) {
         this.location = location;
-    }
+    }*/
 
     public List<Flow> getFlows() {
         return flows;
@@ -112,5 +117,13 @@ public class MMaterial {
 
     public void setMaterialOrders(List<MaterialOrder> materialOrders) {
         this.materialOrders = materialOrders;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 }

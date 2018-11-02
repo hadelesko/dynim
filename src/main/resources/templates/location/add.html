@@ -23,7 +23,17 @@
     </div>
     <br/>
 
-    <div><input type="submit" value="Add a new location"/></div>
+   <div class="form-group">
+        <label th:for="material">material</label>
+        <select name="materialId">
+            <option th:each ="material : ${materials}"
+                    th:text ="${material.matName}"
+                    th:value="${material.matId}">
+            </option>
+            <input th:each="0 :${materials.size()}" name="flowquantity" placeholder ="add the quantity to be added to this location"/>
+        </select>
+    </div>
+    <input type="submit" value="Add a new location"/>
 </form>
 
 </body>
