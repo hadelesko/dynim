@@ -12,5 +12,5 @@ import java.util.Date;
 @Transactional
 public interface IntorderDao extends CrudRepository<MaterialOrder,Integer> {
     MaterialOrder findByOrderId(int orderId);
-    MaterialOrder findByDate(LocalDate date);
+    MaterialOrder findByDate(Date date);
 }

@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class MaterialOrder {
     private String destination;
 
     //@Pattern(regexp="mm-dd-yyyy")
-    private Date date;
+    private Date date=new Date();
 
     @ManyToOne
     private MMaterial material;
@@ -66,6 +67,7 @@ public class MaterialOrder {
     public void setMaterial(MMaterial material) {
         this.material = material;
     }
+
 
     public Date getDate() {
         return date;

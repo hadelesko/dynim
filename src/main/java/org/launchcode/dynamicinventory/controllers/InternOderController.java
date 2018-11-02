@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -61,6 +63,7 @@ public class InternOderController {
 
             return "materialorder/order";
         }
+
         model.addAttribute("title", " Intern Material Order management: List of the ordered material");
 
         List<MMaterial> materials = matDao.findAll();
@@ -72,8 +75,14 @@ public class InternOderController {
 
     @RequestMapping(value = "batches")
     public String batchoftoday(Model model) {
-        model.addAttribute("todaybatch", internOrderDao.findByDate(java.time.LocalDate.now()));
-        model.addAttribute("title", " Intern Material Order management: List of orders of the date" + java.time.LocalDate.now());
+        /*Date date=new Date();
+        int theday=date.getDay();
+        int themonth=date.getMonth();
+        int theyear=date.getYear();*/
+        //String strdate=(toString(theday)+"-"+toString(themonth)+"-"+toString(theyear));
+
+        model.addAttribute("todaybatch", internOrderDao.findByDate(new Date()));
+        model.addAttribute("title", " Intern Material Order management: List of orders of the date" + new Date());
         return "materialorder/todaybatch";
     }
 
