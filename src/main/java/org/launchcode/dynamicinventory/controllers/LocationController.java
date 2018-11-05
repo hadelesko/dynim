@@ -126,6 +126,13 @@ public class LocationController {
     public String addlocationproceedform(Model model, @ModelAttribute @Valid Location location, Errors errors,
                                          @RequestParam("name") String name, @RequestParam("materialId") int materialId) {
 
+        MMaterial material = matDao.findOne(materialId);
+        location.setMaterial(material);
+        model.addAttribute("material", material);
+        model.addAttribute("materialId", location.getMaterial());
+
+
+
         //MMaterial mat=matDao.findByMatId(materialId);
         model.addAttribute("material", matDao.findByMatId(materialId));
 

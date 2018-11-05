@@ -30,8 +30,11 @@
                     th:text ="${material.matName}"
                     th:value="${material.matId}">
             </option>
-            <input th:each="0 :${materials.size()}" name="flowquantity" placeholder ="add the quantity to be added to this location"/>
         </select>
+    </div>
+    <div>
+        <label th:for ="flowquantity">Quantity of material</label>
+        <input th:each="0 :${materials.size()}" name="flowquanti"/>
     </div>
     <input type="submit" value="Add a new location"/>
 </form>

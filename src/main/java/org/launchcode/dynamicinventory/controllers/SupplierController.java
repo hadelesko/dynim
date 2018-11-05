@@ -163,21 +163,21 @@ public class SupplierController {
         return "redirect:";
     }*/
 
-    @RequestMapping(value = "addo", method = RequestMethod.GET)
-    public String addsupplierform(Model model) {
+    @RequestMapping(value = "add", method = RequestMethod.GET)
+    public String addSupplierForm(Model model) {
         model.addAttribute("title", "Add a new supplier to the list of the suppliers");
         model.addAttribute(new Supplier());
         model.addAttribute("suppliers", supplierDao.findAll());
         //model.addAttribute("actuellistofmaterials", matDao.findAll());
         //model.addAttribute(new MMaterial());
-        return "supplier/addOrUpdateSupplierOrMaterial";
+        return "supplier/addsupplier";
 
     }
-    @RequestMapping(value="addo", method=RequestMethod.POST)
-    public String addsupplierform(Model model, @ModelAttribute @Valid Supplier supplier, @RequestParam String name, Errors errors){
+    @RequestMapping(value="add", method=RequestMethod.POST)
+    public String addsupplierformprocess(Model model, @ModelAttribute @Valid Supplier supplier, @RequestParam String name, Errors errors){
         if(errors.hasErrors()){
             model.addAttribute("title", "make sure to fill th required fields. Correct your form");
-            return "supplier/addOrUpdateSupplierOrMaterial";
+            return "supplier/addsupplier";
         }else{
         List<Supplier>presentlistsuppliers=supplierDao.findAll();
         for(Supplier oldsupplier:presentlistsuppliers){

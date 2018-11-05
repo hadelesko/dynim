@@ -76,11 +76,16 @@ public class MaterialController {
     @RequestMapping(value = "reception", method = RequestMethod.POST)
     public String processaddmaterial(Model model,
                                      @ModelAttribute @Valid MMaterial material,
-                                     Errors errors, @RequestParam("stock") double stock,
+                                     Errors errors, @RequestParam("stock") double receivedStock,
                                      @RequestParam String matName, @RequestParam("supplierId") int supplierId){
                                      //@RequestParam("locationId") int locationId,
                                     // HttpServletRequest request) {
 
+
+        Supplier mSupplier = supplierDao.findOne(supplierId);
+        //material.setSupplier(mSupplier);
+        model.addAttribute("supplier", mSupplier);
+        model.addAttribute("supplierId", material.getSupplier());
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Insert a new Material");
@@ -93,71 +98,57 @@ public class MaterialController {
             // Registration of the Flow
             ///(matDao.findByMatName(matName)).getMatId();   //request the id of the material
             entrymaterial.setMaterial(matDao.findByMatName(material.getMatName()));
-            entrymaterial.setFlowQuantity(stock);
+            entrymaterial.setFlowQuantity(receivedStock);
             entrymaterial.setName("reception");
             entrymaterial.getFlowId();
             flowDao.save(entrymaterial);
 
-            //Location mlocation =locDao.findByLocationId(locationId);
-            //model.addAttribute("mlocation", mlocation);
-            //Supplier msupplier=supplierDao.findBySupplierId(supplierId);
-            //model.addAttribute("msupplier", msupplier);
 
-            Supplier thissupplier = supplierDao.findBySupplierId(supplierId);
-            model.addAttribute("thissupplier",thissupplier);
+            //Supplier mSupplier = supplierDao.findBySupplierId(supplierId);
+            //model.addAttribute("mSupplier",mSupplier);
 
-            List<MMaterial>materials=thissupplier.getMaterials();
-            List<Location>locations=material.getLocations();
+            List<MMaterial>materials=mSupplier.getMaterials();
+
+            //List<Location>locations=material.getLocations();
 
             //creation of pseudo variable to reduce the expression
             if ((matDao.findByMatName(matName) == null)) {
 
+                material.setSupplier(mSupplier);//*****
+
                 // the material does not exist; the supplier is supposed to exist because it was choose in the drop down
                 // So the supplier registration must be done before the materials'
-                // Todo here is to implement something to oblige the user to search the for supplier before the reception of the material
-                material.setMatId(material.getMatId());   //get  and set the id for the new material
+                /*Todo here is to  save the new material and to add it to the list of materials delivered
+                  by this supplier.Here e suppose the the supplier exist already */
+
+                //material.setMatId(material.getMatId()); // get  and set the id for the new material
                 matDao.save(material);                    // the new material has been saved
-
-                //Add the new material to the list of the delivered by this supplier
-
-                /*supplierDao.findBySupplierId(material.getSupplier().getSupplierId()).getMaterials().add(material);
-                supplierDao.findBySupplierId(material.getSupplier().getSupplierId())
-                        .setMaterials(supplierDao.findBySupplierId(material.getSupplier().getSupplierId())
-                        .getMaterials());*/
-
                 materials.add(material);
-                thissupplier.setMaterials(materials);
-
+                mSupplier.setMaterials(materials);
                 supplierDao.findBySupplierId(supplierId).setMaterials(materials);
 
+                //LOCATION// canceled after changing the relationship between material(One) and location(many) to One to Many
+                /* The new material is both saved and added to the list of materials delivered by this supplier.
+                Now we have to find the place in the to store the received material: Location management*/
 
+                return "redirect:/location/add";
 
-                //***LOCATION// canceled after changing the relationship between material(One) and location(many) to One to Many
-
-                /*Location location=material.getLocations();
-                List<Location> locations=locDao.findByLocationStock(0);
-                List<MMaterial>newmaterialListforthislocation=new ArrayList<MMaterial>();
-
-                model.addAttribute("locations",locations);
-                double variationStock=Double.parseDouble(request.getParameter("flowquantity"));
-
-                location.setLocationStock(variationStock);
-                locations.add(location);
-                newmaterialListforthislocation.add(material);
-                location.setMaterials(newmaterialListforthislocation);
-                //material.setLocation(location);
-
-                locDao.save(location);*/
-                //matDao.save(material);
-
-                //return "redirect:";
 
             } else { //Here the material exist already in the system. we have to test here if this  material is new or old for this supplier
                 // Todo : before all update, we have to update the stock of the material and then // if the material is new for this supplier, we add it to the list of his delivered material
+                double oldStock = matDao.findByMatName(material.getMatName()).getStock(); //get the existing stock before the reception from the database
+                double newStock = oldStock + receivedStock;
+                material.setStock(newStock);  // This material exists already. Update the stock after the reception
+                int materialId=matDao.findByMatName(material.getMatName()).getMatId(); // The material was updated and need to be saved.To avoid the duplication, we need the Id
 
-                double newstocko = matDao.findByMatName(material.getMatName()).getStock() + stock;
-                matDao.findByMatName(material.getMatName()).setStock(newstocko);
-                //matDao.save(material);
+                /*The material exists in the system before this reception but as the Id is autogenerated for each flow or material,
+                the computer has generated new id for this received material like it doesn't in the system before.To avoid this
+                duplication in our database, we need to set the Id of the material to the existing material Id and then proceed
+                to set the stock and save the update.*/
+
+                material.setMatId(materialId); // Set the Id to the existing materialId
+                matDao.findByMatId(materialId).setStock(newStock);// Update the stock
+                matDao.save(material); // Save the update in the database
 
                 //if (supplierDao.findBySupplierId(material.getSupplier().getSupplierId()).getMaterials().contains(material.getMatName()) == true) {
                 if(materials.contains(material) == true) {
@@ -169,21 +160,23 @@ public class MaterialController {
                     String suppliermaterialsmessage = "No Add this material to the list of the delivered materials by this supplier";
 
                     //return "redirect:";
+                    return "redirect:/location/add";
 
                 } else { //supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material) == false)
                     //material and the supplier exist already. But this material does not exist in the list of the supplied material by this supplier
                     // To do is to update the quantity of the material and update the list of matereials for this supplier
 
                     materials.add(material);
-                    thissupplier.setMaterials(materials);
+                    mSupplier.setMaterials(materials);
                     supplierDao.findBySupplierId(supplierId).setMaterials(materials);
-
+                    supplierDao.save(mSupplier);
 
                     //return "redirect:";
                 }
 
             }
             return "redirect:";
+
         }
 
     }
@@ -192,71 +185,3 @@ public class MaterialController {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-             /*   else{
-                    //New material that is at the first time in the database
-                    //Obtain the id for the new material that will help to save it into the database
-                    material.setMatId(material.getMatId());
-                    //save the new material
-                    matDao.save(material);
-                    return "redirect:";
-                }*/
-
-
-
-
-
-
