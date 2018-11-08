@@ -164,7 +164,7 @@ public class MaterialController {
 
                 } else { //supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material) == false)
                     //material and the supplier exist already. But this material does not exist in the list of the supplied material by this supplier
-                    // To do is to update the quantity of the material and update the list of matereials for this supplier
+                    // To do is to update the quantity of the material and update the list of materials for this supplier
 
                     materials.add(material);
                     mSupplier.setMaterials(materials);
