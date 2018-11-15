@@ -5,8 +5,8 @@
     <h1 th:text="${title}">Default Title</h1>
 </head>
 <body>
-<form method="POST" style="max-width:600px;" th:object="${supplier}" action="add">
-    <div class="supplier">
+<form method="POST" style="max-width:600px;" th:object="${fournisseur}" action="add">
+    <div class="fournisseur">
         <label th:for="name">Name</label>
         <div>
             <input class="form-control" th:field="*{name}"/>
@@ -15,7 +15,7 @@
     </div>
 
 
-    <div clas="supplier">
+    <div clas="fournisseur">
         <label th:for="address">Address</label>
         <div>
             <input class="form-control" th:field="*{address}"/>
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="material">
+    <div class="fournisseur">
         <label th:for="email">Email</label>
         <div>
             <input class="form-control" th:field="*{email}"/>
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="supplier">
+    <div class="fournisseur">
         <label th:for="phone">Phone</label>
         <div>
             <input class="form-control" th:field="*{phone}"/>
@@ -39,16 +39,25 @@
         </div>
     </div>
 
-    <div class="supplier">
+    <div class="fournisseur">
         <label th:for="fax">Fax</label>
         <div>
             <input class="form-control" th:field="*{fax}"/>
             <span th:errors="*{fax}" class="error"></span>
         </div>
     </div>
-    <div><input type="submit" value="Add a new supplier"/></div>
+
+    <div class="form-group">
+        <label th:for="eflow">Extern flow of material</label>
+        <select name="eflowId">
+            <option th:each="eflow : ${eflows}"
+                    th:text="${eflow.name}"
+                    th:value="${eflow.eflowId}">
+            </option>
+        </select>
+    </div>
+    <div><input type="submit" value="Add a new fournisseur"/></div>
+
 </form>
 </body>
 </html>
-
-

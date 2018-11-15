@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <h1 th:text="${title}">Default Title</h1>
+
+    <nav th:replace="fragments :: navigation_home"></nav>
+</head>
+<body>
+    <p th:unless="${eflows} and ${eflows.size()}">No extern flow yet :(</p>
+
+
+    <table class="table" th:object="${eflow}">
+
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Quantity</td>
+        </tr>
+
+        <tr th:each="eflow:${eflows}">
+            <td th:text="${eflow.id}"></td>
+            <td th:text="${eflow.description}"></td>
+            <td th:text="${eflow.flowQuantity}"></td>
+        </tr>
+    </table>
+    <b><a href="/flow/add">add flow</a> |</b>
+    <b><a href="/material">Material</a> |</b>
+    <b><a href="/supplier">Supplier</a>|</b>
+    <b><a href="/location/">Locations</a>|</b>
+    <b><a href="/location/search">search Location</a>|</b>
+</body>
+</html>
+

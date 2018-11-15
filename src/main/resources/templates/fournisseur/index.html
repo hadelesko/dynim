@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+
+<nav th:replace="fragments :: navigation_home"></nav>
+
+<p th:unless="${fournisseurs} and ${fournisseurs.size()}">no fournisseur yet :(</p>
+
+
+<table class="table">
+
+    <tr>
+        <th>List of fournisseurs</th>
+    </tr>
+
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Fax</th>
+        <th>materials</th>
+    </tr>
+
+    <tr th:each="fournisseur:${fournisseurs}">
+        <!--<li><a th:href="'fournisseur/'+${fournisseur.id}" th:object="${fournisseur}"></a></li>-->
+        <td th:text="${fournisseur.name}"></td>
+        <td th:text="${fournisseur.email}"></td>
+        <td th:text="${fournisseur.address}"></td>
+        <td th:text="${fournisseur.phone}"></td>
+        <td th:text="${fournisseur.fax}"></td>
+        <td th:text="${fournisseur.materials}"></td>
+    </tr>
+</table>
+<nav>
+    <b><a href="/fournisseur/add">Add new fournisseur</a>|</b>
+    <b><a href="/material">Materials</a> |</b>
+    <b><a href="/flow">flow</a> |</b>
+    <b><a href="/material">Material</a> |</b>
+    <b><a href="/location">Locations</a> |</b>
+    <b><a href="/location/search">search Location</a> |</b>
+</nav>
+</body>
+</html>

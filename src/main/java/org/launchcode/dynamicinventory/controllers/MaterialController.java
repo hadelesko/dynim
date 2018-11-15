@@ -37,6 +37,12 @@ public class MaterialController {
     @Autowired
     private IntorderDao internOrderDao;
 
+    @Autowired
+    private FournisseurDao fournisseurDao;
+
+    @Autowired
+    private ExflowDao exflowDao;
+
 
     @RequestMapping(value = "")
     public String index(Model model) {
@@ -95,6 +101,7 @@ public class MaterialController {
 
             Flow entrymaterial = new Flow();
 
+
             // Registration of the Flow
             ///(matDao.findByMatName(matName)).getMatId();   //request the id of the material
             entrymaterial.setMaterial(matDao.findByMatName(material.getMatName()));
@@ -102,6 +109,14 @@ public class MaterialController {
             entrymaterial.setName("reception");
             entrymaterial.getFlowId();
             flowDao.save(entrymaterial);
+
+            EFlow eFlow=new EFlow();
+
+            eFlow.setMaterial(matDao.findByMatName(material.getMatName()));
+            eFlow.setFlowQuantity(receivedStock);
+            eFlow.setDescription("reception");
+            eFlow.getId();
+            exflowDao.save(eFlow);
 
 
             //Supplier mSupplier = supplierDao.findBySupplierId(supplierId);
@@ -160,10 +175,13 @@ public class MaterialController {
                     String suppliermaterialsmessage = "No Add this material to the list of the delivered materials by this supplier";
 
                     //return "redirect:";
+                    model.addAttribute("title", "Add new location for the new product received");
                     return "redirect:/location/add";
 
-                } else { //supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material) == false)
-                    //material and the supplier exist already. But this material does not exist in the list of the supplied material by this supplier
+                } else {
+                    //supplierDao.findByName(material.getSupplier().getName()).getMaterials().contains(material) == false)
+                    //material and the supplier exist already. But this material does not exist in the list of the supplied
+                    // material by this supplier
                     // To do is to update the quantity of the material and update the list of materials for this supplier
 
                     materials.add(material);

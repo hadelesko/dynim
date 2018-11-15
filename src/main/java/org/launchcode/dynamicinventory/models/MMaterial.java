@@ -22,9 +22,6 @@ public class MMaterial {
     @ManyToOne
     private Supplier supplier;
 
-    /*@ManyToOne
-    private Location location;*/
-
     @OneToMany
     @JoinColumn(name = "materialId")
     private List<Location> locations = new ArrayList<Location>();
@@ -34,22 +31,22 @@ public class MMaterial {
     private List<Flow> flows = new ArrayList<>();
 
     @OneToMany
+    @JoinColumn(name = "mmatId")
+    private List<EFlow> eflows = new ArrayList<>();
+
+    //This column will be shown in the table to the material order
+    @OneToMany
     @JoinColumn(name = "matId")
     private List<MaterialOrder> materialOrders = new ArrayList<>();
 
- /*   @OneToMany
-    @JoinColumn(name = "mat_Id")
-    private List<Supplier> supplier;*/
+    /*Many to many relationship consist on two one to many relationship according to the
+    * http://en.tekstenuitleg.net/articles/software/database-design-tutorial/many-to-many.html
+    * So the many to many  relationship between the material and the Fournisseur will be here replaced by
+    * OneToMany between the entities "material" and "eflow"*/
 
-/*    // Here we want to use this relationship to associate to every the material to the locations
-    // But one location can only be used to store only one category of material at time but one material
-    // can be stored to different location. That means one location for more material at time can be contradiction
-    // to the reality because each single location is affected to one and only one material
 
-    @OneToMany
-    @JoinColumn(name = "materialId")
-    private List<Location> locations = new ArrayList<>();*/
-
+    @ManyToMany(mappedBy = "materials")
+    private List<Fournisseur>fournisseurs;
 
 
     public MMaterial(){}
@@ -95,13 +92,6 @@ public class MMaterial {
         this.supplier = supplier;
     }
 
-/*  public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }*/
 
     public List<Flow> getFlows() {
         return flows;

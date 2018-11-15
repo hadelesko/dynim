@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <h1 th:text="${title}">Default Title</h1>
+</head>
+<body>
+<form  method="POST" style="max-width:600px;" th:object="${eflow}" action="add">
+
+    <div class="form-group">
+        <label th:for="material">Material</label>
+        <select name="materialId">
+            <option th:each="material : ${materials}"
+                    th:text="${material.name}"
+                    th:value="${material.materialId}">
+            </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label th:for="fournisseur">Fournisseur</label>
+        <select name="fournisseurId">
+            <option th:each="fournisseur : ${fournisseurs}"
+                    th:text="${fournisseur.name}"
+                    th:value="${fournisseur.fournisseurId}">
+            </option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label th:for="description">Description</label>
+        <select name="description">
+            <option th:field="*{description}" th:value="Reception"></option>
+            <option th:field="*{description}" th:value="Retour"></option>
+        </select>
+    </div>
+
+    <div class="material">
+        <label th:for="flowQuantity">Flow quantity</label>
+        <div>
+            <input class="form-control" th:field="*{flowQuantity}"/>
+            <span th:errors="*{flowQuantity}" class="error"></span>
+        </div>
+    </div>
+
+    <input type="submit" value="Confirm the flow" />
+</form>
+
+</body>
+</html>
