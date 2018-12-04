@@ -2,9 +2,30 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
-    <title></title>
+    <h1 th:text="${title}">Default title</h1>
 </head>
 <body>
+
+<form method="POST" action="remove">
+
+    <div th:each="material : ${materials}" class="checkbox">
+        <input type="checkbox" name="materialId" th:value="${material.matId}" th:id="${material.matId}"/>
+        <label th:for="${material.matId}" th:text="${material.matName}"></label>
+        <br/>
+    </div>
+
+   <!-- <div class="form-group">
+        <label th:for="material">Select the material to be removed</label><br/>
+        <select name="materialId" multiple >
+            &lt;!&ndash;<option th:text="${notExistMaterialName}" th:value="0"></option>&ndash;&gt;
+            <option th:each="material:${materials}"
+                    th:text="${material.matName}"
+                    th:value="${material.matId}">
+            </option>
+        </select>
+    </div>-->
+    <input type="submit" value="Remove" />
+</form>
 
 </body>
 </html>

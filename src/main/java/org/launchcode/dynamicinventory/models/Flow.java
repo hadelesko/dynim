@@ -1,6 +1,8 @@
 package org.launchcode.dynamicinventory.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,9 @@ public class Flow {
     @Id
     @GeneratedValue
     private int flowId;
-    private String name;
+    private String name;//Reception +name of the material+ the quantity received+date
+    private String description; // Reception +name of the material+ the quantity received+date
+
     private double flowQuantity;
 
     @ManyToOne
@@ -71,5 +75,13 @@ public class Flow {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

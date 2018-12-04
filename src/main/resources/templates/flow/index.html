@@ -15,17 +15,19 @@
             <td>ID</td>
             <td>Name</td>
             <td>Quantity</td>
+            <td>Description</td>
         </tr>
 
         <tr th:each="flow:${flows}">
             <td th:text="${flow.flowId}"></td>
             <td th:text="${flow.name}"></td>
             <td th:text="${flow.flowQuantity}"></td>
+            <td th:text="${flow.description}"></td>
         </tr>
     </table>
     <b><a href="/flow/add">add flow</a> |</b>
     <b><a href="/material">Material</a> |</b>
-    <b><a href="/supplier">Supplier</a>|</b>
+    <b><a href="/supplier">Supplier</a> |</b>
     <b><a href="/location/">Locations</a>|</b>
     <b><a href="/location/search">search Location</a>|</b>
 </body>

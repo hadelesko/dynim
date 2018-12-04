@@ -2,11 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="${title}">Default title</title>
+    <h1 th:text="${title}">Default title</h1>
 </head>
 <body>
 <form action="search"  style="max-width:600px;"  method="POST">
-    <input th:text="${suppliername}" name="name" placeholder="Enter the supplier name you are looking for or about to register"/>
+    <input type="radio" name="searchTerm" value="id"/> Id <br/>
+    <input type="radio" name="searchTerm" value="name"/> Name <br/>
+    <input type="radio" name="searchTerm" value="email"/> Email <br/>
+    Enter the search value of search term <input type="text" name="searchValue"/><br/>
     <input type="submit" value="search"/>
 </form>
 </body>

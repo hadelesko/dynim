@@ -18,16 +18,17 @@
     </tr>
 
     <tr>
+        <th> id</th>
         <th>Name</th>
         <th>Email</th>
         <th>Address</th>
         <th>Phone</th>
         <th>Fax</th>
-        <th>materials</th>
+        <th>Materials</th>
     </tr>
 
     <tr th:each="fournisseur:${fournisseurs}">
-        <!--<li><a th:href="'fournisseur/'+${fournisseur.id}" th:object="${fournisseur}"></a></li>-->
+        <td><a th:href="'fournisseur/'+${fournisseur.fournisseurId}" th:object="${fournisseur}"></a></td>
         <td th:text="${fournisseur.name}"></td>
         <td th:text="${fournisseur.email}"></td>
         <td th:text="${fournisseur.address}"></td>
@@ -38,6 +39,7 @@
 </table>
 <nav>
     <b><a href="/fournisseur/add">Add new fournisseur</a>|</b>
+    <b><a href="/fournisseur/search">Search fournisseur</a> |</b>
     <b><a href="/material">Materials</a> |</b>
     <b><a href="/flow">flow</a> |</b>
     <b><a href="/material">Material</a> |</b>

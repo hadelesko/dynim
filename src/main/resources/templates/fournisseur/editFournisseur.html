@@ -1,10 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
-<body>
+<head th:replace="fragments :: head"></head>
 
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+
+<nav th:replace="fragments :: navigation_home"></nav>
+
+<p th:unless="${fournisseur}">no fournisseur yet with the given id :(</p>
+
+
+<table class="table">
+
+    <tr>
+        <th> id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Fax</th>
+        <th>Materials</th>
+    </tr>
+
+    <tr th:object="${searchedFournisseur}">
+        <!--<td><a th:href="'fournisseur/'+${fournisseur.fournisseurId}" th:object="${fournisseur}"></a></td>-->
+        <td th:text="${searchedFournisseur.fournisseurId}"></td>
+        <td th:text="${searchedFournisseur.name}"></td>
+        <td th:text="${searchedFournisseur.email}"></td>
+        <td th:text="${searchedFournisseur.address}"></td>
+        <td th:text="${searchedFournisseur.phone}"></td>
+        <td th:text="${searchedFournisseur.fax}"></td>
+        <td th:text="${searchedFournisseur.materials}"></td>
+    </tr>
+</table>
+<nav>
+    <b><a href="/fournisseur/add">Add new fournisseur</a>|</b>
+    <b><a href="/fournisseur/search">Search fournisseur</a> |</b>
+    <b><a href="/material">Materials</a> |</b>
+    <b><a href="/flow">flow</a> |</b>
+    <b><a href="/material">Material</a> |</b>
+    <b><a href="/location">Locations</a> |</b>
+    <b><a href="/location/search">search Location</a> |</b>
+</nav>
 </body>
 </html>

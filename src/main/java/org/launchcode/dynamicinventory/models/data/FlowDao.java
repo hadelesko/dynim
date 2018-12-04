@@ -10,4 +10,9 @@ import javax.transaction.Transactional;
 @Transactional
 public interface FlowDao extends CrudRepository<Flow,Integer> {
 
+    void  removeByName(String name);
+
+    Flow findByFlowId(int flowId);
+
+    Flow findByName(String name);
 }

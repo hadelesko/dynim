@@ -1,5 +1,7 @@
 package org.launchcode.dynamicinventory.models;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -16,14 +18,20 @@ public class Fournisseur {
     private long phone;
     private long fax;
     private String address;
+    @OneToMany
+    @JoinColumn(name = "fournisseurId")
+
+    private List<Eflow>eflows=new ArrayList<>();
 
     @ManyToMany
     private List<MMaterial> materials;
 
-    @ManyToOne
+/*    @ManyToOne
     private EFlow eflow; //Many flow of material to one Fournisseur. Case of reception of different
     // materials sent by one supplier/fournisseur. The object Eflow represent any single movement of
-    // material(reception of material from supplier, retour of material to the supplier)
+    // material(reception of material from supplier, retour of material to the supplier)*/
+
+
 
     public Fournisseur() {
     }
@@ -76,6 +84,14 @@ public class Fournisseur {
         this.address = address;
     }
 
+    public List<Eflow> getEflows() {
+        return eflows;
+    }
+
+    public void setEflows(List<Eflow> eflows) {
+        this.eflows = eflows;
+    }
+
     public List<MMaterial> getMaterials() {
         return materials;
     }
@@ -83,13 +99,4 @@ public class Fournisseur {
     public void setMaterials(List<MMaterial> materials) {
         this.materials = materials;
     }
-
-    public EFlow getEflow() {
-        return eflow;
-    }
-
-    public void setEflow(EFlow eflow) {
-        this.eflow = eflow;
-    }
-
 }

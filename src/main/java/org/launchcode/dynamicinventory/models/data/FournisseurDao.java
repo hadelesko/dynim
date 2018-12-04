@@ -11,8 +11,12 @@ import java.util.List;
 @Repository
 @Transactional
 public interface FournisseurDao extends CrudRepository<Fournisseur, Integer> {
-    List<Fournisseur> findAll();
+    //List<Fournisseur> findAll();
     Fournisseur removeByName(String name);
+
     Fournisseur findByFournisseurId(int fournisseurId);
+
     Fournisseur findByName(String name);
+
+    Fournisseur findByEmail(String email);
 }

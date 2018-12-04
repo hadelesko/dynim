@@ -2,9 +2,7 @@ package org.launchcode.dynamicinventory.models;
 
 import javax.persistence.*;
 //import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 public class MMaterial {
@@ -31,13 +29,13 @@ public class MMaterial {
     private List<Flow> flows = new ArrayList<>();
 
     @OneToMany
-    @JoinColumn(name = "mmatId")
-    private List<EFlow> eflows = new ArrayList<>();
+    @JoinColumn(name = "matId")
+    private List<Eflow> eflows = new ArrayList<Eflow>();
 
     //This column will be shown in the table to the material order
     @OneToMany
     @JoinColumn(name = "matId")
-    private List<MaterialOrder> materialOrders = new ArrayList<>();
+    private List<MaterialOrder> materialOrders = new ArrayList<MaterialOrder>();
 
     /*Many to many relationship consist on two one to many relationship according to the
     * http://en.tekstenuitleg.net/articles/software/database-design-tutorial/many-to-many.html
@@ -46,7 +44,7 @@ public class MMaterial {
 
 
     @ManyToMany(mappedBy = "materials")
-    private List<Fournisseur>fournisseurs;
+    private List<Fournisseur>fournisseurs=new ArrayList<>();
 
 
     public MMaterial(){}
@@ -115,5 +113,21 @@ public class MMaterial {
 
     public void setLocations(List<Location> locations) {
         this.locations = locations;
+    }
+
+    public List<Fournisseur> getFournisseurs() {
+        return fournisseurs;
+    }
+
+    public void setFournisseurs(List<Fournisseur> fournisseurs) {
+        this.fournisseurs = fournisseurs;
+    }
+
+    public List<Eflow> getEflows() {
+        return eflows;
+    }
+
+    public void setEflows(List<Eflow> eflows) {
+        this.eflows = eflows;
     }
 }

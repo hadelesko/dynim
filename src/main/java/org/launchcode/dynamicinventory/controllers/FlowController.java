@@ -1,8 +1,6 @@
 package org.launchcode.dynamicinventory.controllers;
 
-import org.launchcode.dynamicinventory.models.data.FlowDao;
-import org.launchcode.dynamicinventory.models.data.LocDao;
-import org.launchcode.dynamicinventory.models.data.MatDao;
+import org.launchcode.dynamicinventory.models.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +17,10 @@ public class FlowController {
 
     @Autowired
     private MatDao matDao;
+    @Autowired
+    private FournisseurDao fournisseurDao;
+    @Autowired
+    private ExflowDao exflowDao;
 
     @RequestMapping(value = "")
     public String index(Model model) {
@@ -26,5 +28,7 @@ public class FlowController {
         model.addAttribute("flows", flowDao.findAll());
         return "flow/index";
     }
+
+
 
 }
