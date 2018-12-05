@@ -206,8 +206,6 @@ public class MaterialController {
                         matDao.findByMatId(materialId).setFournisseurs(newlistfournisseurs);
                         matDao.save(material);
 
-
-
                     }
                 }
 

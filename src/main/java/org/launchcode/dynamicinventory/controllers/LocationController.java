@@ -126,7 +126,7 @@ public class LocationController {
     public String addlocationproceedform(Model model, @ModelAttribute @Valid Location location, Errors errors,
                                          @RequestParam("name") String name, @RequestParam("materialId") int materialId) {
 
-        MMaterial material = matDao.findOne(materialId);
+        MMaterial material = matDao.findByMatId(materialId);
         location.setMaterial(material);
         model.addAttribute("material", material);
         model.addAttribute("materialId", location.getMaterial());
@@ -134,19 +134,36 @@ public class LocationController {
 
 
         //MMaterial mat=matDao.findByMatId(materialId);
-        model.addAttribute("material", matDao.findByMatId(materialId));
+        //model.addAttribute("material", matDao.findByMatId(materialId));
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Make sure the required fields are not empty");
             return "location/add";
         } else {
 
-            if (locDao.findByName(location.getName()) == null) {
+            if (locDao.findByName(location.getName()) == null) { //Creation of new location
                 //location.getLocationId();
                 //location.setLocationId(location.getLocationId());
                 locDao.save(location);
+                //update the list of the locations where this material is stored and save the updated material
+                List<Location> locationsforthismaterial=new ArrayList<>();
+
+                locationsforthismaterial.addAll(material.getLocations());
+                locationsforthismaterial.add(location);
+                material.getLocations().add(location)
+                matDao.save(material);
                 return "location/editLocation";
-            } else {
+            } else { //The location exists already. Test if the material stored on that location is the same material as
+                // new to be located
+                if(locDao.findByName(location.getName()).getMaterial().getMatId()==location.getMaterial().getMatId()){
+                    // update the material stock at this location with new quantity (of the part) of the delivered material
+                    /*Location existingloction=locDao.findByName(location.getName());
+                    existingloction.setLocationStock(location.getLocationStock());*/
+                    locDao.findByName(location.getName()).setLocationStock(location.getLocationStock());
+                    // Save the update
+
+                    locDao.save(location);
+                }
 
                 return "redirect:";
                 //return "location/editLocation";

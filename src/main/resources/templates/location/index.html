@@ -2,12 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
-    <title th:text="${title}"></title>
+    <h1 th:text="${title}">Default Title</h1>
 </head>
 <body>
-
-<h1 th:text="${title}">Default Title</h1>
-
 <nav th:replace="fragments :: navigation_home"></nav>
 
 <p th:unless="${locations} and ${locations.size()}">no supplier yet :(</p>
@@ -16,8 +13,8 @@
 <table class="table">
 
     <tr>
-        <th>Location ID</th>
-        <th>Location Name</th>
+        <th>ID</th>
+        <th>Name</th>
         <th>Material Id</th>
         <th>Material Name</th>
         <th>Material Stock</th>
@@ -27,8 +24,8 @@
         <!--<li><a th:href="'supplier/'+${supplier.id}" th:object="${supplier}"></a></li>-->
         <td th:text="${location.locationId}"></td>
         <td th:text="${location.name}"></td>
-        <td th:text="#{location.material.matId}"></td>
-        <td th:text="#{location.material.matName}"></td>
+        <td th:text="${location.material.matId}"></td>
+        <td th:text="${location.material.matName}"></td>
         <td th:text="${location.locationStock}"></td>
     </tr>
 </table>
