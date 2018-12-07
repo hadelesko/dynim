@@ -14,7 +14,6 @@ public class MMaterial {
 
     private String description;
 
-
     private double stock;
 
     @ManyToOne

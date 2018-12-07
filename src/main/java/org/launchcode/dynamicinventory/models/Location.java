@@ -20,17 +20,11 @@ public class Location {
     @ManyToOne
     private MMaterial material;
 
-/*    @OneToMany
-    @JoinColumn(name="locationId")
-    private List<MMaterial>materials;*/
-    //private Map<MMaterial,Double> materials;
-
     @OneToMany
     @JoinColumn(name="locationId")
     private List<Flow> flows=new ArrayList<>();
 
     public Location(){}
-
 
     public int getLocationId() {
         return locationId;
@@ -56,27 +50,19 @@ public class Location {
         this.locationStock = locationStock;
     }
 
-   /* public List<MMaterial> getMaterials() {
-        return materials;
-    }
-
-    public void setMaterials(List<MMaterial> materials) {
-        this.materials = materials;
-    }
-*/
-    public List<Flow> getFlows() {
-        return flows;
-    }
-
-    public void setFlows(List<Flow> flows) {
-        this.flows = flows;
-    }
-
     public MMaterial getMaterial() {
         return material;
     }
 
     public void setMaterial(MMaterial material) {
         this.material = material;
+    }
+
+    public List<Flow> getFlows() {
+        return flows;
+    }
+
+    public void setFlows(List<Flow> flows) {
+        this.flows = flows;
     }
 }

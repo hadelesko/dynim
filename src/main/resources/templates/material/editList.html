@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+
+
+
+<nav th:replace="fragments :: navigation_home"></nav>
+
+
+<p th:unless="${materials} and ${materials.size()}">no material yet :(</p>
+
+<div th:if="${materials} and ${materials.size()}">
+    <table class="table" >
+
+        <tr>
+            <th>Materials</th>
+        </tr>
+
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Stock</th>
+            <th>Locations</th>
+            <th>Fournisseurs</th>
+        </tr>
+
+        <tr th:each="mat:${materials}">
+            <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
+            <td th:text="${mat.matId}"></td>
+            <td th:text="${mat.matName}"></td>
+            <td th:text="${mat.description}"></td>
+            <td th:text="${mat.stock}"></td>
+            <td th:text="${mat.locations}"></td>
+            <td th:text="${mat.fournisseurs}"></td>
+        </tr>
+    </table>
+</div>
+<div>
+    <b><a href="/material/reception">Add Material</a> |</b>
+    <b><a href="/material/remove">Remove Material</a> |</b>
+    <b><a href="/material/search">search Material</a> |</b>
+    <b><a href="/flow/">flow</a> |</b>
+    <b><a href="/material">Material</a> |</b>
+    <b><a href="/supplier">Supplier</a> |</b>
+    <b><a href="/location/">Locations</a> |</b>
+    <b><a href="/location/search">search Location</a> |</b>
+</div>
+</body>
+</html>

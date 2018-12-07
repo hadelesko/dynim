@@ -12,17 +12,26 @@
 
     <table>
         <tr>
-            <td><label th:for="locationId">By location id: </label></td>
+            <td><label th:for="locationId">By location id:</label></td>
             <td><input th:text="${locationId}" name="locationId" align="right"/></td>
         </tr>
         <tr>
-            <td><label th:for="locationName">By location name: </label></td>
+            <td><label th:for="locationName">By location name:</label></td>
             <td><input th:text="${locationName}" name="locationName" align="right"/></td>
         </tr>
         <tr>
             <td><label th:for="locationStock">By available Stock:</label></td>
             <td><input th:text="${locationStock}" name="locationStock" align="right"/></td>
         </tr>
+        <tr>
+            <td><label th:for="locatedMaterial">By located material:</label></td>
+            <td><input th:text="${materialId}" name="materialId" align="right"/></td>
+        </tr>
+        <tr>
+            <td><label th:for="locatedMaterialname">By located material name:</label></td>
+            <td><input th:text="${materialName}" name="materialName" align="right"/></td>
+        </tr>
+
     </table>
     <input type="submit" value="search"/>
 </form>

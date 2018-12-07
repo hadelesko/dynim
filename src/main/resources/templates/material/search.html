@@ -5,10 +5,13 @@
     <title th:text="${title}"></title>
 </head>
 <body>
-<form th:action="search" method="POST">
-    <input  name="searchTerm" placeholder="Enter the Search term"/>
-    <input type="submit" th:value="search"/>
-</form>
+    <form action="search"  style="max-width:600px;"  method="POST">
+        <input type="radio" name="searchTerm" value="id"/> Material Id <br/>
+        <input type="radio" name="searchTerm" value="name"/> Material Name <br/>
+        <input type="radio" name="searchTerm" value="availableStock"/> Available stock <br/>
+        Enter the search value of search term <input type="text" name="searchValue"/><br/>
+        <input type="submit" value="search"/>
+    </form>
 </body>
 
 </html>

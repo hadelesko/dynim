@@ -14,6 +14,7 @@ public interface MatDao extends CrudRepository<MMaterial,Integer> {
     List<MMaterial>findAll();
     MMaterial removeByMatName(String matName);
     MMaterial findByMatId(int matId);
+    List<MMaterial>findByStockLessThanEqual(double stock);
     MMaterial removeByMatNameAndStockLessThanEqual(String matName, double stock);
     MMaterial findByMatName(String matName);
 /*    Iterable<MMaterial> getAllMaterials();

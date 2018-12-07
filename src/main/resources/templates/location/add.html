@@ -15,9 +15,9 @@
     </div>
 
     <div clas="location">
-        <label th:for="locationStock"></label>
+        <label th:for="locationStock">Stock to be located</label>
         <div>
-            <input type="hidden" class="form-control" th:field="*{locationStock}" th:value="0"/>
+            <input class="form-control" th:field="*{locationStock}"/>
             <span th:errors="*{locationStock}" class="error"></span>
         </div>
     </div>
@@ -32,12 +32,27 @@
             </option>
         </select>
     </div>
-    <div>
-        <label th:for ="flowquantity">Quantity of material</label>
-        <input th:each="0 :${materials.size()}" name="flowquanti"/>
-    </div>
     <input type="submit" value="Add a new location"/>
 </form>
+<fieldset>
+    <legend>Available locations informations</legend>
+    <table>
+        <tr>
+            <th>Location_ID</th>
+            <th>Name</th>
+            <th>Material_Id</th>
+            <th>Material_Name</th>
+            <th>Material_Stock</th>
+        </tr>
+    <tr th:each="location:${availableLocations}">
+        <td th:text="${location.locationId}"></td>
+        <td th:text="${location.name}"></td>
+        <td th:text="${location.material.matId}"></td>
+        <td th:text="${location.material.matName}"></td>
+        <td th:text="${location.locationStock}"></td>
+    </tr>
+    </table>
+</fieldset>
 
 </body>
 </html>

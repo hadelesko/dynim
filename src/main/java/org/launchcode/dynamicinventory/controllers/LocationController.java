@@ -114,55 +114,54 @@ public class LocationController {
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String addlocationdisplayform(Model model) {
         model.addAttribute("title", "Create new location for material storage in the warehouse ");
-        model.addAttribute(new Location());
+        model.addAttribute("location",new Location());
         model.addAttribute(new MMaterial());
         model.addAttribute(new Flow());
         model.addAttribute("materials",matDao.findAll());
+
+        model.addAttribute("availableLocations",locDao.findAll());
 
         return "location/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String addlocationproceedform(Model model, @ModelAttribute @Valid Location location, Errors errors,
-                                         @RequestParam("name") String name, @RequestParam("materialId") int materialId) {
+                                         @RequestParam("name") String name,
+                                         @RequestParam("locationStock") double locationStock,
+                                         @RequestParam("materialId") int materialId) {
 
         MMaterial material = matDao.findByMatId(materialId);
         location.setMaterial(material);
         model.addAttribute("material", material);
-        model.addAttribute("materialId", location.getMaterial());
-
-
-
-        //MMaterial mat=matDao.findByMatId(materialId);
-        //model.addAttribute("material", matDao.findByMatId(materialId));
+        //model.addAttribute("materialId", location.getMaterial());
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Make sure the required fields are not empty");
             return "location/add";
         } else {
 
-            if (locDao.findByName(location.getName()) == null) { //Creation of new location
-                //location.getLocationId();
-                //location.setLocationId(location.getLocationId());
+            if (locDao.findByName(location.getName()) == null) { //The location does not exist before--> Save it
+
                 locDao.save(location);
                 //update the list of the locations where this material is stored and save the updated material
-                List<Location> locationsforthismaterial=new ArrayList<>();
 
-                locationsforthismaterial.addAll(material.getLocations());
-                locationsforthismaterial.add(location);
-                material.getLocations().add(location)
+                material.getLocations().add(location);
                 matDao.save(material);
                 return "location/editLocation";
             } else { //The location exists already. Test if the material stored on that location is the same material as
                 // new to be located
                 if(locDao.findByName(location.getName()).getMaterial().getMatId()==location.getMaterial().getMatId()){
                     // update the material stock at this location with new quantity (of the part) of the delivered material
-                    /*Location existingloction=locDao.findByName(location.getName());
-                    existingloction.setLocationStock(location.getLocationStock());*/
-                    locDao.findByName(location.getName()).setLocationStock(location.getLocationStock());
-                    // Save the update
+                    // update location : entryStock + existingStock
+                    double stockBeforeEntryLocation=locDao.findByName(location.getName()).getLocationStock();
+                    double stockAfterEntryLocation=stockBeforeEntryLocation+locationStock;
+                    // Copy of the location in the new variable, update and save it
+                    Location tobeUpdatedLocation=locDao.findByName(location.getName());
 
-                    locDao.save(location);
+                    tobeUpdatedLocation.setLocationStock(stockAfterEntryLocation);
+                    // Save the update
+                    tobeUpdatedLocation.setLocationId(tobeUpdatedLocation.getLocationId());
+                    locDao.save(tobeUpdatedLocation);
                 }
 
                 return "redirect:";
