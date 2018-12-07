@@ -64,6 +64,7 @@ public class MaterialController {
         model.addAttribute("searchValue", searchValue);
         String inputCategory;
         String inputValueToSearch;
+        List<MMaterial>listofMaterial=new ArrayList<>();
         HashMap<String, String> searchfieldAndValue = new HashMap<>();
         if ((searchTerm != null && searchValue.length() != 0)) {
             inputCategory = searchTerm;
@@ -96,24 +97,29 @@ public class MaterialController {
             }
 
             if (searchfieldAndValue.containsKey("materialName")) {
-                model.addAttribute("material", matDao.findByMatName(searchfieldAndValue.get("materialName")));
+
+                listofMaterial.add(matDao.findByMatName(searchValue));
+                model.addAttribute("materials", listofMaterial);
                 model.addAttribute("title", "Result of search of the material with the name " + searchValue);
-                return "material/edit";
+                //return "material/edit";
 
             } else {
                 if (searchfieldAndValue.containsKey("materialId")) {
                     int id = Integer.parseInt(searchValue);
-                    model.addAttribute("material", matDao.findByMatId(id));
+                    listofMaterial.add(matDao.findByMatName(searchfieldAndValue.get("materialId")));
+                    model.addAttribute("materials", listofMaterial);
                     model.addAttribute("title", "Result of search of the material with the id" + searchValue);
-                    return "material/edit";
+                    //return "material/edit";
 
                 } else {
-                    model.addAttribute("materials", matDao.findByStockLessThanEqual(Double.parseDouble(searchValue)));
+                    listofMaterial.addAll(matDao.findByStockLessThanEqual(Double.parseDouble(searchValue)));
+                    model.addAttribute("materials", listofMaterial);
                     model.addAttribute("title", "Result of search of the material(s) with the stock " + searchValue);
-                    return "material/editList";
+
                 }
             }
         }
+        return "material/editList";
     }
         /*if(searchTerm=="materialId"){
             boolean isnumeric = true;
