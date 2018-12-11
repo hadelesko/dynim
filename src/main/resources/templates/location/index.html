@@ -21,7 +21,7 @@
     </tr>
 
     <tr th:each="location:${locations}">
-        <!--<li><a th:href="'supplier/'+${supplier.id}" th:object="${supplier}"></a></li>-->
+        <!--<h4><a th:href="'location/'+${location.locationId}" th:object="${location}"></a></h4>-->
         <td th:text="${location.locationId}"></td>
         <td th:text="${location.name}"></td>
         <td th:text="${location.material.matId}"></td>

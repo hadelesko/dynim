@@ -6,5 +6,77 @@
 </head>
 <body>
 
+<form method="POST" style="max-width:600px;" th:object="${flow}" action="add">
+    <div class="flow">
+        <label th:for="name">Check the exact name of the flow that describe the movement</label>
+        <div>
+            <input class="form-control" th:field="*{name}" type="radio" th:value="Reception"/>Reception of material<br/>
+            <input class="form-control" th:field="*{name}" type="radio" th:value="Retour_To_warehouse"/>Retour to warehouse<br/>
+            <input class="form-control" th:field="*{name}" type="radio" th:value="Retour_To_supplier"/>Retour to supplier<br/>
+            <span th:errors="*{name}" class="error"></span>
+        </div>
+    </div>
+
+    <div class="flow">
+        <label th:for="description">Description</label>
+        <div>
+            <input class="form-control" th:field="*{description}"/>
+            <span th:errors="*{description}" class="error"></span>
+        </div>
+    </div>
+
+    <div class="flow">
+        <label th:for="destination">Destination</label>
+        <div>
+            <input class="form-control" th:field="*{destination}"/>
+            <span th:errors="*{destination}" class="error"></span>
+        </div>
+    </div>
+
+    <div class="flow">
+        <label th:for="date">Date</label>
+        <div>
+            <input class="form-control" th:field="*{date}" type="date"/>
+            <span th:errors="*{date}" class="error"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label th:for="material">Material</label>
+        <select name="materialId">
+            <option th:each ="mat:${materials}"
+                    th:text ="${mat.matName}"
+                    th:value="${mat.matId}">
+            </option>
+        </select>
+    </div>
+    <div class="flow">
+        <label th:for="flowQuantity">Quantity of the material</label>
+        <div>
+            <input class="form-control" th:field="*{flowQuantity}"/>
+            <span th:errors="*{flowQuantity}" class="error"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label th:for="supplier">supplier</label>
+        <select name="supplierId">
+            <option th:each="supplier:${suppliers}"
+                    th:text="${supplier.name}"
+                    th:value="${supplier.supplierId}">
+            </option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label th:for="location">Location</label>
+        <select name="locationId">
+            <option th:each="location:${locations}"
+                    th:text="${location.name}"
+                    th:value="${location.locationId}">
+            </option>
+        </select>
+    </div>
+
+    <div><input type="submit" value="Add a new flow"/></div>
+</form>
 </body>
 </html>

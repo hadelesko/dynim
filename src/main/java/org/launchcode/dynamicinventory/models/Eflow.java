@@ -16,6 +16,10 @@ public class Eflow {
         //private int materialId;
         //@NotNull
         //private int fournisseurId;
+
+        @NotNull
+        private Date date=new Date();
+
         @Id
         @GeneratedValue
         private int id;
@@ -34,8 +38,8 @@ public class Eflow {
         private String description;
         /*@Basic
         private Date date;*/
-        public Eflow(MMaterial material, double quantityflow, String description, Fournisseur fournisseur){
-            //this.id=id;
+        public Eflow(String date,MMaterial material, double quantityflow, String description, Fournisseur fournisseur){
+
             this.material=material;
             this.quantityflow=quantityflow;
             this.fournisseur=fournisseur;
@@ -88,11 +92,12 @@ public class Eflow {
         this.quantityflow = quantityflow;
     }
 
-/*    public Date getDate() {
+
+    public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
-    }*/
+    }
 }

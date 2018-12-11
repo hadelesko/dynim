@@ -12,13 +12,16 @@
     <table class="table" th:object="${flow}">
 
         <tr>
+            <td>Date</td>
             <td>ID</td>
             <td>Name</td>
             <td>Quantity</td>
             <td>Description</td>
+
         </tr>
 
         <tr th:each="flow:${flows}">
+            <td th:text="${flow.date}"></td>
             <td th:text="${flow.flowId}"></td>
             <td th:text="${flow.name}"></td>
             <td th:text="${flow.flowQuantity}"></td>

@@ -3,9 +3,7 @@ package org.launchcode.dynamicinventory.controllers;
 import org.launchcode.dynamicinventory.models.Flow;
 import org.launchcode.dynamicinventory.models.Location;
 import org.launchcode.dynamicinventory.models.MMaterial;
-import org.launchcode.dynamicinventory.models.data.FlowDao;
-import org.launchcode.dynamicinventory.models.data.LocDao;
-import org.launchcode.dynamicinventory.models.data.MatDao;
+import org.launchcode.dynamicinventory.models.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,13 +23,24 @@ import java.util.Map;
 @RequestMapping(value = "location")
 public class LocationController {
     @Autowired
-    private LocDao locDao;
+    private MatDao matDao;
 
     @Autowired
     private FlowDao flowDao;
 
     @Autowired
-    private MatDao matDao;
+    private ExflowDao exflowDao;
+
+    @Autowired
+    private LocDao locDao;
+
+    @Autowired
+    private SupplierDao supplierDao;
+    @Autowired
+    private IntorderDao internOrderDao;
+
+    @Autowired
+    private FournisseurDao fournisseurDao;
 
     @RequestMapping(value = "")
     public String index(Model model) {
@@ -144,6 +153,7 @@ public class LocationController {
 
                 locDao.save(location);
                 //update the list of the locations where this material is stored and save the updated material
+                model.addAttribute("newlocation", location);
 
                 material.getLocations().add(location);
                 matDao.save(material);

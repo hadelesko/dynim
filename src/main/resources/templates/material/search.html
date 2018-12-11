@@ -1,17 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
     <title th:text="${title}"></title>
+    <script src='jquery-3.2.1.min.js'></script>
+    <script type="text/javascript"></script>
 </head>
 <body>
-    <form action="search"  style="max-width:600px;"  method="POST">
-        <input type="radio" name="searchTerm" value="materialId"/> Material Id <br/>
-        <input type="radio" name="searchTerm" value="materialName"/> Material Name <br/>
-        <input type="radio" name="searchTerm" value="availableStock"/> Available stock <br/>
-        Enter the search value of search term <input type="text" name="searchValue"/><br/>
-        <input type="submit" value="search"/>
-    </form>
-</body>
 
+<script type="text/javascript">
+</script>
+<form action="search"  style="max-width:600px;"  method="POST" id="search">
+    <input type="radio" name="searchTerm" value="materialId" /> Material Id <br/>
+    <input type="radio" name="searchTerm" value="materialName" /> Material Name <br/>
+    <input type="radio" name="searchTerm" value="availableStock" /> Available stock <br/>
+    Enter the search value of search term <input type="text" name="searchValue"/><br/>
+    <input type="submit" value="search"/>
+</form>
+<!--<script th:inline="javascript">
+        $('#search').submit(function mysearch(){
+        var searchTerm=document.getElementByName("searchTerm")
+
+        var searchValue=document.getElementById("searchValue")
+                if($(searchTerm).val()==='materialId'){
+		            Alert("Error! input not correct. Enter a number")
+        }
+        })
+</script>-->
+</body>
 </html>

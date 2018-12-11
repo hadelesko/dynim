@@ -7,24 +7,41 @@
 <body>
 <nav th:replace="fragments :: navigation_home"></nav>
 
-<b> This Location has been added</b>
+<p> This Location has been added</p>
+
+<table class="table">
+    <tr>
+        <th>Location_ID</th>
+        <th>Location_Name</th>
+        <th>Material_Id</th>
+        <th>Material_Name</th>
+        <th>Material_Stock</th>
+    </tr>
+    <tr>
+    <td th:text="${newlocation.name}"></td>
+    <td th:text="${newlocation.material.matId}"></td>
+    <td th:text="${newlocation.material.matName}"></td>
+    <td th:text="${newlocation.locationStock}"></td>
+    </tr>
+</table>
+
 <table class="table">
 
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Material Id</th>
-        <th>Material Name</th>
-        <th>Material Stock</th>
+        <th>Location_ID</th>
+        <th>Location_Name</th>
+        <th>Material_Id</th>
+        <th>Material_Name</th>
+        <th>Material_Stock</th>
     </tr>
 
     <tr th:each="location:${locations}">
         <!--<li><a th:href="'supplier/'+${supplier.id}" th:object="${supplier}"></a></li>-->
-        <td th:text="${location.locationId}"></td>
-        <td th:text="${location.name}"></td>
-        <td th:text="${location.material.matId}"></td>
-        <td th:text="${location.material.matName}"></td>
-        <td th:text="${location.locationStock}"></td>
+        <td th:text="${loc.locationId}"></td>
+        <td th:text="${loc.name}"></td>
+        <td th:text="${#loc.material.matId}"></td>
+        <td th:text="${#loc.material.matName}"></td>
+        <td th:text="${loc.locationStock}"></td>
     </tr>
 </table>
 <b><a href="/material">Material</a> |</b>

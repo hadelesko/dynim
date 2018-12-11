@@ -16,6 +16,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -65,7 +67,12 @@ public class MaterialController {
         String inputCategory;
         String inputValueToSearch;
         List<MMaterial>listofMaterial=new ArrayList<>();
+
         HashMap<String, String> searchfieldAndValue = new HashMap<>();
+
+        boolean searchValueIsChecked=true;
+        //boolean materialIsExisting=true;
+
         if ((searchTerm != null && searchValue.length() != 0)) {
             inputCategory = searchTerm;
             inputValueToSearch = searchValue;
@@ -78,99 +85,72 @@ public class MaterialController {
                         Integer.parseInt(searchValue);
 
                         searchfieldAndValue.put("materialId", searchValue);
-                    } catch (NumberFormatException e) {
+                    } catch(NumberFormatException e) {
                         isnumeric = false;
                     }
 
                 } else {
                     boolean isDouble = true;
                     try {
-                        Integer.parseInt(searchValue);
+                        Double.parseDouble(searchValue);
 
-                        searchfieldAndValue.put("materialStock", searchValue);
-                        ;
+                        searchfieldAndValue.put("availableStock", searchValue);
+
                     } catch (NumberFormatException e) {
                         isDouble = false;
                     }
 
                 }
             }
+            //Condition of existence of the search material in the list of existing list of material
 
-            if (searchfieldAndValue.containsKey("materialName")) {
-
-                listofMaterial.add(matDao.findByMatName(searchValue));
+            if (searchfieldAndValue.containsKey("materialName")==true){
+                boolean materialIsExisting=matDao.findAll().contains(matDao.findByMatName(searchValue));
+                listofMaterial.add(matDao.findByMatName(searchValue)); // empty if materialIsExisting==false and NotEmpty if materialIsxisting ==true
+                model.addAttribute("criteria", "No material found with the given criteria name = "+searchValue);
                 model.addAttribute("materials", listofMaterial);
-                model.addAttribute("title", "Result of search of the material with the name " + searchValue);
+                model.addAttribute("materialIsExisting",materialIsExisting);// True for material existing and false for empty list of materil
+                model.addAttribute("title", "Result of search of the material with the name = " + searchValue);
                 //return "material/edit";
 
             } else {
-                if (searchfieldAndValue.containsKey("materialId")) {
+                if (searchfieldAndValue.containsKey("materialId")==true) {
+
                     int id = Integer.parseInt(searchValue);
-                    listofMaterial.add(matDao.findByMatName(searchfieldAndValue.get("materialId")));
+                    boolean materialIsExisting=matDao.findAll().contains(matDao.findByMatId(id));
+
+                    //listofMaterial.add(matDao.findByMatId(Integer.parseInt(searchfieldAndValue.get("materialId"))));//==
+                    listofMaterial.add(matDao.findByMatId(id));
+
+                    model.addAttribute("criteria", "No material found with the given criteria id = "+searchValue);
+                    model.addAttribute("materialIsExisting",materialIsExisting);// True for material existing and false for empty list of materil
                     model.addAttribute("materials", listofMaterial);
-                    model.addAttribute("title", "Result of search of the material with the id" + searchValue);
+                    model.addAttribute("title", "Result of search of the material with the id = " + searchValue);
                     //return "material/edit";
 
-                } else {
-                    listofMaterial.addAll(matDao.findByStockLessThanEqual(Double.parseDouble(searchValue)));
-                    model.addAttribute("materials", listofMaterial);
-                    model.addAttribute("title", "Result of search of the material(s) with the stock " + searchValue);
+                } else {//Case of available stock
+                    if (searchfieldAndValue.containsKey("availableStock") == true) {
 
+                        double inputValue=Double.parseDouble(searchValue);
+                        List<MMaterial>existingListofmaterialmatchingCriteria=matDao.findByStockLessThanEqual(inputValue);
+                        boolean materialIsExisting ;
+                        if(existingListofmaterialmatchingCriteria.size()==0){
+                             materialIsExisting = false;
+                        }else {
+                             materialIsExisting = true;
+                        }
+                        listofMaterial.addAll(matDao.findByStockLessThanEqual(inputValue));
+                        model.addAttribute("criteria", "No material found with criteria available stock = "+searchValue);
+                        model.addAttribute("materialIsExisting", materialIsExisting);
+                        model.addAttribute("materials", listofMaterial);
+                        model.addAttribute("title", "Result of search of the material(s) with the stock  less equals to " + searchValue);
+
+                    }
                 }
             }
         }
         return "material/editList";
     }
-        /*if(searchTerm=="materialId"){
-            boolean isnumeric = true;
-
-            try {
-                Integer.parseInt(searchValue);
-            } catch (NumberFormatException e) {
-                isnumeric = false;
-            }
-        }
-            if ((searchTerm.isEmpty() || searchValue.isEmpty())) {
-            inputCategory="";
-            inputValueToSearch= "";
-
-            model.addAttribute("title", "You didn't enter the search value.Try to your search term and make sure to enter it");
-            return "material/search";
-        } else {
-            if (searchTerm.equalsIgnoreCase("materialName")) {
-                 inputCategory=searchTerm;
-                 inputValueToSearch= searchValue;
-
-                model.addAttribute("material", matDao.findByMatName(searchValue));
-                model.addAttribute("title", "Result of search of the material with the name " + searchValue);
-                return "material/edit";
-            } else {
-                if (searchTerm.equalsIgnoreCase("materialId")) {
-
-                    boolean isnumeric = true;
-
-                    try {
-                        int id = Integer.parseInt(searchValue);
-                        model.addAttribute("material", matDao.findByMatId(id));
-                        model.addAttribute("title", "Result of search of the material with the id" + searchValue);
-                        return "material/edit";
-
-                    } catch (NumberFormatException e) {
-                        isnumeric = false;
-                        model.addAttribute("title", "Entered value is not a number.Try to enter a number your search term and make sure to enter it");
-                        return "material/search";
-                    }
-
-                } else {
-                    model.addAttribute("materials", matDao.findByStockLessThanEqual(Double.parseDouble(searchValue)));
-                    model.addAttribute("title", "Result of search of the material(s) with the stock " + searchValue);
-                    return "material/editList";
-                }
-
-*//*        model.addAttribute("material",matDao.findByMatName(searchValue));
-        return "material/edit";*//*
-            }}}*/
-
 
     @RequestMapping(value = "reception", method = RequestMethod.GET)
     public String displayaddmatflow(Model model) {
@@ -210,16 +190,19 @@ public class MaterialController {
 
             return "material/reception";
         } else {
-
+            // The reception of the material does not care about the date which is necessary for the flow registration.
+            // Flows are the record of the movements of the material
             Flow entrymaterial = new Flow();
-            Date flowDate = new Date();
-            // Registration of the Flow
-            // (matDao.findByMatName(matName)).getMatId();   //request the id of the material
+            Date flowDate = new Date();// Create for the registration of the flow
+            //DateFormat dateFormat = new SimpleDateFormat("mm-dd-yyyy");
+            /*String strDate = dateFormat.format(dateFormat);*/
+            // Registration of the Flow via material reception
             entrymaterial.setMaterial(matDao.findByMatName(material.getMatName()));
             entrymaterial.setFlowQuantity(receivedStock);
-
+            entrymaterial.setDate(new Date()); // Set the date of the flow
             entrymaterial.setName("Reception " + matName);
             entrymaterial.setDescription("Reception of " + matName + flowDate);
+            entrymaterial.setDestination("Warehouse");
             entrymaterial.getFlowId();
             flowDao.save(entrymaterial);
 
@@ -315,7 +298,7 @@ public class MaterialController {
                 }
 
             }
-            String flowDescription = "Reception of " + receivedStock + material.getMatName() + " from fournisseur " + fournisseurId;
+            String flowDescription = "Reception of " + receivedStock + " " + material.getMatName() + " from fournisseur " + fournisseurId;
             //Eflow eflow=new Eflow(material,receivedStock, flowDescription,fournisseurDao.findOne(fournisseurId));
             Eflow eflow = new Eflow();
             List<Eflow> flowsOfThisMaterial = material.getEflows();
@@ -324,8 +307,9 @@ public class MaterialController {
             //eflow.setMaterial(matDao.findByMatName(material.getMatName()));
             eflow.setMaterial(material);
             //eflow.setQuantityflow(receivedStock);
-            eflow.setDescription("Reception of " + receivedStock + material.getMatName() + " from fournisseur " + fournisseurId);
+            eflow.setDescription("Reception of  " + receivedStock + " " +material.getMatName() + " from fournisseur " + fournisseurId);
             eflow.setFournisseur(fournisseurDao.findOne(fournisseurId));
+            eflow.setDate(flowDate);
             eflow.getId();
 
             //eflow.setEid(eflow.getEid());
@@ -342,20 +326,7 @@ public class MaterialController {
 
     }
 
-    /*    @RequestMapping(value = "receiving", method = RequestMethod.GET)
-        public String displayreceiving(Model model){
 
-            model.addAttribute("title", "Add the new flow of the material");
-            model.addAttribute("material",new MMaterial());
-            model.addAttribute(new Location());
-            model.addAttribute(new Fournisseur());
-
-            model.addAttribute("eflows", exflowDao.findAll());
-            model.addAttribute("locations", locDao.findAll());
-            return "material/reception";
-
-
-        }*/
     @RequestMapping(value = "remove", method = RequestMethod.GET)
     public String removeMaterial(Model model) {
         model.addAttribute("title", "Remove one or more material from the list");

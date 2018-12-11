@@ -97,7 +97,9 @@ public class ExflowController {
 
          eflowForThisMaterial.add(eflow);
          eflow.setMaterial(flowMaterial);
-
+            int eflowId=eflow.getId();
+            eflow.setId(eflowId);
+            exflowDao.save(eflow);
 
         double oldstock=matDao.findOne(materialId).getStock();
         double newstock=oldstock+eflow.getQuantityflow();
@@ -108,9 +110,7 @@ public class ExflowController {
 
         matDao.save(materiall);
 
-        int eflowId=eflow.getId();
-        eflow.setId(eflowId);
-        exflowDao.save(eflow);
+
 
         return "redirect:/material/";
     }
