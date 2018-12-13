@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+
+
+
+<nav th:replace="fragments :: navigation_home"></nav>
+<hr/>
+
+<div th:unless="${foundFournissur} and ${foundListOfFournisseur.size()}">
+    <h3 th:text="${title}"></h3><br/>
+    <p>No fournisseur found</p>
+</div>
+<div th:if="${foundFournisseur} and ${foundListOfFournisseur.size()}">
+    <table class="table">
+
+        <tr>
+            <th>Fournisser_id</th>
+            <th>Fournisseur_name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Fax</th>
+            <th>Materials</th>
+        </tr>
+
+        <tr th:each="fournisseur:${foundListOffournisseur}">
+            <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
+            <td th:text="${fournisseur.matId}"></td>
+            <td th:text="${fournisseur.fournisseurName}"></td>
+            <td th:text="${fournisseur.description}"></td>
+            <td th:text="${fournisseur.stock}"></td>
+            <td th:text="${fournisseur.locations}"></td>
+            <td th:each="material:${#fournisseur.exflows.materials}">
+                <a th:href="'/fournisseur/id='+${material.matId}">
+                    <span th:text="${material.matId}"></span>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+<hr/>
+<div>
+    <b><a href="/material/reception">Add Material</a> |</b>
+    <b><a href="/material/remove">Remove Material</a> |</b>
+    <b><a href="/material/search">search Material</a> |</b>
+    <b><a href="/flow/">flow</a> |</b>
+    <b><a href="/material">Material</a> |</b>
+    <b><a href="/supplier">Supplier</a> |</b>
+    <b><a href="/location/">Locations</a> |</b>
+    <b><a href="/location/search">search Location</a> |</b>
+</div>
+</body>
+</html>

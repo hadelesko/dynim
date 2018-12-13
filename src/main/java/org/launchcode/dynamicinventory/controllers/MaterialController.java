@@ -50,6 +50,22 @@ public class MaterialController {
         model.addAttribute("materials", matDao.findAll());
         return "material/index";
     }
+    @RequestMapping(value = "id={materialId}")
+    public String schowMaterial(Model model, @PathVariable int materialId){
+        List<MMaterial>foundListOfMaterial=new ArrayList<>();
+        MMaterial foundMaterial=matDao.findByMatId(materialId);
+
+        if(foundMaterial==null){
+
+            model.addAttribute("foundListOfMaterial", foundListOfMaterial);
+        }else{
+            foundListOfMaterial.add(foundMaterial);
+            model.addAttribute("foundListOfMaterial", foundListOfMaterial);
+        }
+        model.addAttribute("foundMaterial",foundMaterial);
+        model.addAttribute("title", "Result of the material with id = "+materialId);
+        return "material/singleMaterialShow";
+    }
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
     public String search(Model model) {

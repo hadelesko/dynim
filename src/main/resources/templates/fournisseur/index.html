@@ -15,8 +15,8 @@
 
 
     <tr>
-        <th>id</th>
-        <th>Name</th>
+        <th>Fournisser_id</th>
+        <th>Fournisseur_name</th>
         <th>Email</th>
         <th>Address</th>
         <th>Phone</th>
@@ -25,13 +25,16 @@
     </tr>
 
     <tr th:each="fournisseur:${fournisseurs}">
-        <td><a th:href="'fournisseur/'+${fournisseur.fournisseurId}" th:object="${fournisseur}"><h4 th:text="${fournisseur.fournisseurId}"></h4></a></td>
+        <td th:text="${fournisseur.fournisseurId}"></td>
         <td th:text="${fournisseur.name}"></td>
         <td th:text="${fournisseur.email}"></td>
         <td th:text="${fournisseur.address}"></td>
         <td th:text="${fournisseur.phone}"></td>
         <td th:text="${fournisseur.fax}"></td>
-        <td th:text="${fournisseur.materials}"></td>
+        <td th:each="material:${fournisseur.materials}">
+            <a th:href="'/material/id='+${material.matId}">
+            <span th:text="${material.matId}"></span></a>
+        </td>
     </tr>
 </table>
 <nav>

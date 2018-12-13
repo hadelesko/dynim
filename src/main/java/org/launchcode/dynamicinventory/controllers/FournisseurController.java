@@ -40,6 +40,23 @@ public class FournisseurController {
         return "fournisseur/index";
     }
 
+    @RequestMapping(value = "id={fournisseurId}")
+    public String schowfournisseur(Model model, @PathVariable int fournisseurId){
+        List<Fournisseur>foundListOfFournisseur=new ArrayList<>();
+        Fournisseur foundFournisseur=fournisseurDao.findByFournisseurId(fournisseurId);
+
+        if(foundFournisseur==null){
+
+            model.addAttribute("foundListOfFournisseur", foundListOfFournisseur);
+        }else{
+            foundListOfFournisseur.add(foundFournisseur);
+            model.addAttribute("foundListOfFournisser", foundListOfFournisseur);
+        }
+        model.addAttribute("foundFournisseur",foundFournisseur);
+        model.addAttribute("title", "Result of the fournisseur with id = "+fournisseurId);
+        return "fournisseur/singleFournisseurShow";
+    }
+
     @RequestMapping(value = "search", method = RequestMethod.GET)
     public String search(Model model) {
         model.addAttribute("title", "Warehouse management: Search of the Supplier");

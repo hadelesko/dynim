@@ -24,7 +24,7 @@
         <!--<h4><a th:href="'location/'+${location.locationId}" th:object="${location}"></a></h4>-->
         <td th:text="${location.locationId}"></td>
         <td th:text="${location.name}"></td>
-        <td th:text="${location.material.matId}"></td>
+        <td><a th:href="'/material/id=' + ${location.material.matId}"><h4 th:text="${location.material.matId}"></h4></a></td>
         <td th:text="${location.material.matName}"></td>
         <td th:text="${location.locationStock}"></td>
     </tr>
