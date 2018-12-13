@@ -36,8 +36,16 @@
         <td th:text="${mat.matName}"></td>
         <td th:text="${mat.description}"></td>
         <td th:text="${mat.stock}"></td>
-        <td th:text="${mat.locations}"></td>
-        <td th:text="${mat.fournisseurs}"></td>
+        <td th:each="location:${mat.locations}">
+            <a th:href="'/location/id='+${location.locationId}">
+                <span th:text="${location.locationId}"></span>
+            </a>
+        </td>
+        <td th:each="fournisseur:${mat.fournisseurs}">
+            <a th:href="'/fournisseur/id='+${fournisseur.fournisseurId}">
+                <span th:text="${fournisseur.fournisseurId}"></span>
+            </a>
+        </td>
     </tr>
 </table>
 </div>

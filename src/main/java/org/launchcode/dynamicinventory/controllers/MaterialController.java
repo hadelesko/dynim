@@ -190,14 +190,12 @@ public class MaterialController {
                                      Errors errors, @RequestParam("stock") double receivedStock,
                                      @RequestParam String matName, @RequestParam("supplierId") int supplierId,
                                      @RequestParam("fournisseurId") int fournisseurId) {
-        //@RequestParam("locationId") int locationId,
-        // HttpServletRequest request) {
-
 
         Supplier mSupplier = supplierDao.findOne(supplierId);
         //material.setSupplier(mSupplier);
         model.addAttribute("supplier", mSupplier);
         model.addAttribute("supplierId", material.getSupplier());
+
 
         //List<Fournisseur>fournisseur
 
@@ -226,8 +224,7 @@ public class MaterialController {
             //model.addAttribute("mSupplier",mSupplier);
 
             List<MMaterial> materials = mSupplier.getMaterials();
-
-            //List<Location>locations=material.getLocations();
+            //List<Fournisseur>fournisseurs=material.getFournisseurs();
 
             //creation of pseudo variable to reduce the expression
             if ((matDao.findByMatName(matName) == null)) {

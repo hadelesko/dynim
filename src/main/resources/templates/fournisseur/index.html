@@ -31,10 +31,12 @@
         <td th:text="${fournisseur.address}"></td>
         <td th:text="${fournisseur.phone}"></td>
         <td th:text="${fournisseur.fax}"></td>
-        <td th:each="material:${fournisseur.materials}">
+<!--        <td th:each ="material:${materials}" >
+            <span th:if="${#bools.isTrue(materialIsDeleveredByThisfournisseur)}">
             <a th:href="'/material/id='+${material.matId}">
             <span th:text="${material.matId}"></span></a>
-        </td>
+            </span>
+        </td>-->
     </tr>
 </table>
 <nav>

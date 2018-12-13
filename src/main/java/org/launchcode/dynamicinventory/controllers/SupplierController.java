@@ -2,9 +2,7 @@ package org.launchcode.dynamicinventory.controllers;
 
 import org.launchcode.dynamicinventory.models.MMaterial;
 import org.launchcode.dynamicinventory.models.Supplier;
-import org.launchcode.dynamicinventory.models.data.FlowDao;
-import org.launchcode.dynamicinventory.models.data.MatDao;
-import org.launchcode.dynamicinventory.models.data.SupplierDao;
+import org.launchcode.dynamicinventory.models.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,13 +22,24 @@ import java.util.Map;
 public class SupplierController {
 
     @Autowired
-    SupplierDao supplierDao;
-
-    @Autowired
     private MatDao matDao;
 
     @Autowired
     private FlowDao flowDao;
+
+    @Autowired
+    private ExflowDao exflowDao;
+
+    @Autowired
+    private LocDao locDao;
+
+    @Autowired
+    private SupplierDao supplierDao;
+    @Autowired
+    private IntorderDao internOrderDao;
+
+    @Autowired
+    private FournisseurDao fournisseurDao;
 
     @RequestMapping(value = "")
     public String index(Model model) {

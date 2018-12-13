@@ -32,11 +32,29 @@ public class FournisseurController {
 
     @Autowired
     private FournisseurDao fournisseurDao;
+    @Autowired
+    private ExflowDao exflowDao;
 
     @RequestMapping(value = "")
     public String index(Model model) {
         model.addAttribute("title", "Warehouse management");
         model.addAttribute("fournisseurs", fournisseurDao.findAll());
+/*        model.addAttribute("materials", matDao.findAll());
+        boolean materialIsDeleveredByThisfournisseur=false;
+        List<MMaterial>listMaterialBythisFournisseur=new ArrayList<>();
+        for(Fournisseur fournisseur:fournisseurDao.findAll()){
+            for(MMaterial material:matDao.findAll()){
+                if(material.getFournisseurs().contains(fournisseur)==true){
+                    materialIsDeleveredByThisfournisseur=true;
+                    listMaterialBythisFournisseur.add(material);
+                }else{
+                    materialIsDeleveredByThisfournisseur=false;
+                }
+            }
+        }
+        model.addAttribute("eflows", exflowDao.findAll());
+        model.addAttribute("listMaterialBythisFournisseur",listMaterialBythisFournisseur);
+        model.addAttribute("materialIsDeleveredByThisfournisseur", materialIsDeleveredByThisfournisseur);*/
         return "fournisseur/index";
     }
 
