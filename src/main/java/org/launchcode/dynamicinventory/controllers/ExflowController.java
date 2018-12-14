@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -115,6 +116,24 @@ public class ExflowController {
         return "redirect:/material/";
     }
 
+}
+@RequestMapping(value="update")
+public String updateflowWithoutdate(){
+        List<Eflow>eflows=new ArrayList<>();
+                ;
+        for(Eflow eflow:exflowDao.findAll()){
+            if(eflow.getDate()==null){
+                eflow.setDate(new Date());
+                eflows.add(eflow);
+            }else{
+                Date date=eflow.getDate();
+                eflow.setDate(date);
+                eflows.add(eflow);
+            }
+        }
+        exflowDao.save(eflows);
+        return "redirect:";
+}
 
 }
-}
+

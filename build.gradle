@@ -28,6 +28,9 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('mysql:mysql-connector-java')
+	compile('org.webjars:bootstrap')
+	compile('org.webjars:jquery')
+	compile('org.webjars:javascript')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
