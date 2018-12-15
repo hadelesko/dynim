@@ -5,22 +5,37 @@
 
     <nav th:replace="fragments :: navigation_home"></nav>
 </head>
-<body>
+<body class="container">
     <p th:unless="${eflows} and ${eflows.size()}">No extern flow yet :(</p>
 
 
-    <table>
+    <table class="table">
 
         <tr>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Quantity</td>
+            <th>Date</th>
+            <th>FlowID</th>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Material</th>
+            <th>Fournisseur</th>
         </tr>
 
         <tr th:each="eflow:${eflows}">
+            <td th:text="${eflow.date}"></td>
             <td th:text="${eflow.id}"></td>
             <td th:text="${eflow.description}"></td>
-            <td th:text="${eflow.flowQuantity}"></td>
+            <td th:text="${eflow.quantityflow}"></td>
+            <td>
+                <a th:href="'/material/id='+${eflow.material.matId}">
+                    <span th:text="${eflow.material.matId}"></span>
+                </a>
+            </td>
+            <td>
+                <a th:href="'/fournisseur/id='+${eflow.fournisseur.fournisseurId}">
+                    <span th:text="${eflow.fournisseur.fournisseurId}"></span>
+                </a>
+            </td>
+
         </tr>
     </table>
     <b><a href="/flow/add">add flow</a> |</b>

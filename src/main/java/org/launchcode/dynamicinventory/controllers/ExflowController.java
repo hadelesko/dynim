@@ -46,7 +46,7 @@ public class ExflowController {
     public String index(Model model) {
         model.addAttribute("title", "List of flows in the warehouse ");
         model.addAttribute("eflows", exflowDao.findAll());
-        return "flow/index";
+        return "exflow/index";
     }
 
     @RequestMapping(value="add", method = RequestMethod.GET)

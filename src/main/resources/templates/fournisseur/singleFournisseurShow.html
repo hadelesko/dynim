@@ -16,6 +16,7 @@
     <p>No fournisseur found</p>
 </div>
 <div th:if="${foundFournisseur} and ${foundListOfFournisseur.size()}">
+<div>
     <table class="table">
 
         <tr>
@@ -35,13 +36,15 @@
             <td th:text="${fournisseur.description}"></td>
             <td th:text="${fournisseur.stock}"></td>
             <td th:text="${fournisseur.locations}"></td>
-            <td th:each="material:${#fournisseur.exflows.materials}">
-                <a th:href="'/fournisseur/id='+${material.matId}">
-                    <span th:text="${material.matId}"></span>
+            <td th:each="eflow:${exflows}">
+                <span th:if="${eflow.fournisseur.fournisseurId}==${fournisseur.fournisseurId}">
+                <a th:href="'/fournisseur/id='+${eflow.material.matId}">
+                    <span th:text="${eflow.material.matId}">,</span>
                 </a>
             </td>
         </tr>
     </table>
+</div>
 </div>
 <hr/>
 <div>

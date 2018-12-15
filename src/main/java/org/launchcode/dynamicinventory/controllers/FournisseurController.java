@@ -39,6 +39,7 @@ public class FournisseurController {
     public String index(Model model) {
         model.addAttribute("title", "Warehouse management");
         model.addAttribute("fournisseurs", fournisseurDao.findAll());
+        model.addAttribute("eflows",exflowDao.findAll());
 /*        model.addAttribute("materials", matDao.findAll());
         boolean materialIsDeleveredByThisfournisseur=false;
         List<MMaterial>listMaterialBythisFournisseur=new ArrayList<>();
