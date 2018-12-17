@@ -2,16 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <h1 th:text="${title}">Default Title</h1>
 </head>
-<body>
+<body class="container">
 <nav th:replace="fragments :: navigation_home"></nav>
 
 <p th:unless="${locations} and ${locations.size()}">no supplier yet :(</p>
 
 <b>List of Location</b>
 <table class="table" >
-
+<thead>
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -19,15 +22,17 @@
         <th>Material Name</th>
         <th>Material Stock</th>
     </tr>
-
+</thead>
+    <tbody>
     <tr th:each="location:${locations}">
         <!--<h4><a th:href="'location/'+${location.locationId}" th:object="${location}"></a></h4>-->
         <td th:text="${location.locationId}"></td>
         <td th:text="${location.name}"></td>
-        <td><a th:href="'/material/id=' + ${location.material.matId}"><h4 th:text="${location.material.matId}"></h4></a></td>
-        <td th:text="${location.material.matName}"></td>
+        <td><a th:href="'/material/id=' + ${location.material.matId}" th:text="${location.material.matId}"></a></td>
+        <td><a th:href="'/material/id='+${location.material.matId}" th:text="${location.material.matName}"></a></td>
         <td th:text="${location.locationStock}"></td>
     </tr>
+    </tbody>
 </table>
 <b><a href="/material">Material</a> |</b>
 <b><a href="/supplier">Supplier</a>|</b>

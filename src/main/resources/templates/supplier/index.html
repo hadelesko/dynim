@@ -10,7 +10,6 @@
 
 <p th:unless="${suppliers} and ${suppliers.size()}">no supplier yet :(</p>
 
-
 <table class="table">
 
     <tr>
@@ -29,7 +28,13 @@
     <tr th:each="supplier:${suppliers}">
         <!--<li><a th:href="'supplier/'+${supplier.id}" th:object="${supplier}"></a></li>-->
         <td th:text="${supplier.name}"></td>
-        <td th:text="${supplier.materials}"></td>
+        <td>
+            <strong th:each="material:${supplier.materials}">|
+            <a  th:href="'/material/id=' + ${material.matId}" th:text="${material.matId}" ></a>
+            </strong>
+            <strong>|</strong>
+        </td>
+
         <td th:text="${supplier.email}"></td>
         <td th:text="${supplier.address}"></td>
         <td th:text="${supplier.phone}"></td>

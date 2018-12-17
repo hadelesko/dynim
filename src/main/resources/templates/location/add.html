@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <h1 th:text="${title}">Default title</h1>
-</head>
-<body>
+<head th:replace="fragments::head"></head>
+<body class="container">
+<h1 th:text="${title}">Default title</h1>
 <form method="POST" style="max-width:600px;" th:object="${location}" action="add">
     <div class="location">
         <label th:for="name">Name</label>
@@ -34,6 +32,7 @@
     </div>
     <input type="submit" value="Add a new location"/>
 </form>
+
 <fieldset>
     <legend>Available locations informations</legend>
     <table>
@@ -53,6 +52,5 @@
     </tr>
     </table>
 </fieldset>
-
 </body>
 </html>

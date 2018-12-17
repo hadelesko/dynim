@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
-
 <body class="container">
 
 <h1 th:text="${title}">Default Title</h1>
@@ -12,7 +11,6 @@
 
 <p>List of fournisseurs</p>
 <table class="table">
-
 
     <tr>
         <th>Fournisser_id</th>
@@ -31,11 +29,12 @@
         <td th:text="${fournisseur.address}"></td>
         <td th:text="${fournisseur.phone}"></td>
         <td th:text="${fournisseur.fax}"></td>
-        <td th:each="eflow:${eflows}">
-            <span th:if="${eflow.fournisseur.fournisseurId}==${fournisseur.fournisseurId}">
-            <a th:href="'/material/id='+${eflow.material.matId}">
-            <span th:text="${eflow.material.matId}">,</span></a>
-            </span>
+        <td>
+            <strong th:each="eflow:${eflows}" th:if="${eflow.fournisseur.fournisseurId}==${fournisseur.fournisseurId}">
+                <strong>|</strong>
+                <a th:href="'/material/id='+${eflow.material.matId}" th:text="${eflow.material.matId}"></a>
+            </strong>
+            <strong>|</strong>
         </td>
     </tr>
 </table>

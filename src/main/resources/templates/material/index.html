@@ -6,8 +6,6 @@
 
 <h1 th:text="${title}">Default Title</h1>
 
-
-
 <nav th:replace="fragments :: navigation_home"></nav>
 
 
@@ -30,20 +28,23 @@
     </tr>
 
     <tr th:each="mat:${materials}">
-        <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
         <td th:text="${mat.matId}"></td>
         <td th:text="${mat.matName}"></td>
         <td th:text="${mat.description}"></td>
         <td th:text="${mat.stock}"></td>
-        <td th:each="location:${mat.locations}">
-            <a th:href="'/location/id='+${location.locationId}">
-                <span th:text="${location.locationId}"></span>
-            </a>
+        <td>
+            <strong th:each="location:${alllocations}" th:if="${location.material.matId}==${mat.matId}">
+                <strong>|</strong>
+                <a th:href="'/location/id='+${location.locationId}" th:text="${location.locationId}"></a>
+            </strong>
+            <strong>|</strong>
         </td>
-        <td th:each="fournisseur:${mat.fournisseurs}">
-            <a th:href="'/fournisseur/id='+${fournisseur.fournisseurId}">
-                <span th:text="${fournisseur.fournisseurId}"></span>
-            </a>
+        <td>
+            <strong th:each="fournisseur:${mat.fournisseurs}">
+                <strong>|</strong>
+                <a th:href="'/fournisseur/id='+${fournisseur.fournisseurId}" th:text="${fournisseur.fournisseurId}"></a>
+            </strong>
+            <strong>|</strong>
         </td>
     </tr>
 </table>

@@ -63,15 +63,19 @@ public class FournisseurController {
     public String schowfournisseur(Model model, @PathVariable int fournisseurId){
         List<Fournisseur>foundListOfFournisseur=new ArrayList<>();
         Fournisseur foundFournisseur=fournisseurDao.findByFournisseurId(fournisseurId);
+        boolean existThisournisseur;
 
         if(foundFournisseur==null){
-
-            model.addAttribute("foundListOfFournisseur", foundListOfFournisseur);
+            existThisournisseur=false;
+            model.addAttribute("existFournisseur", existThisournisseur);
         }else{
+            existThisournisseur=true;
+            model.addAttribute("existFournisseur", existThisournisseur);
             foundListOfFournisseur.add(foundFournisseur);
-            model.addAttribute("foundListOfFournisser", foundListOfFournisseur);
         }
+        model.addAttribute("foundListOfFournisseur", foundListOfFournisseur);
         model.addAttribute("foundFournisseur",foundFournisseur);
+        model.addAttribute("eflows", exflowDao.findAll());
         model.addAttribute("title", "Result of the fournisseur with id = "+fournisseurId);
         return "fournisseur/singleFournisseurShow";
     }

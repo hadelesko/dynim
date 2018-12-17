@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title th:text="${title}">Default title</title>
-</head>
-<body>
+<head th:replace="fragments::head"></head>
+<body class="container">
 <nav th:replace="fragments :: navigation_home"></nav>
 
 <p> This Location has been added</p>
@@ -18,10 +15,11 @@
         <th>Material_Stock</th>
     </tr>
     <tr>
-    <td th:text="${newlocation.name}"></td>
-    <td th:text="${newlocation.material.matId}"></td>
-    <td th:text="${newlocation.material.matName}"></td>
-    <td th:text="${newlocation.locationStock}"></td>
+        <td th:text="${newlocation.locationId}"></td>
+        <td th:text="${newlocation.name}"></td>
+        <td ><a th:href="'/material/id='+${newlocation.material.matId}" th:text="${newlocation.material.matId}"></a></td>
+        <td><a th:href="'/material/id='+${newlocation.material.matId}" th:text="${newlocation.material.matName}"></a></td>
+        <td th:text="${newlocation.locationStock}"></td>
     </tr>
 </table>
 

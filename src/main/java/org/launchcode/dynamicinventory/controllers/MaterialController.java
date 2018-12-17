@@ -48,6 +48,7 @@ public class MaterialController {
     public String index(Model model) {
         model.addAttribute("title", "Warehouse management");
         model.addAttribute("materials", matDao.findAll());
+        model.addAttribute("alllocations",locDao.findAll());
         return "material/index";
     }
     @RequestMapping(value = "id={materialId}")
@@ -63,6 +64,7 @@ public class MaterialController {
             model.addAttribute("foundListOfMaterial", foundListOfMaterial);
         }
         model.addAttribute("foundMaterial",foundMaterial);
+        model.addAttribute("alllocations",locDao.findAll());
         model.addAttribute("title", "Result of the material with id = "+materialId);
         return "material/singleMaterialShow";
     }

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <h1 th:text="${title}">Default Title</h1>
-</head>
-<body>
+<head th:replace="fragments::head"></head>
+<body class="container">
+<h1 th:text="${title}"></h1>
 <form  method="POST" style="max-width:600px;" th:object="${material}" action="reception">
-    <div class="material">
+    <div class="form-group">
         <label th:for="matName">Name</label>
         <div>
             <input class="form-control" th:field="*{matName}"/>
@@ -15,7 +13,7 @@
     </div>
 
 
-     <div clas="material">
+     <div class="form-group">
            <label th:for="description">Description</label>
            <div>
                 <input class="form-control" th:field="*{description}"/>
@@ -23,7 +21,7 @@
            </div>
      </div>
 
-    <div class="material">
+    <div class="form-group">
         <label th:for="stock">Stock</label>
         <div>
             <input class="form-control" th:field="*{stock}"/>

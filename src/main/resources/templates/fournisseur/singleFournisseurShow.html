@@ -11,11 +11,11 @@
 <nav th:replace="fragments :: navigation_home"></nav>
 <hr/>
 
-<div th:unless="${foundFournissur} and ${foundListOfFournisseur.size()}">
+<div th:unless="${#bools.isTrue(existFournisseur)} and ${foundListOfFournisseur.size()}">
     <h3 th:text="${title}"></h3><br/>
     <p>No fournisseur found</p>
 </div>
-<div th:if="${foundFournisseur} and ${foundListOfFournisseur.size()}">
+<!--<div th:if="${#bools.isTrue(existFournisseur)} and ${foundListOfFournisseur.size()}">-->
 <div>
     <table class="table">
 
@@ -29,23 +29,25 @@
             <th>Materials</th>
         </tr>
 
-        <tr th:each="fournisseur:${foundListOffournisseur}">
+        <tr th:each="fournisseur:${foundListOfFournisseur}">
             <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
-            <td th:text="${fournisseur.matId}"></td>
-            <td th:text="${fournisseur.fournisseurName}"></td>
-            <td th:text="${fournisseur.description}"></td>
-            <td th:text="${fournisseur.stock}"></td>
-            <td th:text="${fournisseur.locations}"></td>
-            <td th:each="eflow:${exflows}">
-                <span th:if="${eflow.fournisseur.fournisseurId}==${fournisseur.fournisseurId}">
-                <a th:href="'/fournisseur/id='+${eflow.material.matId}">
-                    <span th:text="${eflow.material.matId}">,</span>
-                </a>
+            <td th:text="${fournisseur.fournisseurId}"></td>
+            <td th:text="${fournisseur.name}"></td>
+            <td th:text="${fournisseur.email}"></td>
+            <td th:text="${fournisseur.address}"></td>
+            <td th:text="${fournisseur.phone}"></td>
+            <td th:text="${fournisseur.fax}"></td>
+            <td>
+                <strong th:each="eflow:${eflows}" th:if="${eflow.fournisseur.fournisseurId}==${fournisseur.fournisseurId}">
+                    <strong>|</strong>
+                    <a th:href="'/fournisseur/id='+${eflow.material.matId}" th:text="${eflow.material.matId}"></a>
+                </strong>
+                <strong>|</strong>
             </td>
         </tr>
     </table>
 </div>
-</div>
+<!--</div>-->
 <hr/>
 <div>
     <b><a href="/material/reception">Add Material</a> |</b>
