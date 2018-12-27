@@ -29,12 +29,18 @@ public class InternOderController {
     private FlowDao flowDao;
 
     @Autowired
+    private ExflowDao exflowDao;
+
+    @Autowired
     private LocDao locDao;
 
     @Autowired
     private SupplierDao supplierDao;
     @Autowired
     private IntorderDao internOrderDao;
+
+    @Autowired
+    private FournisseurDao fournisseurDao;
 
     @RequestMapping(value = "")
     public String index(Model model) {

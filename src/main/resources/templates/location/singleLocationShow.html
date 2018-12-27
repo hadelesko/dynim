@@ -1,10 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
-<body>
+<head th:replace="fragments::head"></head>
+<body class="container">
+<h1 th:text="${title}"></h1>
+<nav th:replace="fragments :: navigation_home"></nav>
 
+<div th:unless="${#bools.isTrue(existLocation)} and ${foundListOfLocation.size()}">
+    <h3 th:text="${title}"></h3><br/>
+    <p>No location found</p>
+</div>
+<!--<div th:if="${#bools.isTrue(existLocation)} and ${foundListOfLocation.size()}">List of Location-->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Material Id</th>
+            <th>Material Name</th>
+            <th>Material Stock</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="location:${foundListOfLocation}">
+            <!--<h4><a th:href="'location/'+${location.locationId}" th:object="${location}"></a></h4>-->
+            <td th:text="${location.locationId}"></td>
+            <td th:text="${location.name}"></td>
+            <td><a th:href="'/material/id=' + ${location.material.matId}" th:text="${location.material.matId}"></a></td>
+            <td><a th:href="'/material/id='+${location.material.matId}" th:text="${location.material.matName}"></a></td>
+            <td th:text="${location.locationStock}"></td>
+        </tr>
+        </tbody>
+    </table>
+<b><a href="/material">Material</a> |</b>
+<b><a href="/supplier">Supplier</a>|</b>
+<b><a href="/location/add">Add Location</a>|</b>
+<b><a href="/location/task">Location tasks</a>|</b>
+<b><a href="/location/search">search Location</a>|</b>
 </body>
 </html>

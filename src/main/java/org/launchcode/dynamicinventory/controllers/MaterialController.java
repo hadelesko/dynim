@@ -49,9 +49,11 @@ public class MaterialController {
         model.addAttribute("title", "Warehouse management");
         model.addAttribute("materials", matDao.findAll());
         model.addAttribute("alllocations",locDao.findAll());
+        model.addAttribute("allEFlows", exflowDao.findAll());
+        model.addAttribute("allfournisseurs", fournisseurDao.findAll());
         return "material/index";
     }
-    @RequestMapping(value = "id={materialId}")
+    @RequestMapping(value = {"id={materialId}"})
     public String schowMaterial(Model model, @PathVariable int materialId){
         List<MMaterial>foundListOfMaterial=new ArrayList<>();
         MMaterial foundMaterial=matDao.findByMatId(materialId);
@@ -69,8 +71,77 @@ public class MaterialController {
         return "material/singleMaterialShow";
     }
 
+    @RequestMapping(value = {"name={materialName}"})
+    public String schowMaterialbyName(Model model, @PathVariable String materialName){
+        List<MMaterial>foundListOfMaterial=new ArrayList<>();
+        MMaterial foundMaterial=matDao.findByMatName(materialName);
+        String title;
+        boolean existthisMaterial=!(foundMaterial==null)? true:false;
+        if(existthisMaterial==true){
+            title="The search of the material with the name = '"+materialName+"' is the following";
+            foundListOfMaterial.add(foundMaterial);
+        }else{
+            title ="No material with the name= '" +materialName +"' found with the ";
+        }
+        model.addAttribute("foundListOfMaterial", foundListOfMaterial);
+
+        model.addAttribute("foundMaterial",foundMaterial);
+        model.addAttribute("alllocations",locDao.findAll());
+        model.addAttribute("title", title);
+        return "material/singleMaterialByName";
+    }
+
+    // How to make sure that all reception of are located in the warehouse or make sure that the available
+    // stock of the the material is conform or equal to the sum of the quantity of that material placed in different
+    // locations
+    // This function aimed to close the gap between the available stock of each material and its stored quantity
+    // It can come that the sum of quantities of the stored material in different places does not match the
+    // total available quantity of the material in the system. THe stapler has maybe omitted to relocate the
+    // material after the reception or forget to associate e new location for the new material
+    @RequestMapping(value="task")
+    public String locationstask(Model model){
+        List <MMaterial>listOfMaterials=new ArrayList<>();
+        listOfMaterials.addAll(matDao.findAll());
+        List<String>taskListOfMaterialNeedingRelocation=new ArrayList<>();
+
+
+        for(MMaterial material:listOfMaterials){
+            //get the stock of the material
+            double availableStock=material.getStock();
+            // Get the list of locations of this material if these exist
+            List<Location>locationsForhisMaterial=locDao.findByMaterial(material);
+            double locatedStockOfThisMaterial=0;
+            List<String>actuellocationsnameforthematerial=new ArrayList<>();
+            for(Location location:locationsForhisMaterial){
+                //cummulation of the stock available of this material at its locations
+                locatedStockOfThisMaterial+=location.getLocationStock();
+            }
+            double tobelocatedSock=availableStock-locatedStockOfThisMaterial;
+
+            boolean relocationNeeded=(tobelocatedSock>0)? true:false;
+            if(relocationNeeded==true){
+                //Map<String, Double>materialAndQuantity=new HashMap<>();
+                //materialAndQuantity.put(material.getMatName(),tobelocatedSock);
+
+                for(Location el:locationsForhisMaterial){
+                    actuellocationsnameforthematerial.add(el.getName());
+                }
+                String newTask=material.getMatName()+":"+tobelocatedSock+":"+actuellocationsnameforthematerial;
+                taskListOfMaterialNeedingRelocation.add(newTask);
+
+                model.addAttribute("title","Location needed for "+ tobelocatedSock + " of the material="+ material.getMatName());
+            }
+            else {//no material to be relocated
+                model.addAttribute("title","No material to be relocated");
+            }
+        }
+        model.addAttribute("taskListOfMaterialNeedingRelocation",taskListOfMaterialNeedingRelocation);
+        return "location/taskList";
+    }
+
+
     @RequestMapping(value = "search", method = RequestMethod.GET)
-    public String search(Model model) {
+    public String searchMaterial(Model model) {
         model.addAttribute("title", "search the material(s) with specific term");
         return "material/search";
     }
@@ -177,6 +248,7 @@ public class MaterialController {
         model.addAttribute("material", new MMaterial());
         model.addAttribute(new Location());
         model.addAttribute(new Supplier());
+        model.addAttribute(new Fournisseur());
 
         model.addAttribute("suppliers", supplierDao.findAll());
         model.addAttribute("locations", locDao.findAll());
@@ -193,13 +265,11 @@ public class MaterialController {
                                      @RequestParam String matName, @RequestParam("supplierId") int supplierId,
                                      @RequestParam("fournisseurId") int fournisseurId) {
 
+        // Add the objects in relation with material
         Supplier mSupplier = supplierDao.findOne(supplierId);
         //material.setSupplier(mSupplier);
         model.addAttribute("supplier", mSupplier);
         model.addAttribute("supplierId", material.getSupplier());
-
-
-        //List<Fournisseur>fournisseur
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Insert a new Material");
@@ -230,11 +300,11 @@ public class MaterialController {
 
             //creation of pseudo variable to reduce the expression
             if ((matDao.findByMatName(matName) == null)) {
-
+                List<Fournisseur>thisMaterialFournisseurs=new ArrayList<>();
                 material.setSupplier(mSupplier);//*****
                 Fournisseur fournisseur = fournisseurDao.findByFournisseurId(fournisseurId);
-                material.getFournisseurs().add(fournisseur);
-                material.setFournisseurs(material.getFournisseurs());
+                thisMaterialFournisseurs.add(fournisseur);
+                material.setFournisseurs(thisMaterialFournisseurs);
                 // the material does not exist; the supplier is supposed to exist because it was choose in the drop down
                 // So the supplier registration must be done before the materials'
                 /*Todo here is to  save the new material and to add it to the list of materials delivered
@@ -301,11 +371,11 @@ public class MaterialController {
 
                         //return "redirect:";
 
-                    } else {
+                    } else {//supplier and fournisseur never deliver this material
                         material.getFournisseurs().add(fournisseurDao.findByFournisseurId(fournisseurId));
                         List<Fournisseur> newlistfournisseurs = material.getFournisseurs();
                         material.setFournisseurs(newlistfournisseurs);
-
+                        fournisseurDao.findByFournisseurId(fournisseurId).getMaterials().add(material);
                         matDao.findByMatId(materialId).setFournisseurs(newlistfournisseurs);
                         matDao.save(material);
 
@@ -313,7 +383,7 @@ public class MaterialController {
                 }
 
             }
-            String flowDescription = "Reception of " + receivedStock + " " + material.getMatName() + " from fournisseur " + fournisseurId;
+            String flowDescription = "Reception of " + receivedStock + "  " + material.getMatName() + " from fournisseur " + fournisseurId;
             //Eflow eflow=new Eflow(material,receivedStock, flowDescription,fournisseurDao.findOne(fournisseurId));
             Eflow eflow = new Eflow();
             List<Eflow> flowsOfThisMaterial = material.getEflows();
@@ -321,13 +391,11 @@ public class MaterialController {
             eflow.setQuantityflow(receivedStock);// initialise the flow quantity
             //eflow.setMaterial(matDao.findByMatName(material.getMatName()));
             eflow.setMaterial(material);
-            //eflow.setQuantityflow(receivedStock);
-            eflow.setDescription("Reception of  " + receivedStock + " " +material.getMatName() + " from fournisseur " + fournisseurId);
+            eflow.setDescription("Reception of  " + receivedStock + "  " +material.getMatName() + " from fournisseur " + fournisseurId);
             eflow.setFournisseur(fournisseurDao.findOne(fournisseurId));
             eflow.setDate(flowDate);
             eflow.getId();
 
-            //eflow.setEid(eflow.getEid());
             exflowDao.save(eflow);
             flowsOfThisMaterial.add(eflow);
             material.setEflows(flowsOfThisMaterial);

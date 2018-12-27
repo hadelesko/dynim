@@ -41,9 +41,16 @@ public class MMaterial {
     * So the many to many  relationship between the material and the Fournisseur will be here replaced by
     * OneToMany between the entities "material" and "eflow"*/
 
-
     @ManyToMany(mappedBy = "materials")
     private List<Fournisseur>fournisseurs=new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "materialId")
+    private List<InRetour> inRetours = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "materialId")
+    private List<ExRetour> exRetours = new ArrayList<>();
 
 
     public MMaterial(){}
@@ -128,5 +135,21 @@ public class MMaterial {
 
     public void setEflows(List<Eflow> eflows) {
         this.eflows = eflows;
+    }
+
+    public List<InRetour> getInRetours() {
+        return inRetours;
+    }
+
+    public void setInRetours(List<InRetour> inRetours) {
+        this.inRetours = inRetours;
+    }
+
+    public List<ExRetour> getExRetours() {
+        return exRetours;
+    }
+
+    public void setExRetours(List<ExRetour> exRetours) {
+        this.exRetours = exRetours;
     }
 }

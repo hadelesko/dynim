@@ -1,6 +1,7 @@
 package org.launchcode.dynamicinventory.models.data;
 
 import org.launchcode.dynamicinventory.models.Location;
+import org.launchcode.dynamicinventory.models.MMaterial;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,5 @@ public interface LocDao extends CrudRepository<Location,Integer> {
     //List<Location>findByNameAndByLocationStock(String name, int locationStock);
     Location findByLocationId(int locationId);
     List<Location>findByLocationStock(double locationStock);
+    List<Location>findByMaterial(MMaterial material);
 }

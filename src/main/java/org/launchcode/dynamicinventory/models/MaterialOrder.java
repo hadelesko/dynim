@@ -14,19 +14,21 @@ public class MaterialOrder {
     @Id
     @GeneratedValue
     private int orderId;
-    private String name;
+    //private String name;
+
+    @ManyToOne
+    private MMaterial material;
+
     @NotNull
-    private double orderQuantity;
+    private double orderdQuantity;
     @NotNull
     private String destination;
 
     //@Pattern(regexp="mm-dd-yyyy")
     private Date date=new Date();
 
-    @ManyToOne
-    private MMaterial material;
-
     public MaterialOrder(){}
+
 
     public int getOrderId() {
         return orderId;
@@ -34,30 +36,6 @@ public class MaterialOrder {
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getOrderQuantity() {
-        return orderQuantity;
-    }
-
-    public void setOrderQuantity(double orderQuantity) {
-        this.orderQuantity = orderQuantity;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     public MMaterial getMaterial() {
@@ -68,6 +46,21 @@ public class MaterialOrder {
         this.material = material;
     }
 
+    public double getOrderdQuantity() {
+        return orderdQuantity;
+    }
+
+    public void setOrderdQuantity(double orderdQuantity) {
+        this.orderdQuantity = orderdQuantity;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 
     public Date getDate() {
         return date;

@@ -20,7 +20,6 @@ public class Fournisseur {
     private String address;
     @OneToMany
     @JoinColumn(name = "fournisseurId")
-
     private List<Eflow>eflows=new ArrayList<>();
 
     @ManyToMany

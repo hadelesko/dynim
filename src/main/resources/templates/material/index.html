@@ -28,8 +28,8 @@
     </tr>
 
     <tr th:each="mat:${materials}">
-        <td th:text="${mat.matId}"></td>
-        <td th:text="${mat.matName}"></td>
+        <td><a th:href="'material/id='+ ${mat.matId}" th:text="${mat.matId}"></a></td>
+        <td><a th:href="'material/name='+ ${mat.matName}" th:text="${mat.matName}"></a></td>
         <td th:text="${mat.description}"></td>
         <td th:text="${mat.stock}"></td>
         <td>
@@ -40,11 +40,21 @@
             <strong>|</strong>
         </td>
         <td>
+<!--            <strong th:each="eflow:${allEFlows}"
+                    th:if="${#bools.isTrue(#arrays.contains(mat.fournisseurs,eflow.fournisseur))}">
+                <strong>|</strong>-->
+
+<!--            <strong th:each="eflow:${allEFlows}" th:if="${eflow.material.matId}==${mat.matId}">
+                <strong>|</strong>
+                <a th:href="'/fournisseur/id='+${eflow.fournisseur.fournisseurId}" th:text="${eflow.fournisseur.fournisseurId}"></a>
+            </strong>
+            <strong>|</strong>-->
             <strong th:each="fournisseur:${mat.fournisseurs}">
                 <strong>|</strong>
                 <a th:href="'/fournisseur/id='+${fournisseur.fournisseurId}" th:text="${fournisseur.fournisseurId}"></a>
             </strong>
             <strong>|</strong>
+
         </td>
     </tr>
 </table>

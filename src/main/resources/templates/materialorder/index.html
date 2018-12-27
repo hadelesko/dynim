@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title th:text="${title}"></title>
 </head>
-<body>
+<body class="container">
 <p th:unless="${materialorders} and ${materialorders.size()}">no material order yet :(</p>
 
 <div th:if="${materialorders} and ${materialorders.size()}">
@@ -15,17 +15,16 @@
         </tr>
 
         <tr>
-            <th>Id</th>
-            <th>Name</th>
+            <th>order_Id</th>
+            <th>Material_Name</th>
             <th>Quantity</th>
             <th>destination</th>
             <th>Date</th>
         </tr>
 
         <tr th:each="materialorder:${materialorders}">
-            <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
             <td th:text="${materialorder.orderId}"></td>
-            <td th:text="${materialorder.name}"></td>
+            <td><a th:href="'/material/name='+${materialorder.material.matName}" th:text="${materialorder.material.matName}"></a></td>
             <td th:text="${materialorder.orderQuantity}"></td>
             <td th:text="${materialorder.destination}"></td>
             <td th:text="${materialorder.date}"></td>

@@ -8,14 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -117,8 +115,69 @@ public class LocationController {
         model.addAttribute("locations", locations);
         return "location/editLocation";
     }
+    @RequestMapping(value = "id={locationId}")
+    public String schowMaterial(Model model, @PathVariable int locationId){
+        List<Location>foundListOfLocation=new ArrayList<>();
+        Location foundLocation=locDao.findByLocationId(locationId);
+        boolean existLocation;
+        if(foundLocation==null){
+            existLocation=false;
+            model.addAttribute("existLocation",existLocation);
+        }else{
+            existLocation=true;
+            model.addAttribute("existLocation",existLocation);
+            foundListOfLocation.add(foundLocation);
+        }
+        model.addAttribute("foundListOfLocation", foundListOfLocation);
+
+        //model.addAttribute("alllocations",locDao.findAll());
+        model.addAttribute("title", "Result of the location with id = "+locationId);
+        return "location/singleLocationShow";
+    }
+    // This function aimed to close the gap between the available stock of each material and its stored quantity
+    // It can come that the sum of quantities of the stored material in different places does not match the
+    // total available quantity of the material in the system. THe stapler has maybe omitted to relocate the
+    // material after the reception or forget to associate e new location for the new material
+    @RequestMapping(value="task")
+    public String locationstask(Model model){
+        List <MMaterial>listOfMaterials=new ArrayList<>();
+        listOfMaterials.addAll(matDao.findAll());
+        List<String>taskListOfMaterialNeedingRelocation=new ArrayList<>();
 
 
+        for(MMaterial material:listOfMaterials){
+            //get the stock of the material
+            double availableStock=material.getStock();
+            // Get the list of locations of this material if these exist
+            List<Location>locationsForhisMaterial=locDao.findByMaterial(material);
+            double locatedStockOfThisMaterial=0;
+            List<String>actuellocationsnameforthematerial=new ArrayList<>();
+            for(Location location:locationsForhisMaterial){
+                //cummulation of the stock available of this material at its locations
+                locatedStockOfThisMaterial+=location.getLocationStock();
+            }
+            double tobelocatedSock=availableStock-locatedStockOfThisMaterial;
+
+                boolean relocationNeeded=(tobelocatedSock>0)? true:false;
+                if(relocationNeeded==true){
+                    //Map<String, Double>materialAndQuantity=new HashMap<>();
+                    //materialAndQuantity.put(material.getMatName(),tobelocatedSock);
+
+                    for(Location el:locationsForhisMaterial){
+                        actuellocationsnameforthematerial.add(el.getName());
+                    }
+                    String newTask=material.getMatName()+":"+tobelocatedSock+":"+actuellocationsnameforthematerial;
+                    taskListOfMaterialNeedingRelocation.add(newTask);
+
+                    model.addAttribute("title","Location needed for "+ tobelocatedSock + " of the material="+ material.getMatName());
+                }
+                else {//no material to be relocated
+                    model.addAttribute("title","No material to be relocated");
+                }
+        }
+        model.addAttribute("taskListOfMaterialNeedingRelocation",taskListOfMaterialNeedingRelocation);
+        return "location/taskList";
+    }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public String addlocationdisplayform(Model model) {

@@ -9,17 +9,14 @@
 
 
 <nav th:replace="fragments :: navigation_home"></nav>
+<hr/>
 
-
-<div th:if="${#bools.isFalse(materialIsExisting)} or !${materials.size()}">
-    <h3 th:text="${criteria}"></h3>
+<div th:unless="${foundMaterial} and ${foundListOfMaterial.size()}">
+    <h3 th:text="${title}"></h3><br/>
 </div>
-<div th:if="${#bools.isTrue(materialIsExisting)}">
-    <table class="table" >
 
-        <tr>
-            <th>Materials</th>
-        </tr>
+<div th:if="${foundMaterial} and ${foundListOfMaterial.size()}">
+    <table class="table">
 
         <tr>
             <th>Id</th>
@@ -30,32 +27,28 @@
             <th>Fournisseurs</th>
         </tr>
 
-        <tr th:each="mat:${materials}">
-            <!--<li><a th:href="'material/'+${mat.id}" th:object="${mat}"></a></li>-->
+        <tr th:each="mat:${foundListOfMaterial}">
             <td th:text="${mat.matId}"></td>
             <td th:text="${mat.matName}"></td>
             <td th:text="${mat.description}"></td>
             <td th:text="${mat.stock}"></td>
-            <!--<td th:text="${mat.locations}"></td>
-            <td th:text="${mat.fournisseurs}"></td>-->
             <td>
-                <!--<strong th:each="location:${locations}" th:if="${location.material.matId}==${mat.matId}">-->
-                <strong th:each="location:${mat.locations}">
+                <strong th:each="location:${alllocations}" th:if="${location.material.matId}==${mat.matId}">
                     <strong>|</strong>
                     <a th:href="'/location/id='+${location.locationId}" th:text="${location.locationId}"></a>
                 </strong>
                 <strong>|</strong>
             </td>
             <td>
-                <strong th:each="fournisseur:${mat.fournisseurs}">
-                    <strong>|</strong>
-                    <a th:href="'/fournisseur/id='+${fournisseur.fournisseurId}" th:text="${fournisseur.fournisseurId}"></a>
+                <strong  th:each="fournisseur:${mat.fournisseurs}">|
+                    <a  th:href="'/fournisseur/id='+${fournisseur.fournisseurId}" th:text="${fournisseur.fournisseurId}"></a>
                 </strong>
                 <strong>|</strong>
             </td>
         </tr>
     </table>
 </div>
+<hr/>
 <div>
     <b><a href="/material/reception">Add Material</a> |</b>
     <b><a href="/material/remove">Remove Material</a> |</b>

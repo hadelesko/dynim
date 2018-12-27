@@ -7,7 +7,6 @@
 <h1 th:text="${title}">Default Title</h1>
 
 
-
 <nav th:replace="fragments :: navigation_home"></nav>
 <hr/>
 
@@ -38,9 +37,10 @@
             <td th:text="${fournisseur.phone}"></td>
             <td th:text="${fournisseur.fax}"></td>
             <td>
-                <strong th:each="eflow:${eflows}" th:if="${eflow.fournisseur.fournisseurId}==${fournisseur.fournisseurId}">
+                <strong th:each="eflow:${eflows}"
+                        th:if="${eflow.fournisseur.fournisseurId}==${fournisseur.fournisseurId}">
                     <strong>|</strong>
-                    <a th:href="'/fournisseur/id='+${eflow.material.matId}" th:text="${eflow.material.matId}"></a>
+                    <a th:href="'/material/id='+${eflow.material.matId}" th:text="${eflow.material.matId}"></a>
                 </strong>
                 <strong>|</strong>
             </td>
