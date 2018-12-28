@@ -1,15 +1,16 @@
 package org.launchcode.dynamicinventory.models;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-
+@Entity
 public class ExRetour {
-
+    @Id
     @GeneratedValue
-    private int Id;
+    private int id;
 
     @ManyToOne
     private MMaterial material;
@@ -24,11 +25,11 @@ public class ExRetour {
     public ExRetour(){}
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        id = id;
     }
 
     public MMaterial getMaterial() {

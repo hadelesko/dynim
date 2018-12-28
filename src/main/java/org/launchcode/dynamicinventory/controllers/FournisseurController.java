@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 @Controller
 @RequestMapping(value="fournisseur")
@@ -194,6 +195,47 @@ public class FournisseurController {
             return "redirect:";
         }
 
+    }
+    @RequestMapping(value="statistics")
+    public String fournisseurstatistics(Model model) {
+
+
+
+        for (MMaterial material: matDao.findAll()){
+
+            HashMap<String,List<HashMap<String,String>>> resumeforThisMaterial=new HashMap<>();
+            List<HashMap<String, String>>allfournisseursResume=new ArrayList<>();
+            for(Eflow eflow:material.getEflows()){
+                //int countEflowsOfThisMaterial=material.getEflows().size();
+                //int countfournisseursForThisMaterial=material.getFournisseurs().size();
+                for(Fournisseur f:material.getFournisseurs()){
+                    HashMap<String,String> resumeforThisfournisseur=new HashMap<>();
+                    resumeforThisfournisseur.put("fournisseur_Id",Integer.toString(f.getFournisseurId()));
+                    resumeforThisfournisseur.put("name", f.getName());
+                    resumeforThisfournisseur.put("numberOfMaterials",Integer.toString(f.getMaterials().size()));
+                    resumeforThisfournisseur.put("numberOfFlows",Integer.toString(f.getEflows().size()));
+                    int fournisseurFlowFrequencyForThisMaterial=0;
+                    double quantityOfThisMaterialSuppliedByThisFournisseur=0;
+                    if(eflow.getFournisseur()==f){
+                        fournisseurFlowFrequencyForThisMaterial+=1;
+                        quantityOfThisMaterialSuppliedByThisFournisseur +=eflow.getQuantityflow();
+                    }
+                    resumeforThisfournisseur.put("frequency ","material '"
+                            + material.getMatName()+"' was delivered|"
+                            +fournisseurFlowFrequencyForThisMaterial
+                            +" over "+ material.getEflows().size()
+                            +" time(s) by fournisseur '"+f.getName()+"' |total delivered| "
+                            + quantityOfThisMaterialSuppliedByThisFournisseur);
+                    allfournisseursResume.add(resumeforThisfournisseur);
+                }
+
+            }
+            resumeforThisMaterial.put(material.getMatName(),allfournisseursResume);
+            //resumeforThisMaterial.put("fournisseurs",allfournisseursResume.toString());
+            model.addAttribute("resumeforThisMaterial", resumeforThisMaterial);
+
+        }
+        return "fournisseur/statistics";
     }
 }
 
