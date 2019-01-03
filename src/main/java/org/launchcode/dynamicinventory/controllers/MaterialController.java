@@ -81,7 +81,7 @@ public class MaterialController {
             title="The search of the material with the name = '"+materialName+"' is the following";
             foundListOfMaterial.add(foundMaterial);
         }else{
-            title ="No material with the name= '" +materialName +"' found with the ";
+            title ="No material with the name = '" +materialName+"'";
         }
         model.addAttribute("foundListOfMaterial", foundListOfMaterial);
 

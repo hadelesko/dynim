@@ -4,10 +4,6 @@
 
 <body class="container">
 
-<h1 th:text="${title}">Default Title</h1>
-
-
-
 <nav th:replace="fragments :: navigation_home"></nav>
 <hr/>
 
@@ -33,12 +29,23 @@
             <td th:text="${mat.description}"></td>
             <td th:text="${mat.stock}"></td>
             <td>
-                <strong th:each="location:${alllocations}" th:if="${location.material.matId}==${mat.matId}">
+                <!--this query of the location might be too long. we can add do it directly via ${mat.locations}-->
+                <strong th:each="location:${mat.locations}">
+
                     <strong>|</strong>
                     <a th:href="'/location/id='+${location.locationId}" th:text="${location.locationId}"></a>
                 </strong>
                 <strong>|</strong>
             </td>
+            <!--<td>
+                &lt;!&ndash;this query of the location might be too long time. we can add do it directly via ${mat.locations}&ndash;&gt;
+                <strong th:each="location:${alllocations}" th:if="${location.material.matId}==${mat.matId}">
+
+                    <strong>|</strong>
+                    <a th:href="'/location/id='+${location.locationId}" th:text="${location.locationId}"></a>
+                </strong>
+                <strong>|</strong>
+            </td>-->
             <td>
                 <strong  th:each="fournisseur:${mat.fournisseurs}">|
                 <a  th:href="'/fournisseur/id='+${fournisseur.fournisseurId}" th:text="${fournisseur.fournisseurId}"></a>

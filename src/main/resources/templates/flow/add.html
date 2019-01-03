@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title></title>
-</head>
-<body>
+<head th:replace="fragments :: head"></head>
+<body class="container">
 
 <form method="POST" style="max-width:600px;" th:object="${flow}" action="add">
-    <div class="flow">
-        <label th:for="name">Check the exact name of the flow that describe the movement</label>
-        <div>
-            <input class="form-control" th:field="*{name}" type="radio" th:value="Reception"/>Reception of material<br/>
-            <input class="form-control" th:field="*{name}" type="radio" th:value="Retour_To_warehouse"/>Retour to warehouse<br/>
-            <input class="form-control" th:field="*{name}" type="radio" th:value="Retour_To_supplier"/>Retour to supplier<br/>
+    <div><h3>Check the exact name of the flow that describe the movement</h3>
+            <label th:for="name" class="radio-inline"><input th:field="*{name}" type="radio" th:value="Reception"/>Reception</label>
+            <label th:for="name" class="radio-inline"><input th:field="*{name}" type="radio" th:value="Retour_To_warehouse"/>Retour to warehouse</label>
+            <label th:for="name" class="radio-inline"><input th:field="*{name}" type="radio" th:value="Retour_To_supplier"/>Retour to supplier</label>
             <span th:errors="*{name}" class="error"></span>
-        </div>
     </div>
-
-    <div class="flow">
+    <div>
         <label th:for="description">Description</label>
         <div>
             <input class="form-control" th:field="*{description}"/>

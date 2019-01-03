@@ -214,11 +214,16 @@ public class LocationController {
                 //update the list of the locations where this material is stored and save the updated material
                 model.addAttribute("newlocation", location);
 
+                List<Location>locationsforthisMaterial=new ArrayList<>();
                 material.getLocations().add(location);
+
+                locationsforthisMaterial.addAll(material.getLocations());
+                material.setLocations(locationsforthisMaterial);
                 matDao.save(material);
                 return "location/editLocation";
-            } else { //The location exists already. Test if the material stored on that location is the same material as
-                // new to be located
+            } else {
+                //The location exists already. Test if the material stored on that location is the same material as
+                // new to be located or placed
                 if(locDao.findByName(location.getName()).getMaterial().getMatId()==location.getMaterial().getMatId()){
                     // update the material stock at this location with new quantity (of the part) of the delivered material
                     // update location : entryStock + existingStock

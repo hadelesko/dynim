@@ -1,21 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <h1 th:text="${title}">Default Title</h1>
-    <nav th:replace="fragments :: head"></nav>
-    <nav th:replace="fragments :: navigation_home"></nav>
-</head>
+<head th:replace="fragments :: head"></head>
 <body class="container">
-
-    <p th:unless="${eflows} and ${eflows.size()}">No extern flow yet :(</p>
-
-
+<nav th:replace="fragments :: navigation_home"></nav>
+<div th:unless="${eflows} and ${eflows.size()}" th:text="${title}"></div>
+<div>
+    <hr/>
     <table class="table">
-
         <tr>
             <th>Date</th>
             <th>FlowID</th>
@@ -27,7 +18,7 @@
 
         <tr th:each="eflow:${eflows}">
             <td th:text="${eflow.date}"></td>
-            <td th:text="${eflow.id}"></td>
+            <td><a th:href="'id='+${eflow.id}" th:text="${eflow.id}"></a></td>
             <td th:text="${eflow.description}"></td>
             <td th:text="${eflow.quantityflow}"></td>
             <td>
@@ -43,11 +34,18 @@
 
         </tr>
     </table>
+    <hr/>
+</div>
+<div>
+    <b><a href="/eflow/add">add Eflow</a>|</b>
     <b><a href="/flow/add">add flow</a> |</b>
     <b><a href="/material">Material</a> |</b>
     <b><a href="/supplier">Supplier</a>|</b>
     <b><a href="/location/">Locations</a>|</b>
     <b><a href="/location/search">search Location</a>|</b>
+<hr/>
+</div>
+
 </body>
 </html>
 

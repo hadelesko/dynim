@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping(value="fournisseur")
 public class FournisseurController {
@@ -138,12 +140,30 @@ public class FournisseurController {
         model.addAttribute("fournisseur", fournisseurDao.findByName(searchTerm));
         return "fournisseur/edit";*/
     }
-    @RequestMapping(value = "{fournisseurId}")
+/*    @RequestMapping(value = "id={fournisseurId}")
     public String editfournisseur(Model model, @PathVariable int fournisseurId){
         Fournisseur fournisseur=fournisseurDao.findByFournisseurId(fournisseurId);
         model.addAttribute("title", "Result of the serach of the fournisseur with id= "+fournisseurId);
         model.addAttribute("fournisseur",fournisseur);
         return "fournisseur/editFournisseur";
+    }*/
+
+    @RequestMapping(value = {"name={fournisseurName}"})
+    public String showbyFournisseurName(Model model, @PathVariable String fournisseurName) {
+        List<Fournisseur>fournisseurs=new ArrayList<>();
+        String title="";
+        Fournisseur fournisseur=fournisseurDao.findByName(fournisseurName);
+        if(fournisseurDao.findByName(fournisseurName)==null){
+            title="Result of the search: No fournisseur found with name = "+fournisseurName;
+            //model.addAttribute("title",title);
+        }else{
+            title="Result of the search of the fournisseur with name = "+fournisseurName+ " is the following";
+            fournisseurs.add(fournisseur);
+            //model.addAttribute("title",title);
+        }
+        model.addAttribute("title",title);
+        model.addAttribute("fournisseurs", fournisseurs);
+        return "fournisseur/index";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
@@ -199,7 +219,7 @@ public class FournisseurController {
     @RequestMapping(value="statistics")
     public String fournisseurstatistics(Model model) {
 
-
+        List<HashMap<String,List<HashMap<String,String>>>>allMaterialResume=new ArrayList<>();
 
         for (MMaterial material: matDao.findAll()){
 
@@ -227,15 +247,21 @@ public class FournisseurController {
                             +" time(s) by fournisseur '"+f.getName()+"' |total delivered| "
                             + quantityOfThisMaterialSuppliedByThisFournisseur);
                     allfournisseursResume.add(resumeforThisfournisseur);
+
                 }
 
             }
             resumeforThisMaterial.put(material.getMatName(),allfournisseursResume);
+            Map<String, Double> locationsForThisMaterial=new HashMap<>();
+            material.getLocations().forEach(location->locationsForThisMaterial.put(location.getName(),location.getLocationStock()));
+           // resumeforThisMaterial.put("locations",locationsForThisMaterial.forEach((singlelocation,stock)->(singlelocation));
             //resumeforThisMaterial.put("fournisseurs",allfournisseursResume.toString());
-            model.addAttribute("resumeforThisMaterial", resumeforThisMaterial);
-
-        }
-        return "fournisseur/statistics";
+            //model.addAttribute("resumeforThisMaterial", resumeforThisMaterial);
+            allMaterialResume.add(resumeforThisMaterial);
+       }
+        model.addAttribute("allMaterialResume", allMaterialResume);
+        model.addAttribute("title", "Resume");
+        return "fournisseur/someStatistics";
     }
 }
 

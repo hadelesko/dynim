@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<h1 th:text="${title}">Default Title</h1>
+
+<nav th:replace="fragments :: navigation_home"></nav>
+
+<p th:unless="${allMaterialResume} and ${allMaterialResume.size()}">no Resume available yet :(</p>
+
+<p>List of Resumes</p>
+<ol th:each="resume:${allMaterialResume}">
+    <li th:text="${resume}"></li>
+</ol>
+
+</body>
+</html>

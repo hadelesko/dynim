@@ -3,8 +3,6 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 
-<h1 th:text="${title}">Default Title</h1>
-
 <nav th:replace="fragments :: navigation_home"></nav>
 
 <p th:unless="${fournisseurs} and ${fournisseurs.size()}">no fournisseur yet :(</p>
@@ -23,19 +21,25 @@
     </tr>
 
     <tr th:each="fournisseur:${fournisseurs}">
-        <td th:text="${fournisseur.fournisseurId}"></td>
+        <td><a th:href="'id='+${fournisseur.fournisseurId}" th:text="${fournisseur.fournisseurId}"></a></td>
         <td th:text="${fournisseur.name}"></td>
         <td th:text="${fournisseur.email}"></td>
         <td th:text="${fournisseur.address}"></td>
         <td th:text="${fournisseur.phone}"></td>
         <td th:text="${fournisseur.fax}"></td>
-        <td>
+        <td><Strong th:each="material:${fournisseur.materials}">
+                <strong>|</strong>
+                <a th:href="'/material/id='+${material.matId}" th:text="${material.matId}"></a>
+        </Strong>
+            <strong>|</strong>
+        </td>
+<!--        <td>
             <strong th:each="eflow:${eflows}" th:if="${eflow.fournisseur.fournisseurId}==${fournisseur.fournisseurId}">
                 <strong>|</strong>
                 <a th:href="'/material/id='+${eflow.material.matId}" th:text="${eflow.material.matId}"></a>
             </strong>
             <strong>|</strong>
-        </td>
+        </td>-->
     </tr>
 </table>
 <nav>

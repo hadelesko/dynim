@@ -4,12 +4,9 @@
 
 <body class="container">
 
-<h1 th:text="${title}">Default Title</h1>
-
 <nav th:replace="fragments :: navigation_home"></nav>
 
-
-<p th:unless="${materials} and ${materials.size()}">no material yet :(</p>
+<div th:unless="${materials} and ${materials.size()}" th:text="${title}">No material yet :(</div>
 
 <div th:if="${materials} and ${materials.size()}">
 <table class="table" >
@@ -33,7 +30,8 @@
         <td th:text="${mat.description}"></td>
         <td th:text="${mat.stock}"></td>
         <td>
-            <strong th:each="location:${alllocations}" th:if="${location.material.matId}==${mat.matId}">
+           <strong th:each="location:${alllocations}" th:if="${location.material.matId}==${mat.matId}">
+           <!--<strong th:each="location:${mat.locations}">-->
                 <strong>|</strong>
                 <a th:href="'/location/id='+${location.locationId}" th:text="${location.locationId}"></a>
             </strong>
