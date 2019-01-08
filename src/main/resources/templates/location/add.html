@@ -2,19 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments::head"></head>
 <body class="container">
-
-<h1 th:text="${title}">Default title</h1>
-
 <form method="POST" style="max-width:600px;" th:object="${location}" action="add">
     <div class="location">
-        <label th:for="name">Name</label>
+        <label th:for="name">Location Name</label>
         <div>
             <input class="form-control" th:field="*{name}"/>
             <span th:errors="*{name}" class="error"></span>
         </div>
     </div>
 
-    <div clas="location">
+    <div class="location">
         <label th:for="locationStock">Stock to be located</label>
         <div>
             <input class="form-control" th:field="*{locationStock}"/>
@@ -34,7 +31,6 @@
     </div>
     <input type="submit" value="Add a new location"/>
 </form>
-
 
 <fieldset>
     <legend>Available locations informations</legend>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments::head">
+  <!--  <script type="text/javascript" th:inline="javascript" >
+       /*<![CDATA[*/ function showLocation(x,y){
+            var x=document.getElementById('materialId');
+            var y=document.getElementById('locationName');
+            var locationsArray=/*[[${material.locations}]]*/;
+            var choosenmaterial=/*[[${material}]]*/;
+            if(x.value==choosenmaterial){
+            for(location in [[${choosenmaterial.locations}]]*/){
+             var newoption=document.createElement("option");
+             newoption.value=/*[[location.name]]*/;
+             newoption.innerHTML=/*[[location.name]]*/;
+             y.options.add(newoption);
+            }
+        }
+        /*]]>*/
+    </script>-->
+</head>
+<body class="container">
+<form method="POST" style="max-width:600px;"  th:action="'place'+${materialName}">
+    <div class="form-group">
+        <label th:for="material">Material</label>
+<!--        <select name="materialId" th:id="materialId" onchange="showLocation('materialId', 'locationName')">
+            <option th:each ="material : ${materials}"
+                    th:text ="${material.matName}"
+                    th:value="${material.matId}">
+            </option>
+        </select>-->
+        <div>
+            <input class="form-control" name="${materialName}" th:value="${material.matName}" th:type="hidden"/>
+            <!--<span th:errors="*{locationStock}" class="error"></span>-->
+        </div>
+    </div>
+    <div class="form-group">
+        <label th:for="name">Loc.name</label>
+        <select name="locationName" id="locationName" >
+            <option th:each ="location : ${availableLocations}"
+                    th:text ="${location.name}"
+                    th:value="${location.locationId}">
+            </option>
+        </select>
+    </div>
+
+
+    <div>
+        <label th:for="locationStock">Stock to be located</label>
+        <div>
+            <input class="form-control" name="locationStock" type="number"/>
+            <!--<span th:errors="*{locationStock}" class="error"></span>-->
+        </div>
+    </div>
+    <br/>
+
+    <input type="submit" value="Place the material"/>
+</form>
+
+
+<!--<select name="chooselocation" th:id="locationId">
+    <option th:each ="location : ${availableLocations}"
+            th:text ="${location.name}"
+            th:value="${location.locationId}">
+    </option>
+</select>-->
+<fieldset>
+    <legend>Available locations informations</legend>
+    <table>
+        <tr>
+            <th>Location_ID</th>
+            <th>Name</th>
+            <th>Material_Id</th>
+            <th>Material_Name</th>
+            <th>Material_Stock</th>
+        </tr>
+        <tr th:each="location:${availableLocations}">
+            <td th:text="${location.locationId}"></td>
+            <td th:text="${location.name}"></td>
+            <td th:text="${location.material.matId}"></td>
+            <td th:text="${location.material.matName}"></td>
+            <td th:text="${location.locationStock}"></td>
+        </tr>
+    </table>
+</fieldset>
+</body>
+</html>
