@@ -287,9 +287,13 @@ public class LocationController {
     }
 
     @RequestMapping(value = "place/{materialName}", method = RequestMethod.POST)
-    public String placeMaterialpost(@RequestParam("materialName")String materialName, Model model) {
+    public String placeMaterialpost(@RequestParam("materialName")String materialName,
+                                    @RequestParam("locationStock") double locationstock,
+                                    @RequestParam("locationId") int locationId,Model model) {
 
-
+    double oldstock=locDao.findByLocationId(locationId).getLocationStock();
+    double newStock=locationstock+oldstock;
+    locDao.findByLocationId(locationId).setLocationStock(newStock);
 
     }
 }
