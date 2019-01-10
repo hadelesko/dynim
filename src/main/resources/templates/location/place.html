@@ -29,8 +29,7 @@
             </option>
         </select>-->
         <div>
-            <input class="form-control" name="${materialName}" th:value="${material.matName}" th:type="hidden"/>
-            <!--<span th:errors="*{locationStock}" class="error"></span>-->
+            <input class="form-control" name="materialName" th:value="${material.matName}" th:type="hidden"/>
         </div>
     </div>
     <div class="form-group">
@@ -47,7 +46,7 @@
     <div>
         <label th:for="locationStock">Stock to be located</label>
         <div>
-            <input class="form-control" name="locationStock" type="number"/>
+            <input class="form-control" name="locationStock" />
             <!--<span th:errors="*{locationStock}" class="error"></span>-->
         </div>
     </div>

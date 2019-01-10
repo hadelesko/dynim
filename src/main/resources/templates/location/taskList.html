@@ -21,7 +21,7 @@
     <tbody>
     <tr th:each="task:${taskListOfMaterialNeedingRelocation}">
         <!--<h4><a th:href="'location/'+${location.locationId}" th:object="${location}"></a></h4>-->
-        <td><a th:href="@{/location/add}" th:text="relocate"></a></td>
+        <td><a th:href="'/location/place/'+${#strings.listSplit(task,':')[0]}" th:text="relocate"></a></td>
         <td th:text="unknown"></td>
         <!--split the string  task into 2 substrings with delimiter ":" and take the first substring [0]-->
         <td><a th:href="'/material/name='+${#strings.listSplit(task,':')[0]}" th:text="${#strings.listSplit(task,':')[0]}"></a></td>

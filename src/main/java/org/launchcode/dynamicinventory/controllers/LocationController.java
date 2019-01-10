@@ -201,43 +201,37 @@ public class LocationController {
                                          @RequestParam("materialId") int materialId) {
 
         MMaterial material = matDao.findByMatId(materialId);
-        List<Location> listLocforselectedmaterial = material.getLocations();
+        List<Location> listLocforselectedmaterial = new ArrayList<>();
+        listLocforselectedmaterial.addAll(locDao.findByMaterial(material));
         location.setMaterial(material);
         model.addAttribute("material", material);
         //model.addAttribute("materialId", location.getMaterial());
-        double locatableQuantityForTheSelectedMaterial = 0;
+        double locatedQuantityForTheSelectedMaterial = 0;
 
-        //locatableQuantityForTheSelectedMaterial+=material.getLocations().forEach(loc->loc.getLocationStock());
+        //locatedQuantityForTheSelectedMaterial+=material.getLocations().forEach(loc->loc.getLocationStock());
         for (Location loc : listLocforselectedmaterial) {
-            locatableQuantityForTheSelectedMaterial += loc.getLocationStock();
-
+            locatedQuantityForTheSelectedMaterial += loc.getLocationStock();
         }
         //model.addAttribute("locatableQuantityForTheSelectedMaterial",locatableQuantityForTheSelectedMaterial);
-        if (errors.hasErrors() || locationStock > locatableQuantityForTheSelectedMaterial) {
-            String quantitytostring = String.valueOf(locatableQuantityForTheSelectedMaterial);
-            String title = locationStock > locatableQuantityForTheSelectedMaterial ?
+        //double totallocateble=locatableQuantityForTheSelectedMaterial;
+
+        double tobelocated = material.getStock() - locatedQuantityForTheSelectedMaterial;
+
+        // Make sure that the user don't enter the a a quantity greater than the quantity
+        // not located(received but not yet placed in the warehouse)
+
+        if (errors.hasErrors() || locationStock > tobelocated) {
+
+            String title = locationStock > locatedQuantityForTheSelectedMaterial ?
                     "Error:the entered stock is greater than the available to be located(" +
-                            quantitytostring + ") for the selected material " +
-                            material.getMatName() + ".Please enter the stock less equals " + quantitytostring :
+                            tobelocated + ") for the selected material " +
+                            material.getMatName() + ".Please enter the stock less equals " + tobelocated :
                     "Make sure the required fields are not empty";
 
             model.addAttribute("title", title);
             model.addAttribute("materials", matDao.findAll());
             return "location/add";
         } else {
-/*            // Make sure that the user don't enter the a a quantity greater than the quantity
-            // not located(received but not yet placed in the warehouse)
-            double locatableQuantity=locatableQuantityForTheSelectedMaterial;
-            if (locationStock > locatableQuantity) {
-                String quantitytostring=Double.toString(locatableQuantity);
-                String title="Error:the entered stock is greater than the available to be located(" +
-                        quantitytostring + ") for the selected material " +
-                        material.getMatName() + ".Please enter the stock less equals "+quantitytostring;
-                model.addAttribute("title", title);
-                model.addAttribute("materials", matDao.findAll());
-                return "location/add";
-
-            } else {*/
 
 
             if (locDao.findByName(location.getName()) == null) { //The location does not exist before--> Save it
@@ -279,7 +273,7 @@ public class LocationController {
     @RequestMapping(value = "place/{materialName}", method = RequestMethod.GET)
     public String placeMaterial(Model model, @PathVariable String materialName) {
         MMaterial material = matDao.findByMatName(materialName);
-        List<Location> availableLocations = material.getLocations();
+        List<Location> availableLocations = locDao.findByMaterial(material);
         model.addAttribute("availableLocations", availableLocations);
         model.addAttribute("material", material);
         model.addAttribute("title", "Place a material '" + materialName + "'");
@@ -287,14 +281,64 @@ public class LocationController {
     }
 
     @RequestMapping(value = "place/{materialName}", method = RequestMethod.POST)
-    public String placeMaterialpost(@RequestParam("materialName")String materialName,
+    public String placeMaterialpost(@RequestParam("materialName") String materialName,
                                     @RequestParam("locationStock") double locationstock,
-                                    @RequestParam("locationId") int locationId,Model model) {
+                                    @RequestParam("locationId") int locationId, Model model) {
+        
 
-    double oldstock=locDao.findByLocationId(locationId).getLocationStock();
-    double newStock=locationstock+oldstock;
-    locDao.findByLocationId(locationId).setLocationStock(newStock);
+        double oldstock = locDao.findByLocationId(locationId).getLocationStock();
+        double newStock = locationstock + oldstock;
+        locDao.findByLocationId(locationId).setLocationStock(newStock);
+        model.addAttribute("title", "The stock of '" + materialName
+                + "'at the location' " + locDao.findByLocationId(locationId).getName() + "' was'" + oldstock +
+                "'." + "With the addition of " + locationstock + "the available stock is updated to "
+                + newStock);
+        List<Location> locations = new ArrayList<>();
+        locations.add(locDao.findByLocationId(locationId));
+        model.addAttribute("locations", locations);
+        return "location/index";
 
     }
-}
+
+    @RequestMapping(value = "material/id={materialId}")
+    public String showLocationByBaterialId(Model model, @PathVariable int materialId) {
+        String title = "";
+        List<Location> locations = new ArrayList<>();
+        if (matDao.findByMatId(materialId) == null) {
+            title = "No material with the id=" + materialId + ". So no location for it";
+        } else {
+            MMaterial material = (matDao.findByMatId(materialId));
+            if (locDao.findByMaterial(material).size() == 0) {
+                title = "No location yet for the material with id='" + materialId;
+            } else {
+                title = "Tne location(s) for the material with id='" + materialId + " the following ";
+                locations.addAll(locDao.findByMaterial(material));
+            }
+        }
+        model.addAttribute("title", title);
+        model.addAttribute("locations", locations);
+        return "location/index";
+
+    }
+
+    @RequestMapping(value = "material/name={materialName}")
+    public String showLocationByBaterialName(Model model, @PathVariable String materialName) {
+        String title = "";
+        List<Location> locations = new ArrayList<>();
+        if (matDao.findByMatName(materialName) == null) {
+            title = "No material with the id=" + materialName + ". So no location for it";
+        } else {
+            MMaterial material = (matDao.findByMatName(materialName));
+            if (locDao.findByMaterial(material).size() == 0) {
+                title = "No location yet for the material '" + materialName;
+            } else {
+                title = "The location(s) for the material '" + materialName + " the following ";
+                locations.addAll(locDao.findByMaterial(material));
+            }
+        }
+        model.addAttribute("title", title);
+        model.addAttribute("locations", locations);
+        return "location/index";
+
+    }
 }
