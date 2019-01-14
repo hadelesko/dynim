@@ -1,5 +1,6 @@
 package org.launchcode.dynamicinventory.models;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -7,25 +8,31 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class MaterialOrder {
     @Id
     @GeneratedValue
     private int orderId;
-    //private String name;
 
     @ManyToOne
     private MMaterial material;
 
-    @NotNull
-    private double orderdQuantity;
-    @NotNull
+    @NotNull(message="Can not be empty")
+    private double orderedQuantity;
+
+    @NotNull(message="Destination must be provided")
     private String destination;
 
-    //@Pattern(regexp="mm-dd-yyyy")
     private Date date=new Date();
+
+
+    private boolean picked=false;
+    private boolean delivered=false;
+
 
     public MaterialOrder(){}
 
@@ -46,12 +53,12 @@ public class MaterialOrder {
         this.material = material;
     }
 
-    public double getOrderdQuantity() {
-        return orderdQuantity;
+    public double getOrderedQuantity() {
+        return orderedQuantity;
     }
 
-    public void setOrderdQuantity(double orderdQuantity) {
-        this.orderdQuantity = orderdQuantity;
+    public void setOrderedQuantity(double orderedQuantity) {
+        this.orderedQuantity = orderedQuantity;
     }
 
     public String getDestination() {
@@ -68,5 +75,21 @@ public class MaterialOrder {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public boolean isPicked() {
+        return picked;
+    }
+
+    public void setPicked(boolean picked) {
+        this.picked = picked;
+    }
+
+    public boolean isDelivered() {
+        return delivered;
+    }
+
+    public void setDelivered(boolean delivered) {
+        this.delivered = delivered;
     }
 }

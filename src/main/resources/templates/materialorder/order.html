@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <h1 th:text="${title}">Default Title</h1>
-</head>
-<body>
+<head th:replace="fragments::head"></head>
+<body class="container">
 <form  method="POST" style="max-width:600px;" th:object="${materialOrder}" action="add">
     <div class="form-group">
         <div>
@@ -20,37 +17,40 @@
             <option th:each="material : ${materials}"
                     th:text="${material.matName}"
                     th:value="${material.matId}">
-<!--                <label th:for="orderdQuantity">Quantity Ordered</label>
-                <div>-->
-                    <input class="form-control" th:field="*{orderdQuantity}" placeholder="Enter the quantity"/>
-                    <span th:errors="*{orderdQuantity}" class="error"></span>
-                <!--</div>-->
-                <!--<label th:for="destination">Destination</label>-->
-                <!--<div>-->
-                    <input class="form-control" th:field="*{Destination}" placeholder="Enter the destination"/>
-                    <span th:errors="*{destination}" class="error"></span>
-                <!--</div>-->
             </option>
         </select>
     </div>
-
-    <!--<div class="material">
-        <label th:for="orderdQuantity">Quantity Ordered</label>
+    <div>
+        <label th:for="orderedQuantity">Quantity Ordered</label>
         <div>
-            <input class="form-control" th:field="*{orderdQuantity}"/>
-            <span th:errors="*{orderdQuantity}" class="error"></span>
+            <input class="form-control" th:field="*{orderedQuantity}" placeholder="Enter the quantity"/>
+            <span th:errors="*{orderedQuantity}" class="error"></span>
+        </div>
+    </div>
+    <div>
+          <label th:for="destination">Destination</label>
+          <div>
+              <input class="form-control" th:field="*{Destination}" placeholder="Enter the destination"/>
+              <span th:errors="*{destination}" class="error"></span>
+          </div>
+    </div>
+
+    <div class="material">
+        <label th:for="isPicked"></label>
+        <div>
+            <input class="form-control" th:field="*{picked}" th:value="${picked}" type="hidden"/>
+            <span th:errors="*{picked}" class="error"></span>
         </div>
     </div>
 
     <div class="material">
-        <label th:for="destination">Destination</label>
+        <label th:for="isDelivered"></label>
         <div>
-            <input class="form-control" th:field="*{Destination}"/>
-            <span th:errors="*{destination}" class="error"></span>
+            <input class="form-control" th:field="*{delivered}" th:value="${delivered}" type="hidden"/>
+            <span th:errors="*{delivered}" class="error"></span>
         </div>
     </div>
--->
-    <input type="submit" value="Edit order" />
+    <input type="submit" value="Edit order"/>
 </form>
 
 </body>

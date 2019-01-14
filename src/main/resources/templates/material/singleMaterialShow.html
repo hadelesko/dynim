@@ -24,14 +24,15 @@
         </tr>
 
         <tr th:each="mat:${foundListOfMaterial}">
-            <td th:text="${mat.matId}"></td>
-            <td th:text="${mat.matName}"></td>
+            <td><a th:href="'/material/id='+${mat.matId}" th:text="${mat.matId}"></a></td>
+            <td><a th:href="'/material/name='+${mat.matName}" th:text="${mat.matName}"></a></td>
             <td th:text="${mat.description}"></td>
             <td th:text="${mat.stock}"></td>
             <td>
+                <strong th:each="location:${alllocations}" th:if="${location.material.matId}==${mat.matId}">
                 <!--this query of the location might be too long. we can add do it directly via ${mat.locations}-->
-                <strong th:each="location:${mat.locations}">
-
+                <!--<strong th:each="location:${mat.locations}">-->
+                
                     <strong>|</strong>
                     <a th:href="'/location/id='+${location.locationId}" th:text="${location.locationId}"></a>
                 </strong>

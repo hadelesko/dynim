@@ -355,7 +355,7 @@ public class MaterialController {
                     //No more update of fournisseur list of this material
                     //return "redirect:";
                     model.addAttribute("title", "Add new location for the new product received");
-                    return "redirect:/location/add";
+                    return "redirect:/location/place/"+material.getMatName();
 
                 } else {
                     if (materials.contains(material) == false && material.getFournisseurs().contains(fournisseurDao.findByFournisseurId(fournisseurId)) == true) {

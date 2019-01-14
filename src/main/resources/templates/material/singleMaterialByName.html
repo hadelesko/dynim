@@ -24,8 +24,8 @@
         </tr>
 
         <tr th:each="mat:${foundListOfMaterial}">
-            <td th:text="${mat.matId}"></td>
-            <td th:text="${mat.matName}"></td>
+            <td><a th:href="'/material/id='+${mat.matId}" th:text="${mat.matId}"></a></td>
+            <td><a th:href="'/material/name='+${mat.matName}" th:text="${mat.matName}"></a></td>
             <td th:text="${mat.description}"></td>
             <td th:text="${mat.stock}"></td>
             <td>
