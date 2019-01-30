@@ -6,7 +6,7 @@
     <div class="form-group">
         <div>
             <label th:for="datetime">Date</label>
-            <input class="form-control"  th:field ="*{date}"/>
+            <input class="form-control" type="datetime" th:field ="*{date}"/>
             <span th:errors="*{date}" class="error"></span>
         </div>
     </div>

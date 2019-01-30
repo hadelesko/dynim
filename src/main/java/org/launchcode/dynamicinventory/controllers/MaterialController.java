@@ -408,7 +408,32 @@ public class MaterialController {
         }
 
     }
+    @RequestMapping(value="order",method=RequestMethod.GET)
+    public String makeOrder(Model model){
+        model.addAttribute("title","Select the materials to be ordered");
+        List<MMaterial>materials=new ArrayList<>();
+        List<MMaterial>stockOutMaterials=new ArrayList<>();
+        for (MMaterial material:matDao.findAll()) {
+            //Only the material with Stock greater than 0 will be shown
+            if (material.getStock() > 0) {
+                materials.add(material);
+            } else {
+                stockOutMaterials.add(material);
+            }
+        }
+        model.addAttribute("outOfStockMaterials",stockOutMaterials);
+        model.addAttribute("materials",materials);
+        return "material/neworder";
+    }
+    @RequestMapping(value="order",method=RequestMethod.POST)
+    public String makeOrder(Model model, @RequestParam int[] materialIds, @RequestParam double[] quantities){
+        for(int i=0;i < materialIds.length; i++){
+            
+        }
 
+
+
+    }
 
     @RequestMapping(value = "remove", method = RequestMethod.GET)
     public String removeMaterial(Model model) {

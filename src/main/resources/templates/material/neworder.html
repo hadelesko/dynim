@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+<form method="POST" style="max-width:600px;" action="order">
+
+<!--<div class="form-group">
+    <label th:for="order">Material Order</label>
+    <select name="materialIds" class="form-control" th:multiple="multiple">
+        <option th:each="material : ${materials}"
+                th:text="${material.matName}"
+                th:value="${material.matId}">
+        </option>
+    </select>
+</div>-->
+    <table>
+    <tr th:each="material : ${materials}" class="checkbox">
+        <td><input type="checkbox" name="materialIds" th:value="${material.matId}" th:id="${material.matId}"/></td>
+        <td><label th:for="${material.matId}" th:text="${material.matName}"></label></td>
+        <td><input type="double" name="quantities"/></td>
+    </tr>
+    </table>
+    <input type="submit" value="Confirm the selected materials" />
+</form>
+</body>
+</html>

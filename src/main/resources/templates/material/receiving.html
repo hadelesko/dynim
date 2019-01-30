@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <h1 th:text="${title}">Default Title</h1>
 </head>
-<body>
+<body class="container">
 <form  method="POST" style="max-width:600px;" th:object="${material}" action="reception">
     <div class="material">
         <label th:for="matName">Name</label>
