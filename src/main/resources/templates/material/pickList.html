@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
+<nav th:replace="fragments :: navigation_home"></nav>
+
+<div th:unless="${materials} and ${materials.size()}" th:text="${title}">No material selected :(</div>
+
+<div th:if="${materials} and ${materials.size()}">
+    <table class="table" >
+
+        <tr>
+            <th>Materials</th>
+        </tr>
+
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Stock</th>
+            <th>Locations</th>
+        </tr>
+
+        <tr th:each="mat:${materials}">
+            <td><a th:href="'material/id='+ ${mat.matId}" th:text="${mat.matId}"></a></td>
+            <td><a th:href="'material/name='+ ${mat.matName}" th:text="${mat.matName}"></a></td>
+            <td th:text="${mat.description}"></td>
+            <td th:text="${mat.stock}"></td>
+            <td>
+                <strong th:each="location:${material.locations}" th:if="${location.material.matId}==${mat.matId}">
+                    <!--<strong th:each="location:${mat.locations}">-->
+                    <strong>|</strong>
+                    <a th:href="'/location/id='+${location.locationId}" th:text="${location.locationId}"></a>
+                </strong>
+                <strong>|</strong>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
