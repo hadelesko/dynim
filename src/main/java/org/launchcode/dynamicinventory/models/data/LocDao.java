@@ -16,4 +16,5 @@ public interface LocDao extends CrudRepository<Location,Integer> {
     Location findByLocationId(int locationId);
     List<Location>findByLocationStock(double locationStock);
     List<Location>findByMaterial(MMaterial material);
+    List<Location>findByMaterialOrderByLocationStockDesc(MMaterial material);
 }

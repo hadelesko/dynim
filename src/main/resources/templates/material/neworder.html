@@ -14,11 +14,11 @@
         </option>
     </select>
 </div>-->
-    <table>
-    <tr th:each="material : ${materials}" class="checkbox">
-        <td><input type="checkbox" name="materialIds" th:value="${material.matId}" th:id="${material.matId}"/></td>
-        <td><label th:for="${material.matId}" th:text="${material.matName}"></label></td>
-        <td><input type="double" name="quantities"/></td>
+    <table th:each="material : ${materials}" >
+    <tr th:object="${mat}" class="checkbox" >
+        <td><input type="checkbox" name="materialIds" th:field="*{matId}" th:value="${material.matId}"/></td>
+        <td><label th:field="*{matName}" th:value="${material.matName}" th:text="${material.matName}"></label></td>
+        <td><input th:field="*{stock}" name="quantities"/></td>
     </tr>
     </table>
     <input type="submit" value="Confirm the selected materials" />

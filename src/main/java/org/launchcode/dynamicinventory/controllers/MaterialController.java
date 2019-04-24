@@ -6,6 +6,7 @@ import org.launchcode.dynamicinventory.data.LocDao;
 import org.launchcode.dynamicinventory.data.MatDao;
 import org.launchcode.dynamicinventory.data.SupplierDao;*/
 
+import org.apache.catalina.Session;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.launchcode.dynamicinventory.models.*;
 import org.launchcode.dynamicinventory.models.data.*;
@@ -423,15 +424,43 @@ public class MaterialController {
         }
         model.addAttribute("outOfStockMaterials",stockOutMaterials);
         model.addAttribute("materials",materials);
+        model.addAttribute("mat",new MMaterial());
         return "material/neworder";
     }
     @RequestMapping(value="order",method=RequestMethod.POST)
-    public String makeOrder(Model model, @RequestParam int[] materialIds, @RequestParam double[] quantities){
-        for(int i=0;i < materialIds.length; i++){
-            
+    public String makeOrder(Model model, @RequestParam int[] materialIds, @RequestParam String[] quantities){
+        List<MMaterial>pickList=new ArrayList<>();
+        if (materialIds.length==quantities.length) {
+            for (int i = 0; i < materialIds.length; i++) {
+                MMaterial material = matDao.findByMatId(materialIds[i]);
+                MMaterial orderdMaterial = material;
+
+                List<Location> locations = locDao.findByMaterialOrderByLocationStockDesc(material);
+                orderdMaterial.setStock(Double.parseDouble(quantities[i]));
+                orderdMaterial.setLocations(locations);
+                pickList.add(orderdMaterial);
+            }
+            model.addAttribute("mat", new MMaterial());
+            model.addAttribute("title", "List of the ordered material");
+            model.addAttribute("materials",pickList);
+            return "material/pickList";
+        }else{
+            List<MMaterial>materials=new ArrayList<>();
+            List<MMaterial>stockOutMaterials=new ArrayList<>();
+            for (MMaterial material:matDao.findAll()) {
+                //Only the material with Stock greater than 0 will be shown
+                if (material.getStock() > 0) {
+                    materials.add(material);
+                } else {
+                    stockOutMaterials.add(material);
+                }
+            }
+            model.addAttribute("title","Error!Try again your order and make sure each material selected has a quantity");
+            model.addAttribute("outOfStockMaterials",stockOutMaterials);
+            model.addAttribute("materials",materials);
+            return "material/neworder";
+
         }
-
-
 
     }
 
