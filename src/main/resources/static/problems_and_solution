@@ -1,0 +1,64 @@
+**********************
+Problem 1
+**********************
+2019-10-13 01:51:43.745  INFO 10582 --- [  restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2019-10-13 01:51:43.811  INFO 10582 --- [  restartedMain] utoConfigurationReportLoggingInitializer : 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-10-13 01:51:43.822 ERROR 10582 --- [  restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The Tomcat connector configured to listen on port 8080 failed to start. The port may already be in use or the connector may be misconfigured.
+
+Action:
+
+Verify the connector's configuration, identify and stop any process that's listening on port 8080, or configure this application to listen on another port.
+
+2019-10-13 01:51:43.823  INFO 10582 --- [  restartedMain] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@47b6baef: startup date [Sun Oct 13 01:51:35 CDT 2019]; root of context hierarchy
+2019-10-13 01:51:43.831  INFO 10582 --- [  restartedMain] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2019-10-13 01:51:43.843  INFO 10582 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+
+BUILD SUCCESSFUL
+
+Total time: 19.421 secs
+1:51:44 AM: Task execution finished 'bootRun'.
+Caused by: java.net.BindException: Address already in use
+
+***************************
+SOLUTION 1
+***************************
+Ce ci est du au fait que j' ai laissee un  serveur running sur le port 8080 qui etait destinee pour le tomcat ici de pouvoir executer mon progam java.
+En effet apres investigation je retrouve que c est mon serveur microk8 qui est en mode running. ce ue j ai du stopper.comme suivant: 
+
+Verifier le status du serveur microk8s 
+~$ sudo microk8s.status
+[sudo] password for root: 
+
+microk8s is running
+addons:
+rbac: disabled
+knative: disabled
+ingress: disabled
+dns: disabled
+metrics-server: disabled
+linkerd: disabled
+prometheus: disabled
+istio: disabled
+jaeger: disabled
+fluentd: disabled
+gpu: disabled
+cilium: disabled
+storage: disabled
+dashboard: disabled
+registry: disabled
+
+~$ sudo microk8s.stop
+Stopped.
+
+Et le probleme est resolu 
+
