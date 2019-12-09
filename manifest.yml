@@ -1,0 +1,4 @@
+applications:
+- name: dynamicinventory
+  buildpack: java_buildpack
+  path: build/libs/dynamicinventory-0.0.1-SNAPSHOT.jar
