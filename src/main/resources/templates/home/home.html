@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<nav th:replace="fragments :: navigation_home"></nav>
+
+<br/>
+<h3 th:replace="fragments :: title">Default Title</h3>
+<div class="container">
+    <hr/>
+    <div>
+        <nav th:fragment="navigation_user">
+            <h4>
+                <a href="user">User</a> |
+                <a href="operations">Locations</a> |
+                <a href="statistics">Statistics</a>|
+                <a href="advices">Advices</a> |
+                <a href="information">Information</a> |
+                <a href="Summary">Summary</a>|
+            </h4>
+        </nav>
+    </div>
+
+    <nav th:replace="fragments :: navigation_task"></nav>
+    <div>
+        <nav th:fragment="navigation_new">
+
+            <h4>
+                <a href="/user/login">Login</a> |
+                <a href="/user/registration">Sign Up</a> |
+            </h4>
+        </nav>
+    </div>
+</div>
+</body>
+</html>
